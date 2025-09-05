@@ -18,6 +18,7 @@ const GameBoard = ({ generatedBoard, level }: BoardProps) => {
   const [selectedCell, setSelectedCell] = useState<CellProps | null>(null);
   const [highlightedCells, setHighlightedCells] = useState<Set<string>>(new Set());
   const [isFinished, setIsFinished] = useState(false);
+  const [rotate, setRotate] = useState<boolean>(false);
 
   useEffect(() => {
     switch (level) {
@@ -50,6 +51,7 @@ const GameBoard = ({ generatedBoard, level }: BoardProps) => {
       }
       if (checkGrid(board, selectedCell!.row, selectedCell!.col)) {
         console.log("completo grid");
+        setRotate(true);
       }
     }
     if (checkGame(board)) {
@@ -132,6 +134,8 @@ const GameBoard = ({ generatedBoard, level }: BoardProps) => {
                 onPress={handleCellPress}
                 highlighted={highlightedCells.has(`${rowIndex},${colIndex}`)}
                 selected={selectedCell?.row === cell.row && selectedCell?.col === cell.col}
+                rotate={rotate}
+                setRotate={setRotate}
               />
             ))
           )}
