@@ -13,6 +13,7 @@ export type NumberCellProps = {
   cell: CellProps;
   selected?: boolean;
   highlighted?: boolean;
+  rotatesCells?: boolean;
   editable?: boolean;
   onPress: (cell: CellProps) => void;
   rotate?: boolean;
@@ -24,6 +25,7 @@ const NumberCell = ({
   selected,
   editable,
   highlighted,
+  rotatesCells,
   onPress,
   rotate,
   setRotate,
@@ -67,7 +69,7 @@ const NumberCell = ({
       onPress={() => onPress(cell)}
     >
       <AnimatedText
-        style={[styles.numberText, highlighted && animatedStyle, selected && animatedStyle]}
+        style={[styles.numberText, rotatesCells && animatedStyle, selected && animatedStyle]}
       >
         {cell.value !== null && cell.value !== 0 ? cell.value : ""}
       </AnimatedText>

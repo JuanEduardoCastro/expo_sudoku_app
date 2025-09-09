@@ -1,9 +1,12 @@
 import { Board, CellProps } from "@/app/Game";
+import useLevel from "@/hooks/useLevel";
 import useTimer from "@/hooks/useTimer";
+import { useNotificationMessageStore } from "@/store/store";
 import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import NotificationModal from "../shared/NotificationModal";
 import NumberCell from "./NumberCell";
 import NumberPad from "./NumberPad";
 
@@ -16,58 +19,64 @@ type BoardProps = {
 const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
   const router = useRouter();
   const { timer, timerRunning, setTimerRunning, formatTimer } = useTimer();
+  const { levelString, clueCount, setClueCount } = useLevel(level);
+  const { notification, setNotification } = useNotificationMessageStore();
   const [board, setBoard] = useState<Board>(generatedBoard);
-  const [levelString, setLevelString] = useState<string | null>(null);
+  const [solutionBoard, setSolutionBoard] = useState<Board>(solution);
   const [selectedCell, setSelectedCell] = useState<CellProps | null>(null);
   const [highlightedCells, setHighlightedCells] = useState<Set<string>>(new Set());
-  const [isFinished, setIsFinished] = useState<boolean>(false);
+  const [rotatedCells, setRotatedCells] = useState<Set<string>>(new Set());
   const [rotate, setRotate] = useState<boolean>(false);
-  const [clueCount, setClueCount] = useState<number | null>(null);
   const [clueCell, setClueCell] = useState<number | null>(null);
-  const [solutionBoard, setSolutionBoard] = useState<Board>(solution);
+  const [isFinished, setIsFinished] = useState<boolean>(false);
 
   useEffect(() => {
-    switch (level) {
-      case 0.05:
-        setLevelString("For test");
-        setClueCount(3);
-        break;
-      case 0.54:
-        setLevelString("Easy");
-        setClueCount(3);
-        break;
-      case 0.6:
-        setLevelString("Medium");
-        setClueCount(2);
-        break;
-      case 0.65:
-        setLevelString("Hard");
-        setClueCount(1);
-        break;
-      case 0.7:
-        setLevelString("Expert");
-        setClueCount(1);
-        break;
-      default:
-        break;
-    }
-  }, []);
+    function checkCells() {
+      console.log("CHECK BOARD !!!!!!");
+      if (selectedCell !== null) {
+        const rotateSelection = new Set<string>();
+        if (checkRow(board, selectedCell!.row)) {
+          for (let i = 0; i < 9; i++) {
+            rotateSelection.add(`${selectedCell!.row},${i}`);
+          }
+          console.log("completo fila");
+          console.log("rotateSelection row ->", rotateSelection);
+          console.log("hightlightedCells row ->", highlightedCells);
+          console.log("selectedCell row ->", selectedCell.row);
+          setRotate(true);
+        }
+        if (checkCol(board, selectedCell!.col)) {
+          for (let i = 0; i < 9; i++) {
+            rotateSelection.add(`${i},${selectedCell!.col}`);
+          }
+          console.log("completo columna");
+          console.log("rotateSelection col ->", rotateSelection);
+          console.log("hightlightedCells col ->", highlightedCells);
+          console.log("selectedCell col ->", selectedCell.col);
+          setRotate(true);
+        }
+        if (checkGrid(board, selectedCell!.row, selectedCell!.col)) {
+          const startRow = Math.floor(selectedCell!.row / 3) * 3;
+          const startCol = Math.floor(selectedCell!.col / 3) * 3;
+          for (let row = startRow; row < startRow + 3; row++) {
+            for (let col = startCol; col < startCol + 3; col++) {
+              rotateSelection.add(`${row},${col}`);
+            }
+          }
+          console.log("completo grid");
+          console.log("rotateSelection grid ->", rotateSelection);
+          console.log("hightlightedCells grid ->", highlightedCells);
+          console.log("selectedCell grid ->", selectedCell.row, selectedCell.col);
 
-  useEffect(() => {
-    console.log("CHECK BOARD !!!!!!");
-    if (selectedCell !== null) {
-      if (checkRow(board, selectedCell!.row)) {
-        console.log("completo fila");
-        console.log("hightlightedCells", highlightedCells);
-      }
-      if (checkCol(board, selectedCell!.col)) {
-        console.log("completo columna");
-      }
-      if (checkGrid(board, selectedCell!.row, selectedCell!.col)) {
-        console.log("completo grid");
-        setRotate(true);
+          setRotate(true);
+        }
+        setRotatedCells(rotateSelection);
+        // return rotateSelection;
       }
     }
+
+    checkCells();
+
     if (checkGame(board)) {
       setIsFinished(true);
       setTimerRunning(false);
@@ -83,7 +92,7 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
     if (!timerRunning) {
       setTimerRunning(true);
     }
-    if (!cell.editable === true) return;
+    // if (!cell.editable === true) return;
 
     if (selectedCell?.row === cell.row && selectedCell?.col === cell.col) {
       setSelectedCell(null);
@@ -117,7 +126,10 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
 
   const handleClickNumberPad = (number: number) => {
     if (!selectedCell) {
-      Alert.alert("Select a cell first");
+      setNotification({
+        message: "Select a cell first",
+        type: "warning",
+      });
       return;
     } else {
       const checkNumberInCell = isValid(board, selectedCell!.row, selectedCell!.col, number);
@@ -128,21 +140,30 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
         setBoard([...board]);
         setClueCell(null);
       } else {
-        Alert.alert("Invalid number");
+        setNotification({
+          message: "Invalid number",
+          type: "warning",
+        });
       }
     }
   };
 
   const handleClueCount = () => {
     if (clueCount === 0) {
-      Alert.alert("No more clues");
+      setNotification({
+        message: "No more clues",
+        type: "warning",
+      });
       return;
     } else {
       if (selectedCell !== null) {
         setClueCount(clueCount! - 1);
         setClueCell(solutionBoard[selectedCell!.row][selectedCell!.col].value);
       } else {
-        Alert.alert("Select a cell first");
+        setNotification({
+          message: "Select a cell first",
+          type: "warning",
+        });
       }
     }
   };
@@ -175,9 +196,11 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
                 cell={cell}
                 onPress={handleCellPress}
                 highlighted={highlightedCells.has(`${rowIndex},${colIndex}`)}
+                rotatesCells={rotatedCells.has(`${rowIndex},${colIndex}`)}
                 selected={selectedCell?.row === cell.row && selectedCell?.col === cell.col}
                 rotate={rotate}
                 setRotate={setRotate}
+                editable={cell.editable}
               />
             ))
           )}
@@ -187,6 +210,7 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
           <NumberPad onPress={handleClickNumberPad} clueCell={clueCell} />
         </View>
       </View>
+      {notification.type && <NotificationModal />}
     </View>
   );
 };

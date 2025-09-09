@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
-type ModalMsgProps = {
+type ConfirmationModalProps = {
   visible: boolean;
   handleOpenModal: () => void;
   title?: string;
@@ -14,7 +14,7 @@ type ModalMsgProps = {
   acceptOnPress?: () => void;
 };
 
-const ModalMsg = ({
+const ConfirmationModal = ({
   visible,
   handleOpenModal,
   title,
@@ -25,7 +25,7 @@ const ModalMsg = ({
   accept = true,
   acceptText = "Ok",
   acceptOnPress,
-}: ModalMsgProps) => {
+}: ConfirmationModalProps) => {
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={styles.container}>
@@ -64,7 +64,7 @@ const ModalMsg = ({
   );
 };
 
-export default ModalMsg;
+export default ConfirmationModal;
 
 const styles = StyleSheet.create({
   container: {

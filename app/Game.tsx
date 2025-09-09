@@ -1,9 +1,10 @@
 import GameBoard from "@/components/grid/GameBoard";
 import ButtonBack from "@/components/shared/ButtonBack";
-import ModalMsg from "@/components/shared/ModalMsg";
+import ConfirmationModal from "@/components/shared/ConfirmationModal";
+import { useBoardStore } from "@/store/store";
 import { generatesBoard } from "@/utils/gameLogic";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 
 export type CellProps = {
@@ -19,7 +20,14 @@ const Game = () => {
   const router = useRouter();
   const { level } = useLocalSearchParams();
   const { board, solution } = generatesBoard(Number(level));
+  const { boardstored, solutionBoardStored, setBoardStored, setSolutionBoardStored } =
+    useBoardStore();
   const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    setBoardStored(board);
+    setSolutionBoardStored(solution);
+  }, []);
 
   const handleBackButton = () => {
     setOpenModal(true);
@@ -43,7 +51,7 @@ const Game = () => {
         <GameBoard generatedBoard={board} solution={solution} level={Number(level)} />
       </View>
       {openModal && (
-        <ModalMsg
+        <ConfirmationModal
           visible={openModal}
           handleOpenModal={handleOpenModal}
           content="Are you sure you want to exit?"
