@@ -1,38 +1,52 @@
 import { Board, CellProps } from "@/app/Game";
+import useTimer from "@/hooks/useTimer";
 import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import NumberCell from "./NumberCell";
 import NumberPad from "./NumberPad";
 
 type BoardProps = {
   generatedBoard: Board;
+  solution: Board;
   level: number;
 };
 
-const GameBoard = ({ generatedBoard, level }: BoardProps) => {
+const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
   const router = useRouter();
+  const { timer, timerRunning, setTimerRunning, formatTimer } = useTimer();
   const [board, setBoard] = useState<Board>(generatedBoard);
   const [levelString, setLevelString] = useState<string | null>(null);
   const [selectedCell, setSelectedCell] = useState<CellProps | null>(null);
   const [highlightedCells, setHighlightedCells] = useState<Set<string>>(new Set());
-  const [isFinished, setIsFinished] = useState(false);
+  const [isFinished, setIsFinished] = useState<boolean>(false);
   const [rotate, setRotate] = useState<boolean>(false);
+  const [clueCount, setClueCount] = useState<number | null>(null);
+  const [clueCell, setClueCell] = useState<number | null>(null);
+  const [solutionBoard, setSolutionBoard] = useState<Board>(solution);
 
   useEffect(() => {
     switch (level) {
+      case 0.05:
+        setLevelString("For test");
+        setClueCount(3);
+        break;
       case 0.54:
         setLevelString("Easy");
+        setClueCount(3);
         break;
       case 0.6:
         setLevelString("Medium");
+        setClueCount(2);
         break;
       case 0.65:
         setLevelString("Hard");
+        setClueCount(1);
         break;
       case 0.7:
         setLevelString("Expert");
+        setClueCount(1);
         break;
       default:
         break;
@@ -56,6 +70,7 @@ const GameBoard = ({ generatedBoard, level }: BoardProps) => {
     }
     if (checkGame(board)) {
       setIsFinished(true);
+      setTimerRunning(false);
       setSelectedCell(null);
       setHighlightedCells(new Set());
       setTimeout(() => {
@@ -65,6 +80,9 @@ const GameBoard = ({ generatedBoard, level }: BoardProps) => {
   }, [board]);
 
   const handleCellPress = (cell: CellProps) => {
+    if (!timerRunning) {
+      setTimerRunning(true);
+    }
     if (!cell.editable === true) return;
 
     if (selectedCell?.row === cell.row && selectedCell?.col === cell.col) {
@@ -108,8 +126,23 @@ const GameBoard = ({ generatedBoard, level }: BoardProps) => {
         board[selectedCell!.row][selectedCell!.col].value = number;
         board[selectedCell!.row][selectedCell!.col].editable = false;
         setBoard([...board]);
+        setClueCell(null);
       } else {
         Alert.alert("Invalid number");
+      }
+    }
+  };
+
+  const handleClueCount = () => {
+    if (clueCount === 0) {
+      Alert.alert("No more clues");
+      return;
+    } else {
+      if (selectedCell !== null) {
+        setClueCount(clueCount! - 1);
+        setClueCell(solutionBoard[selectedCell!.row][selectedCell!.col].value);
+      } else {
+        Alert.alert("Select a cell first");
       }
     }
   };
@@ -118,12 +151,21 @@ const GameBoard = ({ generatedBoard, level }: BoardProps) => {
     <View style={styles.container}>
       <View style={{ height: 18 }} />
       <View style={styles.finishMsg}>
-        {isFinished && <Text style={styles.finishMsgText}>You finish this game!</Text>}
+        {isFinished && (
+          <Text style={styles.finishMsgText}>{`You finish this game in ${formatTimer(
+            timer
+          )} !`}</Text>
+        )}
       </View>
       <View style={{ height: 40 }} />
       <View>
         <View style={styles.headerGrid}>
           <Text style={styles.levelText}>Level: {levelString}</Text>
+          <Text style={styles.levelText}>Time: {formatTimer(timer!)}</Text>
+
+          <Pressable style={styles.clueButton} onPress={handleClueCount}>
+            <Text style={styles.levelText}>Clue: {clueCount}</Text>
+          </Pressable>
         </View>
         <View style={styles.containerGrid}>
           {board.map((row, rowIndex) =>
@@ -142,7 +184,7 @@ const GameBoard = ({ generatedBoard, level }: BoardProps) => {
         </View>
         <View style={{ height: 40 }} />
         <View>
-          <NumberPad onPress={handleClickNumberPad} />
+          <NumberPad onPress={handleClickNumberPad} clueCell={clueCell} />
         </View>
       </View>
     </View>
@@ -169,12 +211,19 @@ const styles = StyleSheet.create({
     color: "#1c3a56",
   },
   headerGrid: {
-    width: "100%",
+    // width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 6,
     paddingHorizontal: 8,
   },
   levelText: {
     color: "#1c3a56",
+  },
+  clueButton: {
+    padding: 8,
+    backgroundColor: "yellow",
   },
   containerGrid: {
     width: 40.5 * 9,

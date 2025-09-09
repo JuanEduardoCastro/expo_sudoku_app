@@ -60,9 +60,16 @@ const shuffle = (array: number[]) => {
   return array;
 };
 
-export const generatesBoard = (difficulty: number): Board => {
+export type GeneratesBoard = {
+  board: Board;
+  solution: Board;
+};
+
+export const generatesBoard = (difficulty: number): GeneratesBoard => {
   const board = createBoard();
   solvedBoard(board);
+
+  const solution = JSON.parse(JSON.stringify(board));
 
   const totalCells = 81;
   const cellsToRemove = Math.floor(totalCells * difficulty);
@@ -78,7 +85,7 @@ export const generatesBoard = (difficulty: number): Board => {
       removedCells++;
     }
   }
-  return board;
+  return { board, solution };
 };
 
 export function checkGame(board: Board): boolean {
@@ -129,4 +136,8 @@ export function checkGrid(
   }
 
   return true;
+}
+
+export function checkCell(board: Board, row: number, col: number, num: number | null = null) {
+  return board[row]?.[col]?.value ?? null;
 }

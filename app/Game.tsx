@@ -18,6 +18,7 @@ export type Board = CellProps[][];
 const Game = () => {
   const router = useRouter();
   const { level } = useLocalSearchParams();
+  const { board, solution } = generatesBoard(Number(level));
   const [openModal, setOpenModal] = useState(false);
 
   const handleBackButton = () => {
@@ -39,7 +40,7 @@ const Game = () => {
         <ButtonBack onPress={handleBackButton} />
       </View>
       <View style={styles.gridContainer}>
-        <GameBoard generatedBoard={generatesBoard(Number(level))} level={Number(level)} />
+        <GameBoard generatedBoard={board} solution={solution} level={Number(level)} />
       </View>
       {openModal && (
         <ModalMsg

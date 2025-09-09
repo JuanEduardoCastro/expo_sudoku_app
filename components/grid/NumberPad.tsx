@@ -4,16 +4,18 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export type NumberPadProps = {
   onPress: (number: number) => void;
+  clueCell?: number | null;
   selectedPad?: number | null;
 };
 
-const NumberPad = ({ onPress, selectedPad }: NumberPadProps) => {
+const NumberPad = ({ onPress, clueCell, selectedPad }: NumberPadProps) => {
   return (
     <View style={styles.container}>
       {numbersPad.map((number, index) => (
         <Pressable
           style={[
             styles.numberBox,
+            number === clueCell && { backgroundColor: "yellow" },
             selectedPad === number
               ? { borderColor: "blue", borderWidth: 2 }
               : { borderColor: "gray" },
