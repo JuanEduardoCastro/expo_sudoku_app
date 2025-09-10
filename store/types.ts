@@ -39,15 +39,7 @@ export interface UseGameScoresTypes {
     completedGames: number;
     totalTimePlay: number;
   };
-  scoresByLevels: [
-    {
-      level: number;
-      maxPoints: number;
-      totalGames: number;
-      besttime: number;
-      streak: number;
-    }
-  ];
+  scoresByLevels: ScoresLevels[];
   setGameScore: (gameScore: {
     errorCount: number;
     points: number;
@@ -62,15 +54,14 @@ export interface UseGameScoresTypes {
     completedGames: number;
     totalTimePlay: number;
   }) => void;
-  setScoresByLevels: (
-    scoresByLevels: [
-      {
-        level: number;
-        maxPoints: number;
-        totalGames: number;
-        besttime: number;
-        streak: number;
-      }
-    ]
-  ) => void;
+  setScoresByLevels: (scoresByLevels: ScoresLevels[]) => void;
+}
+
+interface ScoresLevels {
+  level: number;
+  name: string;
+  maxPoints: number;
+  totalGames: number;
+  besttime: number;
+  streak: number;
 }

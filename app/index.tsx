@@ -1,4 +1,5 @@
 import LevelBox from "@/components/LevelBox";
+import ButtonNav from "@/components/shared/ButtonNav";
 import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -17,6 +18,7 @@ const index = () => {
         <Text style={styles.subTitleText}>Choose your level:</Text>
       </View>
       <LevelBox />
+      <ButtonNav title="Stats" onPress={() => router.push("/Stats")} />
     </View>
   );
 };
