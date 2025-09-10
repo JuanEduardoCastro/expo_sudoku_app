@@ -1,7 +1,7 @@
 import { Board, CellProps } from "@/app/Game";
 import useLevel from "@/hooks/useLevel";
 import useTimer from "@/hooks/useTimer";
-import { useNotificationMessageStore } from "@/store/store";
+import { useBoardStore, useNotificationMessageStore } from "@/store/store";
 import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -18,9 +18,11 @@ type BoardProps = {
 
 const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
   const router = useRouter();
+  const { score, setScore } = useBoardStore();
   const { timer, timerRunning, setTimerRunning, formatTimer } = useTimer();
   const { levelString, clueCount, setClueCount } = useLevel(level);
   const { notification, setNotification } = useNotificationMessageStore();
+  const [errorCount, setErrorCount] = useState<number>(0);
   const [board, setBoard] = useState<Board>(generatedBoard);
   const [solutionBoard, setSolutionBoard] = useState<Board>(solution);
   const [selectedCell, setSelectedCell] = useState<CellProps | null>(null);
@@ -32,27 +34,18 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
 
   useEffect(() => {
     function checkCells() {
-      console.log("CHECK BOARD !!!!!!");
       if (selectedCell !== null) {
         const rotateSelection = new Set<string>();
         if (checkRow(board, selectedCell!.row)) {
           for (let i = 0; i < 9; i++) {
             rotateSelection.add(`${selectedCell!.row},${i}`);
           }
-          console.log("completo fila");
-          console.log("rotateSelection row ->", rotateSelection);
-          console.log("hightlightedCells row ->", highlightedCells);
-          console.log("selectedCell row ->", selectedCell.row);
           setRotate(true);
         }
         if (checkCol(board, selectedCell!.col)) {
           for (let i = 0; i < 9; i++) {
             rotateSelection.add(`${i},${selectedCell!.col}`);
           }
-          console.log("completo columna");
-          console.log("rotateSelection col ->", rotateSelection);
-          console.log("hightlightedCells col ->", highlightedCells);
-          console.log("selectedCell col ->", selectedCell.col);
           setRotate(true);
         }
         if (checkGrid(board, selectedCell!.row, selectedCell!.col)) {
@@ -63,21 +56,16 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
               rotateSelection.add(`${row},${col}`);
             }
           }
-          console.log("completo grid");
-          console.log("rotateSelection grid ->", rotateSelection);
-          console.log("hightlightedCells grid ->", highlightedCells);
-          console.log("selectedCell grid ->", selectedCell.row, selectedCell.col);
-
           setRotate(true);
         }
         setRotatedCells(rotateSelection);
-        // return rotateSelection;
       }
     }
 
     checkCells();
 
     if (checkGame(board)) {
+      setScore(timer! * level);
       setIsFinished(true);
       setTimerRunning(false);
       setSelectedCell(null);
@@ -140,6 +128,7 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
         setBoard([...board]);
         setClueCell(null);
       } else {
+        setErrorCount(errorCount! + 1);
         setNotification({
           message: "Invalid number",
           type: "warning",
@@ -173,17 +162,26 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
       <View style={{ height: 18 }} />
       <View style={styles.finishMsg}>
         {isFinished && (
-          <Text style={styles.finishMsgText}>{`You finish this game in ${formatTimer(
-            timer
-          )} !`}</Text>
+          <>
+            <Text style={styles.finishMsgText}>{`You finish this game in ${formatTimer(
+              timer
+            )} !`}</Text>
+            <Text style={styles.finishMsgText}>{`Your score is ${score} !`}</Text>
+          </>
         )}
       </View>
       <View style={{ height: 40 }} />
       <View>
         <View style={styles.headerGrid}>
+          {errorCount > 0 && <Text style={styles.levelText}>Errors: {errorCount}</Text>}
+          {errorCount > 3 && (
+            <Text style={[styles.levelText, { fontWeight: "bold" }]}>Lost streak! </Text>
+          )}
+          <Text style={styles.levelText}></Text>
+        </View>
+        <View style={styles.headerGrid}>
           <Text style={styles.levelText}>Level: {levelString}</Text>
           <Text style={styles.levelText}>Time: {formatTimer(timer!)}</Text>
-
           <Pressable style={styles.clueButton} onPress={handleClueCount}>
             <Text style={styles.levelText}>Clue: {clueCount}</Text>
           </Pressable>
@@ -235,11 +233,13 @@ const styles = StyleSheet.create({
     color: "#1c3a56",
   },
   headerGrid: {
+    // backgroundColor: "green",
+    height: 30,
     // width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 6,
+    // marginBottom: 6,
     paddingHorizontal: 8,
   },
   levelText: {
