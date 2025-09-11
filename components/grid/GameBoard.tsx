@@ -14,9 +14,11 @@ type BoardProps = {
   generatedBoard: Board;
   solution: Board;
   level: number;
+  gameScore: number;
+  setGameScore: (score: number) => void;
 };
 
-const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
+const GameBoard = ({ generatedBoard, solution, level, gameScore, setGameScore }: BoardProps) => {
   const router = useRouter();
   const { score, setScore } = useBoardStore();
   const { timer, timerRunning, setTimerRunning, formatTimer } = useTimer();
@@ -40,12 +42,14 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
           for (let i = 0; i < 9; i++) {
             rotateSelection.add(`${selectedCell!.row},${i}`);
           }
+          setGameScore(gameScore! + 9);
           setRotate(true);
         }
         if (checkCol(board, selectedCell!.col)) {
           for (let i = 0; i < 9; i++) {
             rotateSelection.add(`${i},${selectedCell!.col}`);
           }
+          setGameScore(gameScore! + 9);
           setRotate(true);
         }
         if (checkGrid(board, selectedCell!.row, selectedCell!.col)) {
@@ -56,6 +60,7 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
               rotateSelection.add(`${row},${col}`);
             }
           }
+          setGameScore(gameScore! + 9);
           setRotate(true);
         }
         setRotatedCells(rotateSelection);
@@ -127,6 +132,7 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
         board[selectedCell!.row][selectedCell!.col].editable = false;
         setBoard([...board]);
         setClueCell(null);
+        setGameScore(gameScore! + 1);
       } else {
         setErrorCount(errorCount! + 1);
         setNotification({
@@ -146,6 +152,7 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
       return;
     } else {
       if (selectedCell !== null) {
+        setGameScore(gameScore! - 3);
         setClueCount(clueCount! - 1);
         setClueCell(solutionBoard[selectedCell!.row][selectedCell!.col].value);
       } else {
@@ -170,6 +177,7 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
           </>
         )}
       </View>
+
       <View style={{ height: 40 }} />
       <View>
         <View style={styles.headerGrid}>
@@ -177,13 +185,12 @@ const GameBoard = ({ generatedBoard, solution, level }: BoardProps) => {
           {errorCount > 3 && (
             <Text style={[styles.levelText, { fontWeight: "bold" }]}>Lost streak! </Text>
           )}
-          <Text style={styles.levelText}></Text>
         </View>
         <View style={styles.headerGrid}>
           <Text style={styles.levelText}>Level: {levelString}</Text>
           <Text style={styles.levelText}>Time: {formatTimer(timer!)}</Text>
           <Pressable style={styles.clueButton} onPress={handleClueCount}>
-            <Text style={styles.levelText}>Clue: {clueCount}</Text>
+            <Text style={styles.levelTextButton}>Clue: {clueCount}</Text>
           </Pressable>
         </View>
         <View style={styles.containerGrid}>
@@ -233,21 +240,28 @@ const styles = StyleSheet.create({
     color: "#1c3a56",
   },
   headerGrid: {
-    // backgroundColor: "green",
     height: 30,
-    // width: "100%",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
-    // marginBottom: 6,
-    paddingHorizontal: 8,
   },
   levelText: {
+    width: 1 / 3,
+    flexGrow: 1,
+    padding: 8,
     color: "#1c3a56",
   },
   clueButton: {
-    padding: 8,
+    flexGrow: 1,
+    width: 1 / 3,
+    padding: 6,
+    alignItems: "flex-end",
+    justifyContent: "center",
     backgroundColor: "yellow",
+    paddingRight: 16,
+  },
+  levelTextButton: {
+    color: "#1c3a56",
   },
   containerGrid: {
     width: 40.5 * 9,

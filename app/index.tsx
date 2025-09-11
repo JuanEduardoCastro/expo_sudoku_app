@@ -18,7 +18,10 @@ const index = () => {
         <Text style={styles.subTitleText}>Choose your level:</Text>
       </View>
       <LevelBox />
-      <ButtonNav title="Stats" onPress={() => router.push("/Stats")} />
+      <View style={styles.buttonBox}>
+        <ButtonNav title="Stats" onPress={() => router.push("/Stats")} />
+        <ButtonNav title="Instructions" onPress={() => router.push("/Instructions")} />
+      </View>
     </View>
   );
 };
@@ -45,5 +48,11 @@ export const styles = StyleSheet.create({
   subTitleText: {
     fontSize: 24,
     color: "#1c3a56",
+  },
+  buttonBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 16,
   },
 });

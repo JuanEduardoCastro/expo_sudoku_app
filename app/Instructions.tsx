@@ -1,11 +1,9 @@
 import ButtonBack from "@/components/shared/ButtonBack";
-import GlobalScores from "@/components/stats/GlobalScores";
-import ScoresByLevel from "@/components/stats/ScoresByLevel";
 import { useRouter } from "expo-router";
 import React from "react";
-import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 
-const Stats = () => {
+const Instructions = () => {
   const router = useRouter();
 
   return (
@@ -13,17 +11,11 @@ const Stats = () => {
       <View style={styles.header}>
         <ButtonBack onPress={() => router.back()} />
       </View>
-      <ScrollView style={{ flex: 1, width: "100%" }} showsVerticalScrollIndicator={false}>
-        <View style={styles.statsContainer}>
-          <GlobalScores />
-          <ScoresByLevel />
-        </View>
-      </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default Stats;
+export default Instructions;
 
 const styles = StyleSheet.create({
   container: {
@@ -39,14 +31,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 16,
-  },
-  statsContainer: {
-    flex: 1,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    gap: 28,
   },
 });

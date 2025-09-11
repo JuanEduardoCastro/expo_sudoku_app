@@ -5,7 +5,7 @@ import { useBoardStore } from "@/store/store";
 import { generatesBoard } from "@/utils/gameLogic";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 
 export type CellProps = {
   row: number;
@@ -23,6 +23,7 @@ const Game = () => {
   const { boardstored, solutionBoardStored, setBoardStored, setSolutionBoardStored } =
     useBoardStore();
   const [openModal, setOpenModal] = useState(false);
+  const [gameScore, setGameScore] = useState<number>(0);
 
   useEffect(() => {
     setBoardStored(board);
@@ -46,9 +47,16 @@ const Game = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={handleBackButton} />
+        <Text style={styles.scoreText}>Score: {gameScore}</Text>
       </View>
       <View style={styles.gridContainer}>
-        <GameBoard generatedBoard={board} solution={solution} level={Number(level)} />
+        <GameBoard
+          generatedBoard={board}
+          solution={solution}
+          level={Number(level)}
+          gameScore={gameScore}
+          setGameScore={setGameScore}
+        />
       </View>
       {openModal && (
         <ConfirmationModal
@@ -86,5 +94,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  scoreText: {
+    color: "#1c3a56",
   },
 });
