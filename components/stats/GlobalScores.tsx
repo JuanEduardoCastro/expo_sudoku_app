@@ -1,18 +1,26 @@
+import { useGameScoresStore } from "@/store/store";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import StatsCard from "./StatsCard";
 
+/**
+ * `GlobalScores` is a component that displays the player's aggregate statistics across all games played.
+ * It fetches data from the `useGameScoresStore` and renders it using `StatsCard` components.
+ */
 const GlobalScores = () => {
+  const { globalScores } = useGameScoresStore();
+
   return (
     <View style={styles.statsSection}>
       <Text style={styles.statsTitle}>Global scores</Text>
       <View style={{ height: 8 }} />
-      <StatsCard title="Max points" value="3.490" />
-      <StatsCard title="Total games" value="20" />
-      <StatsCard title="Perfect games" value="50" />
-      <StatsCard title="Good games" value="30" />
-      <StatsCard title="Complete games" value="90" />
-      <StatsCard title="Total time played" value="330.456" />
+      {/* TODO: Format time value appropriately */}
+      <StatsCard title="Max points" value={globalScores.maxPoints} />
+      <StatsCard title="Total games" value={globalScores.totalGames} />
+      <StatsCard title="Perfect games" value={globalScores.perfectGames} />
+      <StatsCard title="Good games" value={globalScores.goodGames} />
+      <StatsCard title="Complete games" value={globalScores.completedGames} />
+      <StatsCard title="Total time played" value={globalScores.totalTimePlay} />
     </View>
   );
 };

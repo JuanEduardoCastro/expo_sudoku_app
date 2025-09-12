@@ -1,10 +1,23 @@
 import { useEffect, useState } from "react";
 
+/**
+ * A custom hook that provides level-specific game parameters based on a difficulty value.
+ *
+ * @param {number} level - The difficulty level, typically a float between 0 and 1.
+ * @returns An object with level-specific data like the level name, clue count, and score multiplier.
+ */
+
 const useLevel = (level: number) => {
+  /** The string representation of the difficulty level (e.g., "Easy", "Hard"). */
   const [levelString, setLevelString] = useState<string | null>(null);
+  /** The number of available clues for the current level. */
   const [clueCount, setClueCount] = useState<number | null>(null);
+  /** The base score multiplier for the current level. */
   const [scoreMultiply, setScoreMultiply] = useState<number>(0);
 
+  /**
+   * Effect to set the level parameters whenever the `level` prop changes.
+   */
   useEffect(() => {
     switch (level) {
       case 0.05:

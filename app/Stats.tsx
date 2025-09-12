@@ -5,6 +5,11 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 
+/**
+ * The `Stats` screen displays the player's game statistics.
+ * It includes a header with a back button and a scrollable view
+ * containing the `GlobalScores` and `ScoresByLevel` components.
+ */
 const Stats = () => {
   const router = useRouter();
 

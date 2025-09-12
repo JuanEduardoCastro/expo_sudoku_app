@@ -2,19 +2,22 @@ import { useNotificationMessageStore } from "@/store/store";
 import React, { useEffect } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
-type NotificationModalProps = {
-  title?: string;
-  content?: string;
-};
-
-const NotificationModal = ({ title, content }: NotificationModalProps) => {
+/**
+ * A modal component to display temporary notifications to the user.
+ * The visibility and content of the modal are controlled by the `useNotificationMessageStore`.
+ * The modal automatically dismisses itself after a few seconds.
+ */
+const NotificationModal = () => {
   const { notification, setNotification, resetNotification } = useNotificationMessageStore();
 
+  // Effect to automatically close the notification after a delay.
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       resetNotification();
     }, 4000);
-  }, [notification]);
+    // Cleanup function to clear the timer if the component unmounts or notification changes.
+    return () => clearTimeout(timer);
+  }, [notification, resetNotification]);
 
   const handleCloseModal = () => {
     resetNotification();
@@ -39,7 +42,6 @@ const NotificationModal = ({ title, content }: NotificationModalProps) => {
             </Pressable>
           </View>
         </View>
-        <Text>ModalMsg</Text>
       </View>
     </Modal>
   );

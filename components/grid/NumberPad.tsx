@@ -2,12 +2,22 @@ import { numbersPad } from "@/constants/initialGrid";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+/**
+ * Props for the `NumberPad` component.
+ */
 export type NumberPadProps = {
+  /** Callback function triggered when a number on the pad is pressed. */
   onPress: (number: number) => void;
+  /** The number value of a cell revealed by a "clue", to be highlighted on the pad. */
   clueCell?: number | null;
+  /** The currently selected number on the pad (for visual feedback). */
   selectedPad?: number | null;
 };
 
+/**
+ * `NumberPad` is a component that displays a row of numbers (1-9) for the user to input into the Sudoku grid.
+ * It also provides visual feedback for clues.
+ */
 const NumberPad = ({ onPress, clueCell, selectedPad }: NumberPadProps) => {
   return (
     <View style={styles.container}>

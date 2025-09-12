@@ -1,10 +1,18 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+/**
+ * Props for the `StatsCard` component.
+ */
 type StatsCardProps = {
+  /** The label for the statistic being displayed (e.g., "Max points"). */
   title: string;
-  value: string;
+  /** The value of the statistic. Can be a string or a number. */
+  value: string | number;
 };
+/**
+ * A simple component to display a single line of statistics with a title and a value.
+ */
 const StatsCard = ({ title, value }: StatsCardProps) => {
   return (
     <View style={styles.statsLine}>

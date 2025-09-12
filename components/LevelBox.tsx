@@ -2,10 +2,16 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+/**
+ * `LevelBox` is a component that displays a list of selectable difficulty levels for the Sudoku game.
+ * Each level, when pressed, navigates the user to the `Game` screen with the corresponding
+ * difficulty parameter, which determines how many cells are removed from the initial board.
+ */
 const LevelBox = () => {
   const router = useRouter();
   return (
     <View style={styles.levelBox}>
+      {/* A special level for testing purposes with very few cells removed. */}
       <Pressable onPress={() => router.push({ pathname: "/Game", params: { level: 0.05 } })}>
         <Text style={styles.levelText}>For test</Text>
       </Pressable>

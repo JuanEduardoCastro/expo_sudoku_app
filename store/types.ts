@@ -9,6 +9,7 @@ export interface UseNotificationMessageStateTypes {
     message: string;
     type: "warning" | "error" | "success";
   }) => void;
+  resetNotification: () => void;
 }
 
 export interface UseBoardStateTypes {

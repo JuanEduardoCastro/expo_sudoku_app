@@ -1,38 +1,29 @@
+import { useGameScoresStore } from "@/store/store";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import StatsCard from "./StatsCard";
 
+/**
+ * `ScoresByLevel` is a component that displays the player's statistics broken down by each difficulty level.
+ * It fetches data from the `useGameScoresStore` and dynamically renders a section for each level.
+ */
 const ScoresByLevel = () => {
+  const { scoresByLevels } = useGameScoresStore();
+
   return (
     <View style={styles.statsSection}>
       <Text style={styles.statsTitle}>Scores by level</Text>
-      <View style={{ height: 8 }} />
-      <StatsCard title="Level" value="Easy" />
-      <StatsCard title="Max points" value="3.490" />
-      <StatsCard title="Total games" value="20" />
-      <StatsCard title="Best time" value="04.57" />
-      <StatsCard title="Streak" value="10" />
-
-      <View style={{ height: 8 }} />
-      <StatsCard title="Level" value="Medium" />
-      <StatsCard title="Max points" value="3.490" />
-      <StatsCard title="Total games" value="20" />
-      <StatsCard title="Best time" value="04.57" />
-      <StatsCard title="Streak" value="10" />
-
-      <View style={{ height: 8 }} />
-      <StatsCard title="Level" value="Hard" />
-      <StatsCard title="Max points" value="3.490" />
-      <StatsCard title="Total games" value="20" />
-      <StatsCard title="Best time" value="04.57" />
-      <StatsCard title="Streak" value="10" />
-
-      <View style={{ height: 8 }} />
-      <StatsCard title="Level" value="Expert" />
-      <StatsCard title="Max points" value="3.490" />
-      <StatsCard title="Total games" value="20" />
-      <StatsCard title="Best time" value="04.57" />
-      <StatsCard title="Streak" value="10" />
+      {scoresByLevels.map((levelStats) => (
+        <React.Fragment key={levelStats.level}>
+          <View style={{ height: 8 }} />
+          <StatsCard title="Level" value={levelStats.name} />
+          <StatsCard title="Max points" value={levelStats.maxPoints} />
+          <StatsCard title="Total games" value={levelStats.totalGames} />
+          {/* TODO: Format time value appropriately */}
+          <StatsCard title="Best time" value={levelStats.besttime} />
+          <StatsCard title="Streak" value={levelStats.streak} />
+        </React.Fragment>
+      ))}
     </View>
   );
 };

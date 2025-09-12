@@ -4,6 +4,11 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+/**
+ * The main entry point and home screen of the application.
+ * It displays a welcome message, allows the user to select a game difficulty
+ * via the `LevelBox` component, and provides navigation to the Stats and Instructions screens.
+ */
 const index = () => {
   const router = useRouter();
 

@@ -10,21 +10,32 @@ import NotificationModal from "../shared/NotificationModal";
 import NumberCell from "./NumberCell";
 import NumberPad from "./NumberPad";
 
-type BoardProps = {
+/**
+ * Props for the `GameBoard` component.
+ */
+type GameBoardProps = {
+  /** The initial Sudoku board with some cells removed based on difficulty. */
   generatedBoard: Board;
+  /** The complete, solved Sudoku board. */
   solution: Board;
+  /** The difficulty level of the game. */
   level: number;
-  setFactorX: (factor: number) => void;
 };
 
-const GameBoard = ({ generatedBoard, solution, level, setFactorX }: BoardProps) => {
+/**
+ * `GameBoard` is the main component for the Sudoku game screen.
+ * It manages the game state, user interactions, and renders the board, number pad, and other UI elements.
+ */
+const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
   const router = useRouter();
+  // Zustand store hooks for state management
   const { notification, setNotification } = useNotificationMessageStore();
   const { score, setScore, errors, setErrors, resetBoard, factor, setFactor } = useBoardStore();
   const { timer, timerRunning, setTimerRunning, formatTimer, timerMultiply } = useTimer();
   const { levelString, clueCount, setClueCount, scoreMultiply } = useLevel(level);
   const { setGameScore, setGlobalScores, setScoresByLevels } = useGameScoresStore();
 
+  // Component state
   const [board, setBoard] = useState<Board>(generatedBoard);
   const [solutionBoard, setSolutionBoard] = useState<Board>(solution);
 
@@ -37,10 +48,18 @@ const GameBoard = ({ generatedBoard, solution, level, setFactorX }: BoardProps) 
 
   const [isFinished, setIsFinished] = useState<boolean>(false);
 
+  /**
+   * Effect to update the score multiplier factor based on the timer and level difficulty.
+   */
   useEffect(() => {
     timerMultiply !== null ? setFactor(scoreMultiply - timerMultiply!) : setFactor(scoreMultiply);
   }, [timerMultiply, scoreMultiply]);
 
+  /**
+   * Main game logic effect. Runs whenever the board state changes.
+   * - Checks for completed rows, columns, or 3x3 grids to trigger animations and score updates.
+   * - Checks if the entire board is filled correctly to end the game.
+   */
   useEffect(() => {
     function checkCells() {
       if (selectedCell !== null) {
@@ -78,6 +97,7 @@ const GameBoard = ({ generatedBoard, solution, level, setFactorX }: BoardProps) 
 
     if (checkGame(board)) {
       setScore(score + Math.floor(timer! * level));
+      // TODO: Uncomment and implement game score saving
       // setGameScore({
       //   errorCount: errors,
       //   points: score + Math.floor(timer! * level),
@@ -95,6 +115,11 @@ const GameBoard = ({ generatedBoard, solution, level, setFactorX }: BoardProps) 
     }
   }, [board]);
 
+  /**
+   * Handles the press event on a cell in the Sudoku grid.
+   * It starts the timer, selects/deselects a cell, and highlights related cells.
+   * @param cell The `CellProps` object of the pressed cell.
+   */
   const handleCellPress = (cell: CellProps) => {
     if (!timerRunning) {
       setTimerRunning(true);
@@ -112,17 +137,20 @@ const GameBoard = ({ generatedBoard, solution, level, setFactorX }: BoardProps) 
     }
   };
 
+  /**
+   * Calculates which cells to highlight based on the selected cell.
+   * It highlights the row, column, and 3x3 grid of the selected cell.
+   * @param cell The `CellProps` of the selected cell.
+   */
   const calculateHighlightedCells = (cell: CellProps) => {
     const newHighlightedCells = new Set<string>();
     const { row, col } = cell;
 
-    // Select each row and col for the cell selected
     for (let i = 0; i < 9; i++) {
       newHighlightedCells.add(`${row},${i}`);
       newHighlightedCells.add(`${i},${col}`);
     }
 
-    // select the 3x3 grid for the cell selected
     const startRow = Math.floor(row / 3) * 3;
     const startCol = Math.floor(col / 3) * 3;
     for (let row = startRow; row < startRow + 3; row++) {
@@ -133,6 +161,11 @@ const GameBoard = ({ generatedBoard, solution, level, setFactorX }: BoardProps) 
     return newHighlightedCells;
   };
 
+  /**
+   * Handles a press on a number in the number pad.
+   * If a cell is selected, it attempts to place the number in that cell.
+   * @param number The number that was pressed.
+   */
   const handleClickNumberPad = (number: number) => {
     if (!selectedCell) {
       setNotification({
@@ -149,11 +182,8 @@ const GameBoard = ({ generatedBoard, solution, level, setFactorX }: BoardProps) 
         setBoard([...board]);
         setClueCell(null);
         setScore(score! + number * (scoreMultiply - timerMultiply!));
-        // setSelectedCell(null);
-        // setHighlightedCells(new Set());
       } else {
         setErrors(errors! + 1);
-        // setErrorCount(errorCount! + 1);
         setScore(score < 3 ? 0 : score! - 5 * (scoreMultiply - timerMultiply!));
         setNotification({
           message: "Invalid number",
@@ -163,6 +193,10 @@ const GameBoard = ({ generatedBoard, solution, level, setFactorX }: BoardProps) 
     }
   };
 
+  /**
+   * Handles the "Clue" button press.
+   * If a cell is selected, it reveals the correct number for that cell from the solution board.
+   */
   const handleClueCount = () => {
     if (clueCount === 0) {
       setNotification({

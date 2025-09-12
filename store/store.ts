@@ -1,6 +1,11 @@
 import { create } from "zustand";
 import { UseBoardStateTypes, UseGameScoresTypes, UseNotificationMessageStateTypes } from "./types";
 
+/**
+ * Zustand store for managing in-app notifications.
+ * The current notification object. Contains a message and a type (e.g., 'success', 'error').
+ * Setter and reset of notifications.
+ */
 export const useNotificationMessageStore = create<UseNotificationMessageStateTypes>((set) => ({
   notification: {
     message: null,
@@ -10,7 +15,14 @@ export const useNotificationMessageStore = create<UseNotificationMessageStateTyp
   resetNotification: () => set({ notification: { message: null, type: null } }),
 }));
 
+/**
+ * Zustand store for managing the state of the Sudoku game board.
+ * Contains the initial generated board and the complete solution board.
+ * @params level, factor, errors, score for the current game.
+ * Setters and reset params.
+ */
 export const useBoardStore = create<UseBoardStateTypes>((set) => ({
+  /**  */
   boardState: {
     boardStored: [],
     solutionBoardStored: [],
@@ -34,6 +46,13 @@ export const useBoardStore = create<UseBoardStateTypes>((set) => ({
     }),
 }));
 
+/**
+ * Zustand store for managing player scores and game statistics.
+ * Details of the most recently completed game.
+ * Aggregated statistics across all games played.
+ * An array of score statistics, broken down by difficulty level.
+ * Setters and reset for data for the most recently completed game.
+ */
 export const useGameScoresStore = create<UseGameScoresTypes>((set) => ({
   gameScore: {
     errorCount: 0,
