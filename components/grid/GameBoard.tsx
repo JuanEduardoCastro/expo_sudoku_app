@@ -14,25 +14,31 @@ type BoardProps = {
   generatedBoard: Board;
   solution: Board;
   level: number;
-  gameScore: number;
-  setGameScore: (score: number) => void;
+  setFactor: (factor: number) => void;
 };
 
-const GameBoard = ({ generatedBoard, solution, level, gameScore, setGameScore }: BoardProps) => {
+const GameBoard = ({ generatedBoard, solution, level, setFactor }: BoardProps) => {
   const router = useRouter();
-  const { score, setScore } = useBoardStore();
-  const { timer, timerRunning, setTimerRunning, formatTimer } = useTimer();
-  const { levelString, clueCount, setClueCount } = useLevel(level);
   const { notification, setNotification } = useNotificationMessageStore();
-  const [errorCount, setErrorCount] = useState<number>(0);
+  const { score, setScore, errors, setErrors, resetBoard } = useBoardStore();
+  const { timer, timerRunning, setTimerRunning, formatTimer, timerMultiply } = useTimer();
+  const { levelString, clueCount, setClueCount, scoreMultiply } = useLevel(level);
+
   const [board, setBoard] = useState<Board>(generatedBoard);
   const [solutionBoard, setSolutionBoard] = useState<Board>(solution);
+
   const [selectedCell, setSelectedCell] = useState<CellProps | null>(null);
   const [highlightedCells, setHighlightedCells] = useState<Set<string>>(new Set());
   const [rotatedCells, setRotatedCells] = useState<Set<string>>(new Set());
   const [rotate, setRotate] = useState<boolean>(false);
+
   const [clueCell, setClueCell] = useState<number | null>(null);
+
   const [isFinished, setIsFinished] = useState<boolean>(false);
+
+  useEffect(() => {
+    !timerMultiply && setFactor(scoreMultiply - timerMultiply!);
+  }, [timerMultiply, scoreMultiply]);
 
   useEffect(() => {
     function checkCells() {
@@ -42,14 +48,14 @@ const GameBoard = ({ generatedBoard, solution, level, gameScore, setGameScore }:
           for (let i = 0; i < 9; i++) {
             rotateSelection.add(`${selectedCell!.row},${i}`);
           }
-          setGameScore(gameScore! + 9);
+          setScore(score! + 10 * (scoreMultiply - timerMultiply!));
           setRotate(true);
         }
         if (checkCol(board, selectedCell!.col)) {
           for (let i = 0; i < 9; i++) {
             rotateSelection.add(`${i},${selectedCell!.col}`);
           }
-          setGameScore(gameScore! + 9);
+          setScore(score! + 10 * (scoreMultiply - timerMultiply!));
           setRotate(true);
         }
         if (checkGrid(board, selectedCell!.row, selectedCell!.col)) {
@@ -60,7 +66,7 @@ const GameBoard = ({ generatedBoard, solution, level, gameScore, setGameScore }:
               rotateSelection.add(`${row},${col}`);
             }
           }
-          setGameScore(gameScore! + 9);
+          setScore(score! + 10 * (scoreMultiply - timerMultiply!));
           setRotate(true);
         }
         setRotatedCells(rotateSelection);
@@ -70,14 +76,15 @@ const GameBoard = ({ generatedBoard, solution, level, gameScore, setGameScore }:
     checkCells();
 
     if (checkGame(board)) {
-      setScore(timer! * level);
+      setScore(score + Math.floor(timer! * level));
       setIsFinished(true);
       setTimerRunning(false);
       setSelectedCell(null);
       setHighlightedCells(new Set());
       setTimeout(() => {
         router.back();
-      }, 2800);
+        resetBoard();
+      }, 4800);
     }
   }, [board]);
 
@@ -132,9 +139,11 @@ const GameBoard = ({ generatedBoard, solution, level, gameScore, setGameScore }:
         board[selectedCell!.row][selectedCell!.col].editable = false;
         setBoard([...board]);
         setClueCell(null);
-        setGameScore(gameScore! + 1);
+        setScore(score! + number * (scoreMultiply - timerMultiply!));
       } else {
-        setErrorCount(errorCount! + 1);
+        setErrors(errors! + 1);
+        // setErrorCount(errorCount! + 1);
+        setScore(score < 3 ? 0 : score! - 5 * (scoreMultiply - timerMultiply!));
         setNotification({
           message: "Invalid number",
           type: "warning",
@@ -152,7 +161,7 @@ const GameBoard = ({ generatedBoard, solution, level, gameScore, setGameScore }:
       return;
     } else {
       if (selectedCell !== null) {
-        setGameScore(gameScore! - 3);
+        setScore(score < 3 ? 0 : score! - 3 * (scoreMultiply - timerMultiply!));
         setClueCount(clueCount! - 1);
         setClueCell(solutionBoard[selectedCell!.row][selectedCell!.col].value);
       } else {
@@ -181,8 +190,8 @@ const GameBoard = ({ generatedBoard, solution, level, gameScore, setGameScore }:
       <View style={{ height: 40 }} />
       <View>
         <View style={styles.headerGrid}>
-          {errorCount > 0 && <Text style={styles.levelText}>Errors: {errorCount}</Text>}
-          {errorCount > 3 && (
+          {errors > 0 && <Text style={styles.levelText}>Errors: {errors}</Text>}
+          {errors > 3 && (
             <Text style={[styles.levelText, { fontWeight: "bold" }]}>Lost streak! </Text>
           )}
         </View>
@@ -257,10 +266,10 @@ const styles = StyleSheet.create({
     padding: 6,
     alignItems: "flex-end",
     justifyContent: "center",
-    backgroundColor: "yellow",
     paddingRight: 16,
   },
   levelTextButton: {
+    fontWeight: "bold",
     color: "#1c3a56",
   },
   containerGrid: {

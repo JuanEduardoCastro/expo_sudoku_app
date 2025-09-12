@@ -20,14 +20,13 @@ const Game = () => {
   const router = useRouter();
   const { level } = useLocalSearchParams();
   const { board, solution } = generatesBoard(Number(level));
-  const { boardstored, solutionBoardStored, setBoardStored, setSolutionBoardStored } =
-    useBoardStore();
+  const { setBoardState, setLevel, score, resetBoard } = useBoardStore();
   const [openModal, setOpenModal] = useState(false);
-  const [gameScore, setGameScore] = useState<number>(0);
+  const [factor, setFactor] = useState(0);
 
   useEffect(() => {
-    setBoardStored(board);
-    setSolutionBoardStored(solution);
+    setBoardState({ boardStored: board, solutionBoardStored: solution });
+    setLevel(Number(level));
   }, []);
 
   const handleBackButton = () => {
@@ -40,6 +39,7 @@ const Game = () => {
 
   const goBackCommand = () => {
     setOpenModal(false);
+    resetBoard();
     router.back();
   };
 
@@ -47,15 +47,15 @@ const Game = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={handleBackButton} />
-        <Text style={styles.scoreText}>Score: {gameScore}</Text>
+        <Text style={styles.scoreText}>X: {factor}</Text>
+        <Text style={styles.scoreText}>Score: {score}</Text>
       </View>
       <View style={styles.gridContainer}>
         <GameBoard
           generatedBoard={board}
           solution={solution}
           level={Number(level)}
-          gameScore={gameScore}
-          setGameScore={setGameScore}
+          setFactor={setFactor}
         />
       </View>
       {openModal && (
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   scoreText: {
+    fontSize: 18,
     color: "#1c3a56",
   },
 });

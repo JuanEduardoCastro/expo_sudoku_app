@@ -11,18 +11,27 @@ export const useNotificationMessageStore = create<UseNotificationMessageStateTyp
 }));
 
 export const useBoardStore = create<UseBoardStateTypes>((set) => ({
-  boardstored: [],
-  solutionBoardStored: [],
+  boardState: {
+    boardStored: [],
+    solutionBoardStored: [],
+  },
   level: 0,
+  factor: 0,
   errors: 0,
   score: 0,
-  setBoardStored: (boardstored) => set({ boardstored }),
-  setSolutionBoardStored: (solutionBoardStored) => set({ solutionBoardStored }),
+  setBoardState: (boardState) => set({ boardState }),
   setLevel: (level: number) => set({ level }),
+  setFactor: (factor: number) => set({ factor }),
   setErrors: (errors: number) => set({ errors }),
   setScore: (score: number) => set({ score }),
   resetBoard: () =>
-    set({ boardstored: [], solutionBoardStored: [], level: 0, errors: 0, score: 0 }),
+    set({
+      boardState: { boardStored: [], solutionBoardStored: [] },
+      level: 0,
+      factor: 0,
+      errors: 0,
+      score: 0,
+    }),
 }));
 
 export const useGameScoresStore = create<UseGameScoresTypes>((set) => ({

@@ -12,16 +12,20 @@ export interface UseNotificationMessageStateTypes {
 }
 
 export interface UseBoardStateTypes {
-  boardstored: Board;
-  solutionBoardStored: Board;
+  boardState: {
+    boardStored: Board;
+    solutionBoardStored: Board;
+  };
   level: number;
+  factor: number;
   errors: number;
   score: number;
-  setBoardStored: (board: Board) => void;
-  setSolutionBoardStored: (solutionBoard: Board) => void;
+  setBoardState: (boardState: { boardStored: Board; solutionBoardStored: Board }) => void;
   setLevel: (level: number) => void;
+  setFactor: (factor: number) => void;
   setErrors: (errors: number) => void;
   setScore: (score: number) => void;
+  resetBoard: () => void;
 }
 
 export interface UseGameScoresTypes {

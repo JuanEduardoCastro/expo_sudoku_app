@@ -15,7 +15,7 @@ const NumberPad = ({ onPress, clueCell, selectedPad }: NumberPadProps) => {
         <Pressable
           style={[
             styles.numberBox,
-            number === clueCell && { backgroundColor: "yellow" },
+            number === clueCell && { borderWidth: 4, borderColor: "blue" },
             selectedPad === number
               ? { borderColor: "blue", borderWidth: 2 }
               : { borderColor: "gray" },
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
+    borderRadius: 4,
   },
   numberText: {
     fontSize: 20,
