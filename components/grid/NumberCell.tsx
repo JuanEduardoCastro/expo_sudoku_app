@@ -18,6 +18,8 @@ export type NumberCellProps = {
   onPress: (cell: CellProps) => void;
   rotate?: boolean;
   setRotate?: (rotate: boolean) => void;
+  setSelectedCell?: (cell: CellProps | null) => void;
+  setHighlightedCells?: (highlightedCells: Set<string>) => void;
 };
 
 const NumberCell = ({
@@ -29,6 +31,8 @@ const NumberCell = ({
   onPress,
   rotate,
   setRotate,
+  setSelectedCell,
+  setHighlightedCells,
 }: NumberCellProps) => {
   const rotation = useSharedValue(0);
 
@@ -44,7 +48,7 @@ const NumberCell = ({
   useEffect(() => {
     if (rotate === true) {
       rotation.value = withRepeat(
-        withTiming(360, { duration: 800, easing: Easing.linear }),
+        withTiming(360, { duration: 700, easing: Easing.linear }),
         1,
         false
       );
@@ -53,7 +57,9 @@ const NumberCell = ({
       setTimeout(() => {
         rotation.value = 0;
         setRotate && setRotate(false);
-      }, 801);
+        setSelectedCell && setSelectedCell(null);
+        setHighlightedCells && setHighlightedCells(new Set());
+      }, 701);
     };
   }, [rotate]);
 
@@ -62,7 +68,7 @@ const NumberCell = ({
       style={[
         styles.container,
         highlighted && { backgroundColor: "lightgray" },
-        selected && { backgroundColor: "gray" },
+        selected && { backgroundColor: "lightgray", borderWidth: 3, borderColor: "gray" },
         cell.col === 2 || cell.col === 5 ? { borderRightWidth: 2 } : { borderRightWidth: 1 },
         cell.row === 2 || cell.row === 5 ? { borderBottomWidth: 2 } : { borderBottomWidth: 1 },
       ]}

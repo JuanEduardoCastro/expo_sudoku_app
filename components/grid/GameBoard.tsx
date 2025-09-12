@@ -1,7 +1,7 @@
 import { Board, CellProps } from "@/app/Game";
 import useLevel from "@/hooks/useLevel";
 import useTimer from "@/hooks/useTimer";
-import { useBoardStore, useNotificationMessageStore } from "@/store/store";
+import { useBoardStore, useGameScoresStore, useNotificationMessageStore } from "@/store/store";
 import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -14,15 +14,16 @@ type BoardProps = {
   generatedBoard: Board;
   solution: Board;
   level: number;
-  setFactor: (factor: number) => void;
+  setFactorX: (factor: number) => void;
 };
 
-const GameBoard = ({ generatedBoard, solution, level, setFactor }: BoardProps) => {
+const GameBoard = ({ generatedBoard, solution, level, setFactorX }: BoardProps) => {
   const router = useRouter();
   const { notification, setNotification } = useNotificationMessageStore();
-  const { score, setScore, errors, setErrors, resetBoard } = useBoardStore();
+  const { score, setScore, errors, setErrors, resetBoard, factor, setFactor } = useBoardStore();
   const { timer, timerRunning, setTimerRunning, formatTimer, timerMultiply } = useTimer();
   const { levelString, clueCount, setClueCount, scoreMultiply } = useLevel(level);
+  const { setGameScore, setGlobalScores, setScoresByLevels } = useGameScoresStore();
 
   const [board, setBoard] = useState<Board>(generatedBoard);
   const [solutionBoard, setSolutionBoard] = useState<Board>(solution);
@@ -37,7 +38,7 @@ const GameBoard = ({ generatedBoard, solution, level, setFactor }: BoardProps) =
   const [isFinished, setIsFinished] = useState<boolean>(false);
 
   useEffect(() => {
-    !timerMultiply && setFactor(scoreMultiply - timerMultiply!);
+    timerMultiply !== null ? setFactor(scoreMultiply - timerMultiply!) : setFactor(scoreMultiply);
   }, [timerMultiply, scoreMultiply]);
 
   useEffect(() => {
@@ -77,6 +78,12 @@ const GameBoard = ({ generatedBoard, solution, level, setFactor }: BoardProps) =
 
     if (checkGame(board)) {
       setScore(score + Math.floor(timer! * level));
+      // setGameScore({
+      //   errorCount: errors,
+      //   points: score + Math.floor(timer! * level),
+      //   level: level,
+      //   time: timer!,
+      // });
       setIsFinished(true);
       setTimerRunning(false);
       setSelectedCell(null);
@@ -100,7 +107,9 @@ const GameBoard = ({ generatedBoard, solution, level, setFactor }: BoardProps) =
       return;
     }
     setSelectedCell(cell);
-    setHighlightedCells(calculateHighlightedCells(cell));
+    if (level < 0.65) {
+      setHighlightedCells(calculateHighlightedCells(cell));
+    }
   };
 
   const calculateHighlightedCells = (cell: CellProps) => {
@@ -140,6 +149,8 @@ const GameBoard = ({ generatedBoard, solution, level, setFactor }: BoardProps) =
         setBoard([...board]);
         setClueCell(null);
         setScore(score! + number * (scoreMultiply - timerMultiply!));
+        // setSelectedCell(null);
+        // setHighlightedCells(new Set());
       } else {
         setErrors(errors! + 1);
         // setErrorCount(errorCount! + 1);
@@ -215,6 +226,8 @@ const GameBoard = ({ generatedBoard, solution, level, setFactor }: BoardProps) =
                 rotate={rotate}
                 setRotate={setRotate}
                 editable={cell.editable}
+                setSelectedCell={setSelectedCell}
+                setHighlightedCells={setHighlightedCells}
               />
             ))
           )}
@@ -258,6 +271,7 @@ const styles = StyleSheet.create({
     width: 1 / 3,
     flexGrow: 1,
     padding: 8,
+    fontSize: 15,
     color: "#1c3a56",
   },
   clueButton: {
@@ -270,6 +284,7 @@ const styles = StyleSheet.create({
   },
   levelTextButton: {
     fontWeight: "bold",
+    fontSize: 15,
     color: "#1c3a56",
   },
   containerGrid: {

@@ -20,9 +20,9 @@ const Game = () => {
   const router = useRouter();
   const { level } = useLocalSearchParams();
   const { board, solution } = generatesBoard(Number(level));
-  const { setBoardState, setLevel, score, resetBoard } = useBoardStore();
+  const { setBoardState, setLevel, score, resetBoard, factor } = useBoardStore();
   const [openModal, setOpenModal] = useState(false);
-  const [factor, setFactor] = useState(0);
+  const [factorX, setFactorX] = useState(0);
 
   useEffect(() => {
     setBoardState({ boardStored: board, solutionBoardStored: solution });
@@ -55,7 +55,7 @@ const Game = () => {
           generatedBoard={board}
           solution={solution}
           level={Number(level)}
-          setFactor={setFactor}
+          setFactorX={setFactorX}
         />
       </View>
       {openModal && (

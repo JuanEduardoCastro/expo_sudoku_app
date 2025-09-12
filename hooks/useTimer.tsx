@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const useTimer = () => {
   const [timer, setTimer] = useState<number>(0);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
-  const [timerMultiply, setTimerMultiply] = useState<number | null>(null);
+  const [timerMultiply, setTimerMultiply] = useState<number | null>(0);
 
   useEffect(() => {
     let interval = 0;
