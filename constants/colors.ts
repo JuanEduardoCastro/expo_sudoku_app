@@ -7,12 +7,14 @@ export const COLORS = {
     background2: "#e9e9deff",
     text: "#142738",
     tint: lightColor,
+    negative: darkColor,
   },
   dark: {
     background: "#010610ff",
     background2: "#03112bff",
     text: "#c6c7e8ff",
     tint: darkColor,
+    negative: lightColor,
   },
 };
 

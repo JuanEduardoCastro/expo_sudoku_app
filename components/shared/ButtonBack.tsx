@@ -40,7 +40,7 @@ const createStyles = (colors: TColors) =>
     },
     backButtonText: {
       fontSize: 18,
-      color: "#1c3a56",
+      color: colors.text,
       fontWeight: "semibold",
     },
   });

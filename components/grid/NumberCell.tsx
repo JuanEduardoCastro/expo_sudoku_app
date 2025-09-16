@@ -93,21 +93,23 @@ const NumberCell = ({
     <Pressable
       style={[
         styles.container,
-        highlighted && { backgroundColor: "lightgray" },
-        selected && { backgroundColor: "lightgray", borderWidth: 3, borderColor: "gray" },
+        highlighted && { backgroundColor: colors.gray },
+        selected && { backgroundColor: colors.tint, borderWidth: 3, borderColor: colors.negative },
         cell.col === 2 || cell.col === 5 ? { borderRightWidth: 2 } : { borderRightWidth: 1 },
         cell.row === 2 || cell.row === 5 ? { borderBottomWidth: 2 } : { borderBottomWidth: 1 },
       ]}
       onPress={() => onPress(cell)}
     >
       <AnimatedText
-        style={[styles.numberText, rotatesCells && animatedStyle, selected && animatedStyle]}
+        style={[
+          styles.numberText,
+          rotatesCells && animatedStyle,
+          selected && animatedStyle,
+          selected && { color: colors.negative },
+        ]}
       >
         {cell.value !== null && cell.value !== 0 ? cell.value : ""}
       </AnimatedText>
-      {/* <Text style={styles.numberText}>
-        {cell.value !== null && cell.value !== 0 ? cell.value : ""}
-      </Text> */}
     </Pressable>
   );
 };
@@ -121,13 +123,12 @@ const createStyles = (colors: TColors) =>
       height: 40,
       alignItems: "center",
       justifyContent: "center",
-      // borderWidth: 1,
-      // borderColor: "gray",
+      borderColor: colors.negative,
     },
 
     numberText: {
       fontSize: 24,
       fontWeight: "bold",
-      color: "#1c3a56",
+      color: colors.text,
     },
   });

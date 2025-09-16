@@ -8,6 +8,7 @@ export type StylesModeProps = {
   background2: string;
   text: string;
   tint: string;
+  negative: string;
 };
 
 export type ColorsNameProps = {

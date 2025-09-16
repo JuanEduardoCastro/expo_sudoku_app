@@ -43,6 +43,7 @@ export const createStyles = (colors: TColors) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: colors.background,
       alignItems: "center",
       justifyContent: "center",
       gap: 12,
@@ -54,12 +55,12 @@ export const createStyles = (colors: TColors) =>
     titleText: {
       fontSize: 24,
       fontWeight: "bold",
-      color: "#1c3a56",
+      color: colors.text,
     },
     subTitleBox: {},
     subTitleText: {
       fontSize: 24,
-      color: "#1c3a56",
+      color: colors.text,
     },
     buttonBox: {
       flexDirection: "row",

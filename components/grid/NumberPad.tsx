@@ -29,10 +29,10 @@ const NumberPad = ({ onPress, clueCell, selectedPad }: NumberPadProps) => {
         <Pressable
           style={[
             styles.numberBox,
-            number === clueCell && { borderWidth: 4, borderColor: "blue" },
+            number === clueCell && { borderWidth: 4, borderColor: colors.tint },
             selectedPad === number
-              ? { borderColor: "blue", borderWidth: 2 }
-              : { borderColor: "gray" },
+              ? { borderColor: colors.negative, borderWidth: 2 }
+              : { borderColor: colors.tint },
           ]}
           key={index}
           onPress={() => onPress(number)}
@@ -63,6 +63,7 @@ const createStyles = (colors: TColors) =>
       borderRadius: 4,
     },
     numberText: {
+      color: colors.text,
       fontSize: 20,
       fontWeight: "bold",
     },

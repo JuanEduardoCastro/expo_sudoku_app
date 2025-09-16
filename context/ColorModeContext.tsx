@@ -1,5 +1,6 @@
 import { BNW, COLORS, SHARED } from "@/constants/colors";
 import { ColorModeProps, TColors } from "@/constants/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 
@@ -20,17 +21,27 @@ export const ColorModeProvider = ({ children }: ColorModeProviderProps) => {
   const [colorMode, setColorMode] = useState<ColorModeProps>(systemColorScheme || "light");
 
   useEffect(() => {
-    // TODO: check Local Storage for color mode
+    const checkLocalStorage = async () => {
+      const isInMode = await AsyncStorage.getItem("colorMode");
+      if (isInMode === "light") {
+        setColorMode("light");
+      } else if (isInMode === "dark") {
+        setColorMode("dark");
+      } else {
+        setColorMode(systemColorScheme || "light");
+      }
+    };
+    checkLocalStorage();
   }, []);
 
   const toggleColorMode = () => {
     setColorMode((prev) => (prev === "light" ? "dark" : "light"));
     if (colorMode === "light") {
-      //TODO: save in Local Storage dark mode
+      AsyncStorage.setItem("colorMode", "dark");
     } else if (colorMode === "dark") {
-      //TODO: save in Local Storage light mode
+      AsyncStorage.setItem("colorMode", "light");
     } else {
-      //TODO: remove in Local Storage mode
+      AsyncStorage.removeItem("colorMode");
     }
   };
 

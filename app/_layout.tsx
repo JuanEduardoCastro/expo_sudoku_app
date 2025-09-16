@@ -1,7 +1,29 @@
 import { ColorModeProvider } from "@/context/ColorModeContext";
 import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+
+SplashScreen.setOptions({
+  duration: 5000,
+  fade: true,
+});
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  useEffect(() => {
+    async function checkIsAppReady() {
+      try {
+        // TODO: other asyn functions
+      } catch (error) {
+        __DEV__ && console.log(error);
+      } finally {
+        await SplashScreen.hideAsync();
+      }
+    }
+    checkIsAppReady();
+  }, []);
+
   return (
     <ColorModeProvider>
       <Stack>

@@ -298,7 +298,7 @@ const createStyles = (colors: TColors) =>
     finishMsgText: {
       fontSize: 24,
       fontWeight: "bold",
-      color: "#1c3a56",
+      color: colors.text,
     },
     headerGrid: {
       height: 30,
@@ -311,7 +311,7 @@ const createStyles = (colors: TColors) =>
       flexGrow: 1,
       padding: 8,
       fontSize: 15,
-      color: "#1c3a56",
+      color: colors.text,
     },
     clueButton: {
       flexGrow: 1,
@@ -324,7 +324,7 @@ const createStyles = (colors: TColors) =>
     levelTextButton: {
       fontWeight: "bold",
       fontSize: 15,
-      color: "#1c3a56",
+      color: colors.text,
     },
     containerGrid: {
       width: 40.5 * 9,
@@ -334,6 +334,6 @@ const createStyles = (colors: TColors) =>
       justifyContent: "center",
       alignItems: "flex-start",
       borderWidth: 2,
-      borderColor: "gray",
+      borderColor: colors.tint,
     },
   });

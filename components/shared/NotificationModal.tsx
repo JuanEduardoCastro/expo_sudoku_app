@@ -61,12 +61,12 @@ const createStyles = (colors: TColors) =>
       height: "100%",
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: "rgba(0,0,0,0.6)",
+      backgroundColor: "rgba(0,0,0,0.7)",
     },
     cardContainer: {
       width: "80%",
       height: "20%",
-      backgroundColor: "white",
+      backgroundColor: colors.background2,
       borderRadius: 8,
     },
     header: {
@@ -79,12 +79,12 @@ const createStyles = (colors: TColors) =>
     headerCloseButton: {
       paddingHorizontal: 8,
       paddingVertical: 4,
-      color: "#1c3a56",
+      color: colors.text,
     },
     headerCloseText: {
       fontSize: 20,
       fontWeight: "bold",
-      color: "#1c3a56",
+      color: colors.text,
     },
     content: {
       flexGrow: 1,
@@ -93,7 +93,7 @@ const createStyles = (colors: TColors) =>
     },
     contentText: {
       fontSize: 16,
-      color: "#1c3a56",
+      color: colors.text,
     },
     buttonBox: {
       width: "100%",
@@ -117,7 +117,7 @@ const createStyles = (colors: TColors) =>
     },
     buttonText: {
       fontSize: 16,
-      color: "#1c3a56",
+      color: colors.dark,
       fontWeight: "bold",
     },
   });

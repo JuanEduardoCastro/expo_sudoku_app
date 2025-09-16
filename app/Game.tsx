@@ -107,6 +107,7 @@ const createStyles = (colors: TColors) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: colors.background,
       alignItems: "center",
       justifyContent: "flex-start",
       gap: 10,
@@ -126,6 +127,6 @@ const createStyles = (colors: TColors) =>
     },
     scoreText: {
       fontSize: 18,
-      color: "#1c3a56",
+      color: colors.text,
     },
   });

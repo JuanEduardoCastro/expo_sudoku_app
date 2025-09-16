@@ -51,6 +51,6 @@ const createStyles = (colors: TColors) =>
     levelText: {
       fontSize: 20,
       fontWeight: "bold",
-      color: "#1c3a56",
+      color: colors.text,
     },
   });

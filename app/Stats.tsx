@@ -38,6 +38,7 @@ const createStyles = (colors: TColors) =>
   StyleSheet.create({
     container: {
       flex: 1,
+      backgroundColor: colors.background,
       alignItems: "center",
       justifyContent: "flex-start",
       gap: 10,
