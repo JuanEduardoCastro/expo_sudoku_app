@@ -1,4 +1,6 @@
 import { CellProps } from "@/app/Game";
+import { TColors } from "@/constants/types";
+import useStyles from "@/hooks/useStyles";
 import React, { useEffect } from "react";
 import { Pressable, StyleSheet, Text } from "react-native";
 import Animated, {
@@ -52,6 +54,7 @@ const NumberCell = ({
   setSelectedCell,
   setHighlightedCells,
 }: NumberCellProps) => {
+  const { colors, styles } = useStyles(createStyles);
   const rotation = useSharedValue(0);
 
   const AnimatedText = Animated.createAnimatedComponent(Text);
@@ -111,19 +114,20 @@ const NumberCell = ({
 
 export default NumberCell;
 
-const styles = StyleSheet.create({
-  container: {
-    width: 40,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    // borderWidth: 1,
-    // borderColor: "gray",
-  },
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    container: {
+      width: 40,
+      height: 40,
+      alignItems: "center",
+      justifyContent: "center",
+      // borderWidth: 1,
+      // borderColor: "gray",
+    },
 
-  numberText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#1c3a56",
-  },
-});
+    numberText: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: "#1c3a56",
+    },
+  });

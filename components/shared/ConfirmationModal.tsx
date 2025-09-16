@@ -1,3 +1,5 @@
+import { TColors } from "@/constants/types";
+import useStyles from "@/hooks/useStyles";
 import React from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -43,6 +45,8 @@ const ConfirmationModal = ({
   acceptText = "Ok",
   acceptOnPress,
 }: ConfirmationModalProps) => {
+  const { colors, styles } = useStyles(createStyles);
+
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={styles.container}>
@@ -83,70 +87,71 @@ const ConfirmationModal = ({
 
 export default ConfirmationModal;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.6)",
-  },
-  cardContainer: {
-    width: "80%",
-    height: "30%",
-    backgroundColor: "white",
-    borderRadius: 8,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 8,
-    paddingVertical: 8,
-  },
-  headerCloseButton: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    color: "#1c3a56",
-  },
-  headerCloseText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#1c3a56",
-  },
-  content: {
-    flexGrow: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  contentText: {
-    fontSize: 16,
-    color: "#1c3a56",
-  },
-  buttonBox: {
-    width: "100%",
-    height: 100,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 16,
-  },
-  button: {
-    width: 90,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "lightblue",
-    padding: 10,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  buttonText: {
-    fontSize: 16,
-    color: "#1c3a56",
-    fontWeight: "bold",
-  },
-});
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      width: "100%",
+      height: "100%",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0,0,0,0.6)",
+    },
+    cardContainer: {
+      width: "80%",
+      height: "30%",
+      backgroundColor: "white",
+      borderRadius: 8,
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: 8,
+      paddingVertical: 8,
+    },
+    headerCloseButton: {
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      color: "#1c3a56",
+    },
+    headerCloseText: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: "#1c3a56",
+    },
+    content: {
+      flexGrow: 1,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    contentText: {
+      fontSize: 16,
+      color: "#1c3a56",
+    },
+    buttonBox: {
+      width: "100%",
+      height: 100,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 16,
+    },
+    button: {
+      width: 90,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "lightblue",
+      padding: 10,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderRadius: 8,
+    },
+    buttonText: {
+      fontSize: 16,
+      color: "#1c3a56",
+      fontWeight: "bold",
+    },
+  });

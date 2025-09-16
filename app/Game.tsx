@@ -1,6 +1,8 @@
 import GameBoard from "@/components/grid/GameBoard";
 import ButtonBack from "@/components/shared/ButtonBack";
 import ConfirmationModal from "@/components/shared/ConfirmationModal";
+import { TColors } from "@/constants/types";
+import useStyles from "@/hooks/useStyles";
 import { useBoardStore } from "@/store/store";
 import { generatesBoard } from "@/utils/gameLogic";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -32,6 +34,7 @@ export type Board = CellProps[][];
  * manages navigation, and renders the header and the `GameBoard` component.
  */
 const Game = () => {
+  const { colors, styles } = useStyles(createStyles);
   const router = useRouter();
   const { level } = useLocalSearchParams();
   const { board, solution } = generatesBoard(Number(level));
@@ -100,28 +103,29 @@ const Game = () => {
 
 export default Game;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    gap: 10,
-  },
-  header: {
-    width: "100%",
-    height: 60,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-  },
-  gridContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  scoreText: {
-    fontSize: 18,
-    color: "#1c3a56",
-  },
-});
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "flex-start",
+      gap: 10,
+    },
+    header: {
+      width: "100%",
+      height: 60,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 16,
+    },
+    gridContainer: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    scoreText: {
+      fontSize: 18,
+      color: "#1c3a56",
+    },
+  });

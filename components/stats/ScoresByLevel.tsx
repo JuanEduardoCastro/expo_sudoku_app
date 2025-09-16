@@ -1,3 +1,5 @@
+import { TColors } from "@/constants/types";
+import useStyles from "@/hooks/useStyles";
 import { useGameScoresStore } from "@/store/store";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -8,6 +10,8 @@ import StatsCard from "./StatsCard";
  * It fetches data from the `useGameScoresStore` and dynamically renders a section for each level.
  */
 const ScoresByLevel = () => {
+  const { colors, styles } = useStyles(createStyles);
+
   const { scoresByLevels } = useGameScoresStore();
 
   return (
@@ -30,14 +34,15 @@ const ScoresByLevel = () => {
 
 export default ScoresByLevel;
 
-const styles = StyleSheet.create({
-  statsSection: {
-    width: "100%",
-    gap: 4,
-  },
-  statsTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#1c3a56",
-  },
-});
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    statsSection: {
+      width: "100%",
+      gap: 4,
+    },
+    statsTitle: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: "#1c3a56",
+    },
+  });

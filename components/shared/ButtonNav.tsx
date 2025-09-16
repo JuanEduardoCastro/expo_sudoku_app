@@ -1,3 +1,6 @@
+import { textVar } from "@/constants/textVar";
+import { TColors } from "@/constants/types";
+import useStyles from "@/hooks/useStyles";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
 /**
@@ -15,6 +18,8 @@ export type ButtonNavProps = {
  * Used on the home screen to navigate to different sections like "Stats" or "Instructions".
  */
 const ButtonNav = ({ title, onPress }: ButtonNavProps) => {
+  const { colors, styles } = useStyles(createStyles);
+
   return (
     <View style={styles.container}>
       <Pressable style={styles.button} onPress={onPress}>
@@ -26,18 +31,21 @@ const ButtonNav = ({ title, onPress }: ButtonNavProps) => {
 
 export default ButtonNav;
 
-const styles = StyleSheet.create({
-  container: {
-    margin: 8,
-  },
-  button: {
-    backgroundColor: "lightblue",
-    padding: 10,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  buttonText: {
-    fontSize: 16,
-  },
-});
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    container: {
+      margin: 8,
+    },
+    button: {
+      backgroundColor: colors.button,
+      padding: 10,
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderRadius: 8,
+    },
+    buttonText: {
+      ...textVar.base,
+      color: colors.dark, //TODO
+      textAlign: "center",
+    },
+  });

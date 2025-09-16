@@ -1,3 +1,5 @@
+import { TColors } from "@/constants/types";
+import useStyles from "@/hooks/useStyles";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -14,6 +16,8 @@ type StatsCardProps = {
  * A simple component to display a single line of statistics with a title and a value.
  */
 const StatsCard = ({ title, value }: StatsCardProps) => {
+  const { colors, styles } = useStyles(createStyles);
+
   return (
     <View style={styles.statsLine}>
       <Text style={styles.statsText}>{title}</Text>
@@ -24,20 +28,21 @@ const StatsCard = ({ title, value }: StatsCardProps) => {
 
 export default StatsCard;
 
-const styles = StyleSheet.create({
-  statsLine: {
-    flexDirection: "row",
-    gap: 12,
-  },
-  statsText: {
-    width: "40%",
-    fontSize: 16,
-    color: "#1c3a56",
-    textAlign: "right",
-  },
-  statsDinamicText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#1c3a56",
-  },
-});
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    statsLine: {
+      flexDirection: "row",
+      gap: 12,
+    },
+    statsText: {
+      width: "40%",
+      fontSize: 16,
+      color: "#1c3a56",
+      textAlign: "right",
+    },
+    statsDinamicText: {
+      fontSize: 16,
+      fontWeight: "bold",
+      color: "#1c3a56",
+    },
+  });

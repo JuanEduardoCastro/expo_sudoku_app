@@ -1,3 +1,5 @@
+import { TColors } from "@/constants/types";
+import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -8,6 +10,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
  * difficulty parameter, which determines how many cells are removed from the initial board.
  */
 const LevelBox = () => {
+  const { colors, styles } = useStyles(createStyles);
+
   const router = useRouter();
   return (
     <View style={styles.levelBox}>
@@ -33,19 +37,20 @@ const LevelBox = () => {
 
 export default LevelBox;
 
-const styles = StyleSheet.create({
-  levelBox: {
-    width: "70%",
-    paddingHorizontal: 26,
-    paddingVertical: 22,
-    gap: 16,
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 8,
-  },
-  levelText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#1c3a56",
-  },
-});
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    levelBox: {
+      width: "70%",
+      paddingHorizontal: 26,
+      paddingVertical: 22,
+      gap: 16,
+      borderWidth: 1,
+      borderColor: "gray",
+      borderRadius: 8,
+    },
+    levelText: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: "#1c3a56",
+    },
+  });

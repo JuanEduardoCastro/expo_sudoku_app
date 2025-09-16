@@ -1,5 +1,7 @@
 import { Board, CellProps } from "@/app/Game";
+import { TColors } from "@/constants/types";
 import useLevel from "@/hooks/useLevel";
+import useStyles from "@/hooks/useStyles";
 import useTimer from "@/hooks/useTimer";
 import { useBoardStore, useGameScoresStore, useNotificationMessageStore } from "@/store/store";
 import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
@@ -27,6 +29,8 @@ type GameBoardProps = {
  * It manages the game state, user interactions, and renders the board, number pad, and other UI elements.
  */
 const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
+  const { colors, styles } = useStyles(createStyles);
+
   const router = useRouter();
   // Zustand store hooks for state management
   const { notification, setNotification } = useNotificationMessageStore();
@@ -278,57 +282,58 @@ const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
 
 export default GameBoard;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  finishMsg: {
-    width: "100%",
-    height: 60,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  finishMsgText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#1c3a56",
-  },
-  headerGrid: {
-    height: 30,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  levelText: {
-    width: 1 / 3,
-    flexGrow: 1,
-    padding: 8,
-    fontSize: 15,
-    color: "#1c3a56",
-  },
-  clueButton: {
-    flexGrow: 1,
-    width: 1 / 3,
-    padding: 6,
-    alignItems: "flex-end",
-    justifyContent: "center",
-    paddingRight: 16,
-  },
-  levelTextButton: {
-    fontWeight: "bold",
-    fontSize: 15,
-    color: "#1c3a56",
-  },
-  containerGrid: {
-    width: 40.5 * 9,
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    borderWidth: 2,
-    borderColor: "gray",
-  },
-});
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "flex-start",
+      alignItems: "center",
+    },
+    finishMsg: {
+      width: "100%",
+      height: 60,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    finishMsgText: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: "#1c3a56",
+    },
+    headerGrid: {
+      height: 30,
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    levelText: {
+      width: 1 / 3,
+      flexGrow: 1,
+      padding: 8,
+      fontSize: 15,
+      color: "#1c3a56",
+    },
+    clueButton: {
+      flexGrow: 1,
+      width: 1 / 3,
+      padding: 6,
+      alignItems: "flex-end",
+      justifyContent: "center",
+      paddingRight: 16,
+    },
+    levelTextButton: {
+      fontWeight: "bold",
+      fontSize: 15,
+      color: "#1c3a56",
+    },
+    containerGrid: {
+      width: 40.5 * 9,
+      display: "flex",
+      flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "center",
+      alignItems: "flex-start",
+      borderWidth: 2,
+      borderColor: "gray",
+    },
+  });

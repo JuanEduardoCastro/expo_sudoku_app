@@ -1,4 +1,6 @@
 import ButtonBack from "@/components/shared/ButtonBack";
+import { TColors } from "@/constants/types";
+import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
@@ -8,6 +10,7 @@ import { SafeAreaView, StyleSheet, Text, View } from "react-native";
  * and instructions on how to interact with the game controls.
  */
 const Instructions = () => {
+  const { colors, styles } = useStyles(createStyles);
   const router = useRouter();
 
   return (
@@ -35,36 +38,37 @@ const Instructions = () => {
 
 export default Instructions;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    gap: 10,
-  },
-  header: {
-    width: "100%",
-    height: 60,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 24,
-    gap: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#1c3a56",
-    marginBottom: 16,
-    textAlign: "center",
-  },
-  ruleText: {
-    fontSize: 18,
-    color: "#1c3a56",
-    lineHeight: 26,
-  },
-});
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "flex-start",
+      gap: 10,
+    },
+    header: {
+      width: "100%",
+      height: 60,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 16,
+    },
+    content: {
+      flex: 1,
+      paddingHorizontal: 24,
+      gap: 20,
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: "bold",
+      color: "#1c3a56",
+      marginBottom: 16,
+      textAlign: "center",
+    },
+    ruleText: {
+      fontSize: 18,
+      color: "#1c3a56",
+      lineHeight: 26,
+    },
+  });

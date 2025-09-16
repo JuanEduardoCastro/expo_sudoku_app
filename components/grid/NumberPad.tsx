@@ -1,4 +1,6 @@
 import { numbersPad } from "@/constants/initialGrid";
+import { TColors } from "@/constants/types";
+import useStyles from "@/hooks/useStyles";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -19,6 +21,8 @@ export type NumberPadProps = {
  * It also provides visual feedback for clues.
  */
 const NumberPad = ({ onPress, clueCell, selectedPad }: NumberPadProps) => {
+  const { colors, styles } = useStyles(createStyles);
+
   return (
     <View style={styles.container}>
       {numbersPad.map((number, index) => (
@@ -42,23 +46,24 @@ const NumberPad = ({ onPress, clueCell, selectedPad }: NumberPadProps) => {
 
 export default NumberPad;
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 6,
-  },
-  numberBox: {
-    width: 36,
-    height: 36,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    borderRadius: 4,
-  },
-  numberText: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-});
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 6,
+    },
+    numberBox: {
+      width: 36,
+      height: 36,
+      alignItems: "center",
+      justifyContent: "center",
+      borderWidth: 1,
+      borderRadius: 4,
+    },
+    numberText: {
+      fontSize: 20,
+      fontWeight: "bold",
+    },
+  });

@@ -1,3 +1,5 @@
+import { TColors } from "@/constants/types";
+import useStyles from "@/hooks/useStyles";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -16,6 +18,8 @@ export type ButtonBackProps = {
  * It's typically used in headers to provide navigation to the previous screen.
  */
 const ButtonBack = ({ title, onPress }: ButtonBackProps) => {
+  const { colors, styles } = useStyles(createStyles);
+
   return (
     <View style={styles.container}>
       <Pressable style={styles.backButton} onPress={onPress}>
@@ -27,15 +31,16 @@ const ButtonBack = ({ title, onPress }: ButtonBackProps) => {
 
 export default ButtonBack;
 
-const styles = StyleSheet.create({
-  container: {},
-  backButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-  },
-  backButtonText: {
-    fontSize: 18,
-    color: "#1c3a56",
-    fontWeight: "semibold",
-  },
-});
+const createStyles = (colors: TColors) =>
+  StyleSheet.create({
+    container: {},
+    backButton: {
+      paddingVertical: 8,
+      paddingHorizontal: 10,
+    },
+    backButtonText: {
+      fontSize: 18,
+      color: "#1c3a56",
+      fontWeight: "semibold",
+    },
+  });
