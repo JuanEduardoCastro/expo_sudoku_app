@@ -5,6 +5,7 @@ import useStyles from "@/hooks/useStyles";
 import useTimer from "@/hooks/useTimer";
 import { useBoardStore, useGameScoresStore, useNotificationMessageStore } from "@/store/store";
 import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
+import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -171,6 +172,7 @@ const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
    * @param number The number that was pressed.
    */
   const handleClickNumberPad = (number: number) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     if (!selectedCell) {
       setNotification({
         message: "Select a cell first",
