@@ -1,5 +1,6 @@
 import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
+import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -19,10 +20,15 @@ export type ButtonNavProps = {
  */
 const ButtonNav = ({ title, onPress }: ButtonNavProps) => {
   const { colors, styles } = useStyles(createStyles);
+  const { onClickHapticHeavy } = useHaptic();
+
+  const handleOnPress = () => {
+    onPress && (onPress(), onClickHapticHeavy());
+  };
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.button} onPress={onPress}>
+      <Pressable style={styles.button} onPress={handleOnPress}>
         <Text style={styles.buttonText}>{title}</Text>
       </Pressable>
     </View>

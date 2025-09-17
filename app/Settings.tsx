@@ -4,7 +4,8 @@ import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
-import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Settings = () => {
   const { colors, styles } = useStyles(createStyles);
@@ -14,6 +15,7 @@ const Settings = () => {
       <View style={styles.header}>
         <ButtonBack onPress={() => router.back()} />
       </View>
+      <Text style={styles.statsTitle}>Settings</Text>
       <ScrollView style={{ flex: 1, width: "100%" }} showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           <SettingsBlock />
@@ -41,6 +43,13 @@ const createStyles = (colors: TColors) =>
       alignItems: "center",
       justifyContent: "space-between",
       paddingHorizontal: 16,
+    },
+    statsTitle: {
+      width: "100%",
+      paddingHorizontal: 16,
+      fontSize: 24,
+      fontWeight: "bold",
+      color: colors.text,
     },
     content: {
       flex: 1,

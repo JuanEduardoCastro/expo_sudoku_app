@@ -4,7 +4,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
 SplashScreen.setOptions({
-  duration: 5000,
+  duration: 2000,
   fade: true,
 });
 

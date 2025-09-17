@@ -1,4 +1,5 @@
 import { TColors } from "@/constants/types";
+import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -11,24 +12,30 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
  */
 const LevelBox = () => {
   const { colors, styles } = useStyles(createStyles);
+  const { onClickHapticHeavy } = useHaptic();
+
+  const handleClick = (level: number) => {
+    router.push({ pathname: "/Game", params: { level } });
+    onClickHapticHeavy();
+  };
 
   const router = useRouter();
   return (
     <View style={styles.levelBox}>
       {/* A special level for testing purposes with very few cells removed. */}
-      <Pressable onPress={() => router.push({ pathname: "/Game", params: { level: 0.05 } })}>
+      <Pressable onPress={() => handleClick(0.05)}>
         <Text style={styles.levelText}>For test</Text>
       </Pressable>
-      <Pressable onPress={() => router.push({ pathname: "/Game", params: { level: 0.54 } })}>
+      <Pressable onPress={() => handleClick(0.54)}>
         <Text style={styles.levelText}>Easy</Text>
       </Pressable>
-      <Pressable onPress={() => router.push({ pathname: "/Game", params: { level: 0.6 } })}>
+      <Pressable onPress={() => handleClick(0.6)}>
         <Text style={styles.levelText}>Medium</Text>
       </Pressable>
-      <Pressable onPress={() => router.push({ pathname: "/Game", params: { level: 0.65 } })}>
+      <Pressable onPress={() => handleClick(0.65)}>
         <Text style={styles.levelText}>Hard</Text>
       </Pressable>
-      <Pressable onPress={() => router.push({ pathname: "/Game", params: { level: 0.7 } })}>
+      <Pressable onPress={() => handleClick(0.7)}>
         <Text style={styles.levelText}>Expert</Text>
       </Pressable>
     </View>

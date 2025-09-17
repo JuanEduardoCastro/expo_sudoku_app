@@ -2,12 +2,14 @@ import GameBoard from "@/components/grid/GameBoard";
 import ButtonBack from "@/components/shared/ButtonBack";
 import ConfirmationModal from "@/components/shared/ConfirmationModal";
 import { TColors } from "@/constants/types";
+import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
 import { useBoardStore } from "@/store/store";
 import { generatesBoard } from "@/utils/gameLogic";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 /**
  * Represents the properties of a single cell in the Sudoku grid.
@@ -39,6 +41,7 @@ const Game = () => {
   const { level } = useLocalSearchParams();
   const { board, solution } = generatesBoard(Number(level));
   const { setBoardState, setLevel, score, resetBoard, factor } = useBoardStore();
+  const { onClickHapticHeavy } = useHaptic();
 
   /** State to control the visibility of the exit confirmation modal. */
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -57,12 +60,14 @@ const Game = () => {
    */
   const handleBackButton = () => {
     setOpenModal(true);
+    onClickHapticHeavy();
   };
 
   /**
    * Toggles the visibility of the confirmation modal.
    */
   const handleOpenModal = () => {
+    onClickHapticHeavy();
     setOpenModal(!openModal);
   };
 
@@ -71,6 +76,7 @@ const Game = () => {
    * and navigates back to the previous screen.
    */
   const goBackCommand = () => {
+    onClickHapticHeavy();
     setOpenModal(false);
     resetBoard();
     router.back();

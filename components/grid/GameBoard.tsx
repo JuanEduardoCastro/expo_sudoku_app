@@ -1,11 +1,11 @@
 import { Board, CellProps } from "@/app/Game";
 import { TColors } from "@/constants/types";
+import useHaptic from "@/hooks/useHaptic";
 import useLevel from "@/hooks/useLevel";
 import useStyles from "@/hooks/useStyles";
 import useTimer from "@/hooks/useTimer";
 import { useBoardStore, useGameScoresStore, useNotificationMessageStore } from "@/store/store";
 import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
-import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -31,6 +31,7 @@ type GameBoardProps = {
  */
 const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
   const { colors, styles } = useStyles(createStyles);
+  const { onClickHapticHeavy } = useHaptic();
 
   const router = useRouter();
   // Zustand store hooks for state management
@@ -172,17 +173,18 @@ const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
    * @param number The number that was pressed.
    */
   const handleClickNumberPad = (number: number) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     if (!selectedCell) {
       setNotification({
         message: "Select a cell first",
         type: "warning",
       });
+      onClickHapticHeavy();
       return;
     } else {
       const checkNumberInCell = isValid(board, selectedCell!.row, selectedCell!.col, number);
 
       if (checkNumberInCell) {
+        onClickHapticHeavy();
         board[selectedCell!.row][selectedCell!.col].value = number;
         board[selectedCell!.row][selectedCell!.col].editable = false;
         setBoard([...board]);
@@ -191,6 +193,7 @@ const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
       } else {
         setErrors(errors! + 1);
         setScore(score < 3 ? 0 : score! - 5 * (scoreMultiply - timerMultiply!));
+        onClickHapticHeavy();
         setNotification({
           message: "Invalid number",
           type: "warning",

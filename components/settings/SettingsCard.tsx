@@ -1,23 +1,24 @@
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React, { ReactElement } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 
 type SettingsCardProps = {
   title: string;
   value?: string | number;
   icon?: ReactElement;
+  onPress?: () => void;
 };
 
-const SettingsCard = ({ title, value, icon }: SettingsCardProps) => {
+const SettingsCard = ({ title, value, icon, onPress }: SettingsCardProps) => {
   const { colors, styles } = useStyles(createStyles);
 
   return (
-    <View style={styles.settingsLine}>
+    <Pressable onPress={onPress} style={styles.settingsLine}>
       {icon}
       <Text style={styles.settingsText}>{title}</Text>
       <Text style={styles.settingsDinamicText}> {value} </Text>
-    </View>
+    </Pressable>
   );
 };
 
@@ -28,10 +29,10 @@ const createStyles = (colors: TColors) =>
     settingsLine: {
       alignItems: "center",
       flexDirection: "row",
-      gap: 12,
+      gap: 24,
     },
     settingsText: {
-      width: "40%",
+      width: "80%",
       fontSize: 16,
       color: colors.text,
       // textAlign: "right",
