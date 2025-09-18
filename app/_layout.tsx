@@ -3,18 +3,34 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 
+/**
+ * Configures the global splash screen behavior for the application.
+ * - `duration`: The time in milliseconds the splash screen will be visible.
+ * - `fade`: Enables a fade-out animation when the splash screen hides.
+ */
 SplashScreen.setOptions({
   duration: 2000,
   fade: true,
 });
 
+// Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
+/**
+ * The root layout component for the application.
+ * It sets up the main navigation stack using Expo Router, wraps the app in necessary
+ * context providers (like `ColorModeProvider`), and manages the splash screen visibility.
+ */
 export default function RootLayout() {
+  /**
+   * Effect to hide the splash screen once the app is ready.
+   * This can be extended to wait for fonts to load, data to be fetched, etc.
+   */
   useEffect(() => {
     async function checkIsAppReady() {
       try {
-        // TODO: other asyn functions
+        // TODO: Add any other async functions needed for app initialization,
+        // such as loading fonts, fetching initial data, or authenticating the user.
       } catch (error) {
         __DEV__ && console.log(error);
       } finally {
@@ -29,7 +45,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false, title: "Home" }} />
         <Stack.Screen name="Game" options={{ headerShown: false, title: "Game" }} />
-        <Stack.Screen name="Stats" options={{ headerShown: false, title: "Stas" }} />
+        <Stack.Screen name="Stats" options={{ headerShown: false, title: "Stats" }} />
         <Stack.Screen name="Instructions" options={{ headerShown: false, title: "Instructions" }} />
         <Stack.Screen name="Settings" options={{ headerShown: false, title: "Settings" }} />
       </Stack>

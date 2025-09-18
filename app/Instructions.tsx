@@ -3,11 +3,13 @@ import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 /**
- * The `Instructions` screen provides players with the rules of Sudoku
- * and instructions on how to interact with the game controls.
+ * The `Instructions` screen displays a static page with the rules of Sudoku.
+ * It includes a header with a back button and a main content area
+ * that lists the game's objectives and controls.
  */
 const Instructions = () => {
   const { colors, styles } = useStyles(createStyles);

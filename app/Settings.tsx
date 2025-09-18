@@ -7,6 +7,11 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+/**
+ * The `Settings` screen allows users to configure application-wide preferences.
+ * It features a header with a back button and displays various setting options
+ * through the `SettingsBlock` component.
+ */
 const Settings = () => {
   const { colors, styles } = useStyles(createStyles);
   const router = useRouter();

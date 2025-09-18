@@ -40,6 +40,6 @@ const createStyles = (colors: TColors) =>
     statsTitle: {
       fontSize: 24,
       fontWeight: "bold",
-      color: "#1c3a56",
+      color: colors.text,
     },
   });

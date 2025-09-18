@@ -13,6 +13,18 @@ import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import SettingsCard from "./SettingsCard";
 
+/**
+ * `SettingsBlock` is a component that groups and displays various application settings.
+ * It provides interactive options for users to customize their experience.
+ *
+ * This component manages and renders individual settings for:
+ * - **Color Mode**: Toggles between light and dark themes using `useColorMode` context.
+ * - **Vibration**: Enables or disables haptic feedback using the `useHaptic` hook.
+ * - **Sound**: Toggles in-game sound effects (currently managed via local state).
+ *
+ * Each setting is presented using a `SettingsCard` component, which displays the
+ * setting's title, its current state, and an icon.
+ */
 const SettingsBlock = () => {
   const { colors, styles } = useStyles(createStyles);
   const { vibEnabled, setVibEnabled } = useHaptic();

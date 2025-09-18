@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 /**
  * A custom hook that provides level-specific game parameters based on a difficulty value.
@@ -8,49 +8,47 @@ import { useEffect, useState } from "react";
  */
 
 const useLevel = (level: number) => {
-  /** The string representation of the difficulty level (e.g., "Easy", "Hard"). */
-  const [levelString, setLevelString] = useState<string | null>(null);
-  /** The number of available clues for the current level. */
-  const [clueCount, setClueCount] = useState<number | null>(null);
-  /** The base score multiplier for the current level. */
-  const [scoreMultiply, setScoreMultiply] = useState<number>(0);
-
   /**
-   * Effect to set the level parameters whenever the `level` prop changes.
+   * Memoizes the level data to avoid recalculation on every render.
+   * The data is only recomputed when the `level` prop changes.
    */
-  useEffect(() => {
+  const levelData = useMemo(() => {
+    let levelString = "Unknown";
+    let clueCount = 0;
+    let scoreMultiply = 0;
     switch (level) {
       case 0.05:
-        setLevelString("For test");
-        setClueCount(3);
-        setScoreMultiply(10);
+        levelString = "For test";
+        clueCount = 3;
+        scoreMultiply = 10;
         break;
       case 0.54:
-        setLevelString("Easy");
-        setClueCount(3);
-        setScoreMultiply(24);
+        levelString = "Easy";
+        clueCount = 3;
+        scoreMultiply = 24;
         break;
       case 0.6:
-        setLevelString("Medium");
-        setClueCount(2);
-        setScoreMultiply(40);
+        levelString = "Medium";
+        clueCount = 2;
+        scoreMultiply = 40;
         break;
       case 0.65:
-        setLevelString("Hard");
-        setClueCount(1);
-        setScoreMultiply(80);
+        levelString = "Hard";
+        clueCount = 1;
+        scoreMultiply = 80;
         break;
       case 0.7:
-        setLevelString("Expert");
-        setClueCount(1);
-        setScoreMultiply(150);
+        levelString = "Expert";
+        clueCount = 1;
+        scoreMultiply = 150;
         break;
       default:
         break;
     }
-  }, []);
+    return { levelString, clueCount, scoreMultiply };
+  }, [level]);
 
-  return { levelString, setLevelString, clueCount, setClueCount, scoreMultiply, setScoreMultiply };
+  return levelData;
 };
 
 export default useLevel;

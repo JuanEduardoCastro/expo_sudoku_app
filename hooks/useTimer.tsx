@@ -15,30 +15,30 @@ const useTimer = () => {
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
   /** A multiplier that increases as time passes, used to adjust scoring. */
   const [timerMultiply, setTimerMultiply] = useState<number | null>(0);
-
   /**
    * Effect to start or stop the timer interval based on the `timerRunning` state.
    */
   useEffect(() => {
-    let interval = 0;
+    let interval: number | undefined = undefined;
     if (timerRunning) {
       interval = setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1);
-        /**
-         * Effect to update the time-based score multiplier at set intervals (e.g., every 30 seconds).
-         */
-        if (interval % 30 === 0) {
-          setTimerMultiply(timerMultiply === null ? 0 : timerMultiply + 1);
-        }
       }, 1000);
-    } else if (!timerRunning && timer !== 0) {
-      // Cleanup function to clear the interval when the component unmounts or `timerRunning` changes.
+    } else {
       clearInterval(interval);
     }
-
     // Cleanup function to clear the interval when the component unmounts or `timerRunning` changes.
     return () => clearInterval(interval);
-  }, [timer, timerRunning]);
+  }, [timerRunning]);
+
+  /**
+   * Effect to update the time-based score multiplier every 30 seconds.
+   */
+  useEffect(() => {
+    if (timer > 0 && timer % 30 === 0) {
+      setTimerMultiply((prev) => (prev === null ? 1 : prev + 1));
+    }
+  }, [timer]);
 
   /**
    * Formats a time in seconds into a "MM:SS" string.

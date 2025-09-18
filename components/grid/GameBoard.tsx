@@ -2,6 +2,7 @@ import { Board, CellProps } from "@/app/Game";
 import { TColors } from "@/constants/types";
 import useHaptic from "@/hooks/useHaptic";
 import useLevel from "@/hooks/useLevel";
+import useLoadSound from "@/hooks/useLoadSound";
 import useStyles from "@/hooks/useStyles";
 import useTimer from "@/hooks/useTimer";
 import { useBoardStore, useGameScoresStore, useNotificationMessageStore } from "@/store/store";
@@ -32,13 +33,14 @@ type GameBoardProps = {
 const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
   const { colors, styles } = useStyles(createStyles);
   const { onClickHapticHeavy } = useHaptic();
+  const { playSound } = useLoadSound();
 
   const router = useRouter();
   // Zustand store hooks for state management
   const { notification, setNotification } = useNotificationMessageStore();
   const { score, setScore, errors, setErrors, resetBoard, factor, setFactor } = useBoardStore();
   const { timer, timerRunning, setTimerRunning, formatTimer, timerMultiply } = useTimer();
-  const { levelString, clueCount, setClueCount, scoreMultiply } = useLevel(level);
+  const { levelString, clueCount, scoreMultiply } = useLevel(level);
   const { setGameScore, setGlobalScores, setScoresByLevels } = useGameScoresStore();
 
   // Component state
@@ -178,12 +180,14 @@ const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
         message: "Select a cell first",
         type: "warning",
       });
+      playSound();
       onClickHapticHeavy();
       return;
     } else {
       const checkNumberInCell = isValid(board, selectedCell!.row, selectedCell!.col, number);
 
       if (checkNumberInCell) {
+        playSound();
         onClickHapticHeavy();
         board[selectedCell!.row][selectedCell!.col].value = number;
         board[selectedCell!.row][selectedCell!.col].editable = false;
@@ -193,6 +197,7 @@ const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
       } else {
         setErrors(errors! + 1);
         setScore(score < 3 ? 0 : score! - 5 * (scoreMultiply - timerMultiply!));
+        playSound();
         onClickHapticHeavy();
         setNotification({
           message: "Invalid number",
@@ -216,7 +221,7 @@ const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
     } else {
       if (selectedCell !== null) {
         setScore(score < 3 ? 0 : score! - 3 * (scoreMultiply - timerMultiply!));
-        setClueCount(clueCount! - 1);
+        clueCount! - 1;
         setClueCell(solutionBoard[selectedCell!.row][selectedCell!.col].value);
       } else {
         setNotification({

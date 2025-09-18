@@ -7,9 +7,9 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 /**
- * The main entry point and home screen of the application.
- * It displays a welcome message, allows the user to select a game difficulty
- * via the `LevelBox` component, and provides navigation to the Stats and Instructions screens.
+ * The Home screen of the application, serving as the main entry point.
+ * It displays a welcome message, a `LevelBox` for game difficulty selection,
+ * and navigation buttons to other screens like Stats, Instructions, and Settings.
  */
 const index = () => {
   const { colors, styles } = useStyles(createStyles);
@@ -18,7 +18,7 @@ const index = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleBox}>
-        <Text style={styles.titleText}>WELLCOME</Text>
+        <Text style={styles.titleText}>WELCOME</Text>
         <Text style={styles.titleText}>SUDOKU APP</Text>
       </View>
       <View style={{ height: 80 }} />

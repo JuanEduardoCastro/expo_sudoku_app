@@ -37,12 +37,12 @@ const createStyles = (colors: TColors) =>
     statsText: {
       width: "40%",
       fontSize: 16,
-      color: "#1c3a56",
+      color: colors.text,
       textAlign: "right",
     },
     statsDinamicText: {
       fontSize: 16,
       fontWeight: "bold",
-      color: "#1c3a56",
+      color: colors.text,
     },
   });

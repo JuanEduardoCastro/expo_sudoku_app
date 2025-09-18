@@ -5,12 +5,15 @@ import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
-import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 /**
- * The `Stats` screen displays the player's game statistics.
- * It includes a header with a back button and a scrollable view
- * containing the `GlobalScores` and `ScoresByLevel` components.
+ * The `Stats` screen presents the player's game statistics.
+ * It features a standard header with a back button for navigation.
+ * The main content is a scrollable view that showcases two key components:
+ * - `GlobalScores`: Displays overall statistics across all games.
+ * - `ScoresByLevel`: Breaks down scores by game difficulty level.
  */
 const Stats = () => {
   const { colors, styles } = useStyles(createStyles);
