@@ -1,7 +1,10 @@
 const { getDefaultConfig } = require("expo/metro-config");
 
 module.exports = (() => {
+  /** @type {import('expo/metro-config').MetroConfig} */
   const config = getDefaultConfig(__dirname);
+
+  config.resolver.sourceExts.push("sql");
 
   const { transformer, resolver } = config;
 

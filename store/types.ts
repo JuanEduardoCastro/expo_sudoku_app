@@ -70,3 +70,28 @@ interface ScoresLevels {
   besttime: number;
   streak: number;
 }
+
+/* 
+
+scoreByGame {
+  user ->
+  id ->
+  level
+  score
+  time
+  errorCount
+  lostStreak
+  createdAt
+
+  ------
+ ?boardState {
+    boardStored
+    solutionBoardStored
+  }
+  level
+  factor
+  errors
+  score
+}
+
+*/
