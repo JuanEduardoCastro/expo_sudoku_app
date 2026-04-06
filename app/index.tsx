@@ -33,9 +33,11 @@ const index = () => {
       <View style={styles.buttonBox}>
         <ButtonNav title="Settings" onPress={() => router.push("/Settings")} />
       </View>
-      <View style={styles.buttonBox}>
-        <ButtonNav title="TestSQLite" onPress={() => router.push("/TestSQLite")} />
-      </View>
+      {__DEV__ && (
+        <View style={styles.buttonBox}>
+          <ButtonNav title="TestSQLite" onPress={() => router.push("/TestSQLite")} />
+        </View>
+      )}
     </View>
   );
 };

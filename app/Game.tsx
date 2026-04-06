@@ -4,7 +4,7 @@ import ConfirmationModal from "@/components/shared/ConfirmationModal";
 import { TColors } from "@/constants/types";
 import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
-import { useBoardStore } from "@/store/store";
+import { useBoardStore } from "@/store/store_zustand";
 import { generatesBoard } from "@/utils/gameLogic";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";

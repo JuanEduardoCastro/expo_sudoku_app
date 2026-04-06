@@ -1,6 +1,6 @@
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
-import { useGameScoresStore } from "@/store/store";
+import { useGameScoresStore } from "@/store/store_zustand";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import StatsCard from "./StatsCard";

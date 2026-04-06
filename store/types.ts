@@ -60,6 +60,7 @@ export interface UseGameScoresTypes {
     totalTimePlay: number;
   }) => void;
   setScoresByLevels: (scoresByLevels: ScoresLevels[]) => void;
+  loadFromDatabase: () => Promise<void>;
 }
 
 interface ScoresLevels {

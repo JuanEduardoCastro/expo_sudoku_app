@@ -5,7 +5,12 @@ import useLevel from "@/hooks/useLevel";
 import useLoadSound from "@/hooks/useLoadSound";
 import useStyles from "@/hooks/useStyles";
 import useTimer from "@/hooks/useTimer";
-import { useBoardStore, useGameScoresStore, useNotificationMessageStore } from "@/store/store";
+import { saveCompletedGame } from "@/store/dbServices";
+import {
+  useBoardStore,
+  useGameScoresStore,
+  useNotificationMessageStore,
+} from "@/store/store_zustand";
 import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -104,14 +109,23 @@ const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
     checkCells();
 
     if (checkGame(board)) {
-      setScore(score + Math.floor(timer! * level));
-      // TODO: Uncomment and implement game score saving
-      // setGameScore({
-      //   errorCount: errors,
-      //   points: score + Math.floor(timer! * level),
-      //   level: level,
-      //   time: timer!,
-      // });
+      const finalScore = score + Math.floor(timer! * level);
+
+      setScore(finalScore);
+
+      saveCompletedGame({
+        level: level,
+        points: finalScore,
+        timeSeconds: timer!,
+        errorCount: errors,
+      })
+        .then(() => {
+          console.log("game saved to database");
+          useGameScoresStore.getState().loadFromDatabase();
+        })
+        .catch((error) => {
+          console.error("Error saving game:", error);
+        });
       setIsFinished(true);
       setTimerRunning(false);
       setSelectedCell(null);
@@ -123,11 +137,6 @@ const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
     }
   }, [board]);
 
-  /**
-   * Handles the press event on a cell in the Sudoku grid.
-   * It starts the timer, selects/deselects a cell, and highlights related cells.
-   * @param cell The `CellProps` object of the pressed cell.
-   */
   const handleCellPress = (cell: CellProps) => {
     if (!timerRunning) {
       setTimerRunning(true);
@@ -145,11 +154,6 @@ const GameBoard = ({ generatedBoard, solution, level }: GameBoardProps) => {
     }
   };
 
-  /**
-   * Calculates which cells to highlight based on the selected cell.
-   * It highlights the row, column, and 3x3 grid of the selected cell.
-   * @param cell The `CellProps` of the selected cell.
-   */
   const calculateHighlightedCells = (cell: CellProps) => {
     const newHighlightedCells = new Set<string>();
     const { row, col } = cell;

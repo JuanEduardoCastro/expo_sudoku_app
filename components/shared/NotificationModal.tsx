@@ -1,6 +1,6 @@
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
-import { useNotificationMessageStore } from "@/store/store";
+import { useNotificationMessageStore } from "@/store/store_zustand";
 import React, { useEffect } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 

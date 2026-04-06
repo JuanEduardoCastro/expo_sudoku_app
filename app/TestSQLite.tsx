@@ -1,8 +1,9 @@
 import ButtonBack from "@/components/shared/ButtonBack";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
+import { gameScoresService, globalStatsService, levelStatsService } from "@/store/dbServices";
+import * as schema from "@/store/schema";
 import { useFocusEffect, useRouter } from "expo-router";
-import { useSQLiteContext } from "expo-sqlite";
 import React, { useCallback, useState } from "react";
 import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,6 +18,19 @@ const TestSQLite = () => {
   const { colors, styles } = useStyles(createStyles);
   const router = useRouter();
   const [dataFromDB, setDataFromDB] = useState<UserType[]>([]);
+  const [gameScore, setGameScore] = useState<schema.GameScores[]>([]);
+  const [globalStats, setGlobalStats] = useState<schema.GlobalStats[]>([]);
+  const [levelStats, setLevelStats] = useState<schema.LevelStats[]>([]);
+
+  const loadData = async () => {
+    const scores = await gameScoresService.getRecent(30);
+    const global = await globalStatsService.get();
+    const levels = await levelStatsService.getAll();
+
+    setGameScore(scores);
+    setGlobalStats(global);
+    setLevelStats(levels);
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -24,25 +38,18 @@ const TestSQLite = () => {
     }, [])
   );
 
-  const database = useSQLiteContext();
+  const testInsertGame = async () => {
+    await gameScoresService.create({
+      level: 1,
+      points: 100,
+      timeSeconds: 300,
+      errorCount: 2,
+      isPerfect: false,
+      isGood: true,
+      lostStreak: false,
+    });
 
-  const onClick = async () => {
-    console.log("onClick");
-    try {
-      database.runAsync("INSERT INTO users (name, email) VALUES (?, ?);", [
-        "trujillo",
-        "trujillomail@mail.com",
-      ]);
-    } catch (error) {
-      console.log("XX -> TestSQLite.tsx:23 -> error :", error);
-    }
-  };
-
-  const loadData = async () => {
-    console.log("loadData");
-    const dataLoaded = await database.getAllAsync<UserType>("SELECT * FROM users;");
-    setDataFromDB(dataLoaded);
-    console.log("dataLoaded ------->", dataLoaded);
+    await loadData();
   };
 
   return (
@@ -52,7 +59,7 @@ const TestSQLite = () => {
       </View>
       <View style={styles.content}>
         <Text style={styles.title}>SQLite</Text>
-        <Button onPress={onClick} title="Insert" />
+        <Button onPress={testInsertGame} title="Insert game" />
         <View style={{ height: 60 }} />
         <FlatList
           data={dataFromDB}
