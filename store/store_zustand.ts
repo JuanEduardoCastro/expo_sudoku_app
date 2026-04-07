@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { globalStatsService, levelStatsService } from "./dbServices";
+import { clearAllData, globalStatsService, levelStatsService } from "./dbServices";
 import { UseBoardStateTypes, UseGameScoresTypes, UseNotificationMessageStateTypes } from "./types";
 
 export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
@@ -54,7 +54,8 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
   setGameScore: (gameScore) => set({ gameScore }),
   setGlobalScores: (globalScores) => set({ globalScores }),
   setScoresByLevels: (scoresByLevels) => set({ scoresByLevels }),
-  resetGameScores: () =>
+  resetGameScores: async () => {
+    await clearAllData();
     set({
       gameScore: {
         errorCount: 0,
@@ -104,7 +105,8 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
           streak: 0,
         },
       ],
-    }),
+    });
+  },
   loadFromDatabase: async () => {
     const globalStats = await globalStatsService.get();
     const levelStats = await levelStatsService.getAll();
@@ -129,7 +131,7 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
           name: stat.name,
           maxPoints: stat.maxPoints,
           totalGames: stat.totalGames,
-          bestTime: stat.bestTime,
+          besttime: stat.bestTime,
           streak: stat.currentStreak,
         })),
       });

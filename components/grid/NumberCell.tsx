@@ -37,6 +37,8 @@ export type NumberCellProps = {
   setHighlightedCells?: (highlightedCells: Set<string>) => void;
 };
 
+const AnimatedText = Animated.createAnimatedComponent(Text);
+
 /**
  * `NumberCell` is a component that renders a single cell in the Sudoku grid.
  * It handles its own styling based on whether it's selected, highlighted, or part of a completed
@@ -57,8 +59,6 @@ const NumberCell = ({
   const { colors, styles } = useStyles(createStyles);
   const rotation = useSharedValue(0);
 
-  const AnimatedText = Animated.createAnimatedComponent(Text);
-
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ rotate: `${rotation.value}deg` }],
@@ -76,7 +76,7 @@ const NumberCell = ({
       rotation.value = withRepeat(
         withTiming(360, { duration: 700, easing: Easing.linear }),
         1,
-        false
+        false,
       );
     }
     return () => {

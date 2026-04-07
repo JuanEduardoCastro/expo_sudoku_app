@@ -3,11 +3,12 @@ import ButtonBack from "@/components/shared/ButtonBack";
 import ConfirmationModal from "@/components/shared/ConfirmationModal";
 import { TColors } from "@/constants/types";
 import useHaptic from "@/hooks/useHaptic";
+import useLevel from "@/hooks/useLevel";
 import useStyles from "@/hooks/useStyles";
 import { useBoardStore } from "@/store/store_zustand";
 import { generatesBoard } from "@/utils/gameLogic";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -42,9 +43,11 @@ const Game = () => {
 
   /** Retrieves the difficulty level passed from the previous screen (e.g., Home). */
   const { level } = useLocalSearchParams();
+  const levelId = Number(level);
+  const { difficulty } = useLevel(levelId);
 
   /** Generates a new Sudoku board and its solution based on the difficulty level. */
-  const { board, solution } = generatesBoard(Number(level));
+  const { board, solution } = useMemo(() => generatesBoard(difficulty), [difficulty]);
 
   /** Hooks into the global board state store (Zustand) for state management. */
   const { setBoardState, setLevel, score, resetBoard, factor } = useBoardStore();
@@ -95,7 +98,7 @@ const Game = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={handleBackButton} />
-        <Text style={styles.scoreText}>X: {factor}</Text>
+        <Text style={styles.factorText}>X: {factor}</Text>
         <Text style={styles.scoreText}>Score: {score}</Text>
       </View>
       <View style={styles.gridContainer}>
@@ -143,7 +146,13 @@ const createStyles = (colors: TColors) =>
       alignItems: "center",
       justifyContent: "center",
     },
+    factorText: {
+      fontSize: 18,
+      color: colors.text,
+    },
     scoreText: {
+      alignItems: "flex-end",
+      width: 90,
       fontSize: 18,
       color: colors.text,
     },

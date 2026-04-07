@@ -1,3 +1,4 @@
+import { LEVEL_CONFIG, TEST_LEVEL } from "@/constants/levels";
 import { useMemo } from "react";
 
 /**
@@ -7,47 +8,16 @@ import { useMemo } from "react";
  * @returns An object with level-specific data like the level name, clue count, and score multiplier.
  */
 
-const useLevel = (level: number) => {
-  /**
-   * Memoizes the level data to avoid recalculation on every render.
-   * The data is only recomputed when the `level` prop changes.
-   */
+const useLevel = (levelId: number) => {
   const levelData = useMemo(() => {
-    let levelString = "Unknown";
-    let clueCount = 0;
-    let scoreMultiply = 0;
-    switch (level) {
-      case 0.05:
-        levelString = "For test";
-        clueCount = 3;
-        scoreMultiply = 10;
-        break;
-      case 0.54:
-        levelString = "Easy";
-        clueCount = 3;
-        scoreMultiply = 24;
-        break;
-      case 0.6:
-        levelString = "Medium";
-        clueCount = 2;
-        scoreMultiply = 40;
-        break;
-      case 0.65:
-        levelString = "Hard";
-        clueCount = 1;
-        scoreMultiply = 80;
-        break;
-      case 0.7:
-        levelString = "Expert";
-        clueCount = 1;
-        scoreMultiply = 150;
-        break;
-      default:
-        break;
-    }
-    return { levelString, clueCount, scoreMultiply };
-  }, [level]);
-
+    const config = LEVEL_CONFIG[levelId] ?? TEST_LEVEL;
+    return {
+      levelString: config.name,
+      clueCount: config.clues,
+      scoreMultiply: config.scoreMultiplier,
+      difficulty: config.difficulty,
+    };
+  }, [levelId]);
   return levelData;
 };
 

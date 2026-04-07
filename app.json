@@ -7,7 +7,6 @@
     "icon": "./assets/images/icon/icon.png",
     "scheme": "exposudokuapp",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.exposudokuapp",
@@ -21,7 +20,6 @@
         "foregroundImage": "./assets/images/icon/adaptive-icon.png",
         "backgroundColor": "#F8F8F8"
       },
-      "edgeToEdgeEnabled": true,
       "package": "com.anonymous.exposudokuapp"
     },
     "web": {
@@ -43,7 +41,12 @@
         }
       ],
       "expo-sqlite",
-      "expo-audio"
+      "expo-audio",
+      "expo-web-browser",
+      "expo-font",
+      "expo-image",
+      "expo-sharing",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true

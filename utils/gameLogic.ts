@@ -11,7 +11,7 @@ const createBoard = (): Board => {
       col,
       value: null,
       editable: true,
-    }))
+    })),
   );
 };
 
@@ -114,7 +114,10 @@ export const generatesBoard = (difficulty: number): GeneratesBoard => {
     const row = Math.floor(Math.random() * 9);
     const col = Math.floor(Math.random() * 9);
 
-    if (board[row]?.[col]?.value !== null || board[row]?.[col]?.value !== undefined) {
+    if (
+      board[row]?.[col]?.value !== null
+      // || board[row]?.[col]?.value !== undefined
+    ) {
       board[row][col].value = null;
       board[row][col].editable = true;
       removedCells++;
@@ -191,7 +194,7 @@ export function checkGrid(
   board: Board,
   row: number,
   col: number,
-  num: number | null = null
+  num: number | null = null,
 ): boolean {
   const startRow = row - (row % 3);
   const startCol = col - (col % 3);

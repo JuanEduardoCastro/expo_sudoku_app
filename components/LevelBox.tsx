@@ -1,3 +1,4 @@
+import { LEVEL_CONFIG, TEST_LEVEL } from "@/constants/levels";
 import { TColors } from "@/constants/types";
 import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
@@ -23,21 +24,16 @@ const LevelBox = () => {
   return (
     <View style={styles.levelBox}>
       {/* A special level for testing purposes with very few cells removed. */}
-      <Pressable onPress={() => handleClick(0.05)}>
-        <Text style={styles.levelText}>For test</Text>
-      </Pressable>
-      <Pressable onPress={() => handleClick(0.54)}>
-        <Text style={styles.levelText}>Easy</Text>
-      </Pressable>
-      <Pressable onPress={() => handleClick(0.6)}>
-        <Text style={styles.levelText}>Medium</Text>
-      </Pressable>
-      <Pressable onPress={() => handleClick(0.65)}>
-        <Text style={styles.levelText}>Hard</Text>
-      </Pressable>
-      <Pressable onPress={() => handleClick(0.7)}>
-        <Text style={styles.levelText}>Expert</Text>
-      </Pressable>
+      {Object.values(LEVEL_CONFIG).map((level) => (
+        <Pressable key={level.id} onPress={() => handleClick(level.id)}>
+          <Text style={styles.levelText}>{level.name}</Text>
+        </Pressable>
+      ))}
+      {__DEV__ && (
+        <Pressable onPress={() => handleClick(TEST_LEVEL.id)}>
+          <Text style={styles.levelText}>For test</Text>
+        </Pressable>
+      )}
     </View>
   );
 };

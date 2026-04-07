@@ -8,7 +8,6 @@ import { migrate } from "drizzle-orm/expo-sqlite/migrator";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import * as SQLite from "expo-sqlite";
-import { useEffect } from "react";
 
 const DB_NAME = "sudoku.db";
 
@@ -20,17 +19,19 @@ SplashScreen.setOptions({
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const expo = SQLite.openDatabaseSync(DB_NAME);
-  const db = drizzle(expo, { schema });
-
-  // TODO: check typ of db
-  const initializeDB = async (db: any) => {
+  // TODO: check type of db
+  const initializeDB = async (rawDb: any) => {
     try {
-      await migrate(db, migrations);
-      await seedInitialData(db);
+      const drizzleDB = drizzle(rawDb, { schema });
+      await migrate(drizzleDB, migrations);
+      await seedInitialData(drizzleDB);
+      await migrateSettings();
+      await useGameScoresStore.getState().loadFromDatabase();
       console.log("DB initialized");
     } catch (error) {
       __DEV__ && console.log(error);
+    } finally {
+      await SplashScreen.hideAsync();
     }
   };
 
@@ -46,28 +47,8 @@ export default function RootLayout() {
       await db.insert(schema.levelStats).values(levelData).onConflictDoNothing();
     }
 
-    await db.insert(schema.levelStats).values({ id: 1 }).onConflictDoNothing();
+    await db.insert(schema.globalStats).values({ id: 1 }).onConflictDoNothing();
   };
-
-  useEffect(() => {
-    async function checkIsAppReady() {
-      try {
-        // TODO: Add any other async functions needed for app initialization,
-        // such as loading fonts, fetching initial data, or authenticating the user.
-
-        await useGameScoresStore.getState().loadFromDatabase();
-
-        await migrateSettings();
-
-        // initializeDB();
-      } catch (error) {
-        __DEV__ && console.log("App initialization error: ", error);
-      } finally {
-        await SplashScreen.hideAsync();
-      }
-    }
-    checkIsAppReady();
-  }, []);
 
   return (
     <SQLite.SQLiteProvider databaseName={DB_NAME} onInit={initializeDB}>

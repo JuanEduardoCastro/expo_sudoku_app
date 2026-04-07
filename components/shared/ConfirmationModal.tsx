@@ -79,7 +79,6 @@ const ConfirmationModal = ({
             )}
           </View>
         </View>
-        <Text>ModalMsg</Text>
       </View>
     </Modal>
   );
