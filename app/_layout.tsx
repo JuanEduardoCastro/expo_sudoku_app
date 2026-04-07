@@ -63,6 +63,10 @@ export default function RootLayout() {
           />
           <Stack.Screen name="Settings" options={{ headerShown: false, title: "Settings" }} />
           <Stack.Screen name="TestSQLite" options={{ headerShown: false, title: "TestSQLite" }} />
+          <Stack.Screen
+            name="DesignPreview"
+            options={{ headerShown: false, title: "DesignPreview" }}
+          />
         </Stack>
       </ColorModeProvider>
     </SQLite.SQLiteProvider>

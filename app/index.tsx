@@ -34,8 +34,13 @@ const index = () => {
         <ButtonNav title="Settings" onPress={() => router.push("/Settings")} />
       </View>
       {__DEV__ && (
-        <View style={styles.buttonBox}>
-          <ButtonNav title="TestSQLite" onPress={() => router.push("/TestSQLite")} />
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View style={styles.buttonBox}>
+            <ButtonNav title="TestSQLite" onPress={() => router.push("/TestSQLite")} />
+          </View>
+          <View style={styles.buttonBox}>
+            <ButtonNav title="DesignPreview" onPress={() => router.push("/DesignPreview")} />
+          </View>
         </View>
       )}
     </View>

@@ -28,14 +28,13 @@ const TestSQLite = () => {
     const levels = await levelStatsService.getAll();
 
     setGameScore(scores);
-    setGlobalStats(global);
     setLevelStats(levels);
   };
 
   useFocusEffect(
     useCallback(() => {
       loadData();
-    }, [])
+    }, []),
   );
 
   const testInsertGame = async () => {
