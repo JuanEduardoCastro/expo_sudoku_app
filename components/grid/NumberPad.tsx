@@ -4,22 +4,12 @@ import useStyles from "@/hooks/useStyles";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-/**
- * Props for the `NumberPad` component.
- */
 export type NumberPadProps = {
-  /** Callback function triggered when a number on the pad is pressed. */
   onPress: (number: number) => void;
-  /** The number value of a cell revealed by a "clue", to be highlighted on the pad. */
   clueCell?: number | null;
-  /** The currently selected number on the pad (for visual feedback). */
   selectedPad?: number | null;
 };
 
-/**
- * `NumberPad` is a component that displays a row of numbers (1-9) for the user to input into the Sudoku grid.
- * It also provides visual feedback for clues.
- */
 const NumberPad = ({ onPress, clueCell, selectedPad }: NumberPadProps) => {
   const { colors, styles } = useStyles(createStyles);
 
@@ -29,10 +19,14 @@ const NumberPad = ({ onPress, clueCell, selectedPad }: NumberPadProps) => {
         <Pressable
           style={[
             styles.numberBox,
-            number === clueCell && { borderWidth: 4, borderColor: colors.tint },
-            selectedPad === number
-              ? { borderColor: colors.negative, borderWidth: 2 }
-              : { borderColor: colors.tint },
+            number === clueCell && {
+              backgroundColor: colors.accentBase,
+              borderColor: colors.accentSoft,
+            },
+
+            // selectedPad === number
+            //   ? { borderColor: colors.accentLight, borderWidth: 5 }
+            //   : { borderColor: colors.accentLight },
           ]}
           key={index}
           onPress={() => onPress(number)}
@@ -55,12 +49,14 @@ const createStyles = (colors: TColors) =>
       gap: 6,
     },
     numberBox: {
+      backgroundColor: colors.surface,
       width: 36,
       height: 36,
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,
-      borderRadius: 4,
+      borderRadius: 12,
+      borderColor: colors.border,
     },
     numberText: {
       color: colors.text,

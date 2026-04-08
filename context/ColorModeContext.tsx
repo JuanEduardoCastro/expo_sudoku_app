@@ -1,4 +1,4 @@
-import { BNW, COLORS, SHARED } from "@/constants/colors";
+import { ACCENT, BNW, COLORS, SCHEMES, SHARED } from "@/constants/colors";
 import { ColorModeProps, TColors } from "@/constants/types";
 import { settingsService } from "@/store/dbServices";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
@@ -40,8 +40,8 @@ export const ColorModeProvider = ({ children }: ColorModeProviderProps) => {
 
   const colors =
     colorMode === "light"
-      ? { ...COLORS.light, ...SHARED, ...BNW }
-      : { ...COLORS.dark, ...SHARED, ...BNW };
+      ? { ...COLORS.light, ...SHARED, ...BNW, ...ACCENT, ...SCHEMES }
+      : { ...COLORS.dark, ...SHARED, ...BNW, ...ACCENT, ...SCHEMES };
 
   return (
     <ColorModeContext.Provider value={{ colorMode, colors, toggleColorMode }}>

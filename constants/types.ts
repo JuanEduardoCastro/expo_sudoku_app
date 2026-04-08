@@ -1,14 +1,23 @@
 import { StyleSheet } from "react-native";
-import { BNW, COLORS, SHARED } from "./colors";
+import { ACCENT, BNW, COLORS, SCHEMES, SHARED } from "./colors";
 
 export type ColorModeProps = "light" | "dark";
 
 export type StylesModeProps = {
   background: string;
-  background2: string;
+  surface: string;
+  surface2: string;
   text: string;
-  tint: string;
-  negative: string;
+  textMuted: string;
+  border: string;
+  cell: string;
+  cellGiven: string;
+};
+
+export type AccentProps = {
+  accentBase: string;
+  accentSoft: string;
+  accentLight: string;
 };
 
 export type ColorsNameProps = {
@@ -16,7 +25,21 @@ export type ColorsNameProps = {
   dark: StylesModeProps;
 };
 
-export type TColors = typeof COLORS.light & typeof COLORS.dark & typeof SHARED & typeof BNW;
+export type LevelSchemeProps = {
+  name: string;
+  label: string;
+  easy: string;
+  medium: string;
+  hard: string;
+  expert: string;
+};
+
+export type TColors = typeof COLORS.light &
+  typeof COLORS.dark &
+  typeof SHARED &
+  typeof BNW &
+  typeof ACCENT &
+  typeof SCHEMES;
 
 export interface Styles<T extends StyleSheet.NamedStyles<T>> {
   colors: TColors;

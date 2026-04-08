@@ -4,22 +4,15 @@ import { useNotificationMessageStore } from "@/store/store_zustand";
 import React, { useEffect } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
-/**
- * A modal component to display temporary notifications to the user.
- * The visibility and content of the modal are controlled by the `useNotificationMessageStore`.
- * The modal automatically dismisses itself after a few seconds.
- */
 const NotificationModal = () => {
   const { colors, styles } = useStyles(createStyles);
 
   const { notification, setNotification, resetNotification } = useNotificationMessageStore();
 
-  // Effect to automatically close the notification after a delay.
   useEffect(() => {
     const timer = setTimeout(() => {
       resetNotification();
     }, 4000);
-    // Cleanup function to clear the timer if the component unmounts or notification changes.
     return () => clearTimeout(timer);
   }, [notification, resetNotification]);
 
@@ -66,7 +59,7 @@ const createStyles = (colors: TColors) =>
     cardContainer: {
       width: "80%",
       height: "20%",
-      backgroundColor: colors.background2,
+      backgroundColor: colors.surface2,
       borderRadius: 8,
     },
     header: {

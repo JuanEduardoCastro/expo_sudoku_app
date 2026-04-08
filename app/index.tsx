@@ -1,16 +1,12 @@
 import LevelBox from "@/components/LevelBox";
 import ButtonNav from "@/components/shared/ButtonNav";
+import { H_PAD } from "@/constants/dimensions";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-/**
- * The Home screen of the application, serving as the main entry point.
- * It displays a welcome message, a `LevelBox` for game difficulty selection,
- * and navigation buttons to other screens like Stats, Instructions, and Settings.
- */
 const index = () => {
   const { colors, styles } = useStyles(createStyles);
   const router = useRouter();
@@ -18,29 +14,24 @@ const index = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleBox}>
-        <Text style={styles.titleText}>WELCOME</Text>
-        <Text style={styles.titleText}>SUDOKU APP</Text>
+        <Text style={styles.titleText}>SUDOKU</Text>
+        <Text style={styles.titleSubtex}>Think. Scan. Place.</Text>
       </View>
-      <View style={{ height: 80 }} />
-      <View style={styles.subTitleBox}>
-        <Text style={styles.subTitleText}>Choose your level:</Text>
-      </View>
+      <View style={{ height: 36 }} />
+      <Text style={styles.sectionLabel}>Choose your level:</Text>
+      <View style={{ height: 12 }} />
       <LevelBox />
+      <View style={{ height: 28 }} />
+
       <View style={styles.buttonBox}>
         <ButtonNav title="Stats" onPress={() => router.push("/Stats")} />
         <ButtonNav title="Instructions" onPress={() => router.push("/Instructions")} />
-      </View>
-      <View style={styles.buttonBox}>
         <ButtonNav title="Settings" onPress={() => router.push("/Settings")} />
       </View>
       {__DEV__ && (
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <View style={styles.buttonBox}>
-            <ButtonNav title="TestSQLite" onPress={() => router.push("/TestSQLite")} />
-          </View>
-          <View style={styles.buttonBox}>
-            <ButtonNav title="DesignPreview" onPress={() => router.push("/DesignPreview")} />
-          </View>
+        <View style={styles.buttonBox}>
+          <ButtonNav title="TestSQLite" onPress={() => router.push("/TestSQLite")} />
+          <ButtonNav title="DesignPreview" onPress={() => router.push("/DesignPreview")} />
         </View>
       )}
     </View>
@@ -54,28 +45,37 @@ export const createStyles = (colors: TColors) =>
     container: {
       flex: 1,
       backgroundColor: colors.background,
-      alignItems: "center",
       justifyContent: "center",
-      gap: 12,
+      padding: H_PAD,
+      // gap: 12,
     },
     titleBox: {
       alignItems: "center",
-      gap: 8,
+      paddingTop: 28,
+      gap: 6,
     },
     titleText: {
-      fontSize: 24,
+      fontSize: 42,
       fontWeight: "bold",
-      color: colors.text,
+      letterSpacing: 10,
+      color: colors.accentBase,
     },
-    subTitleBox: {},
-    subTitleText: {
-      fontSize: 24,
-      color: colors.text,
+    titleSubtex: {
+      fontSize: 14,
+      letterSpacing: 0.3,
+      color: colors.textMuted,
+    },
+    sectionLabel: {
+      fontSize: 12,
+      fontWeight: "semibold",
+      letterSpacing: 1.5,
+      marginHorizontal: 10,
+      color: colors.textMuted,
     },
     buttonBox: {
       flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      gap: 16,
+      gap: 8,
+      marginHorizontal: 8,
+      marginBottom: 24,
     },
   });

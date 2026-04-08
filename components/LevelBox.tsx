@@ -1,4 +1,5 @@
-import { LEVEL_CONFIG, TEST_LEVEL } from "@/constants/levels";
+import { SCHEMES } from "@/constants/colors";
+import { getLevels, TEST_LEVEL } from "@/constants/levels";
 import { TColors } from "@/constants/types";
 import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
@@ -6,14 +7,11 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-/**
- * `LevelBox` is a component that displays a list of selectable difficulty levels for the Sudoku game.
- * Each level, when pressed, navigates the user to the `Game` screen with the corresponding
- * difficulty parameter, which determines how many cells are removed from the initial board.
- */
 const LevelBox = () => {
   const { colors, styles } = useStyles(createStyles);
   const { onClickHapticHeavy } = useHaptic();
+
+  const levels = getLevels(SCHEMES);
 
   const handleClick = (level: number) => {
     router.push({ pathname: "/Game", params: { level } });
@@ -23,14 +21,20 @@ const LevelBox = () => {
   const router = useRouter();
   return (
     <View style={styles.levelBox}>
-      {/* A special level for testing purposes with very few cells removed. */}
-      {Object.values(LEVEL_CONFIG).map((level) => (
-        <Pressable key={level.id} onPress={() => handleClick(level.id)}>
-          <Text style={styles.levelText}>{level.name}</Text>
+      {Object.values(levels).map((level) => (
+        <Pressable key={level.id} onPress={() => handleClick(level.id)} style={styles.levelCard}>
+          <View style={[styles.levelDot, { backgroundColor: level.color }]} />
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text style={styles.levelText}>{level.name}</Text>
+            <Text style={styles.levelTextSub}>{level.sub}</Text>
+          </View>
+          <View style={styles.levelArrow}>
+            <Text style={styles.levelArrowIcon}>›</Text>
+          </View>
         </Pressable>
       ))}
       {__DEV__ && (
-        <Pressable onPress={() => handleClick(TEST_LEVEL.id)}>
+        <Pressable onPress={() => handleClick(TEST_LEVEL.id)} style={styles.levelCard}>
           <Text style={styles.levelText}>For test</Text>
         </Pressable>
       )}
@@ -42,18 +46,45 @@ export default LevelBox;
 
 const createStyles = (colors: TColors) =>
   StyleSheet.create({
-    levelBox: {
-      width: "70%",
-      paddingHorizontal: 26,
-      paddingVertical: 22,
-      gap: 16,
+    levelBox: {},
+    levelCard: {
+      backgroundColor: colors.surface,
+      flexDirection: "row",
+      alignItems: "center",
+      paddingVertical: 14,
+      paddingHorizontal: 16,
+      borderRadius: 16,
       borderWidth: 1,
-      borderColor: "gray",
-      borderRadius: 8,
+      borderColor: colors.border,
+      marginHorizontal: 8,
+      marginBottom: 10,
+      gap: 14,
+    },
+    levelDot: {
+      width: 12,
+      height: 12,
+      borderRadius: 6,
     },
     levelText: {
       fontSize: 20,
       fontWeight: "bold",
       color: colors.text,
+    },
+    levelTextSub: {
+      fontSize: 13,
+      color: colors.textMuted,
+    },
+    levelArrow: {
+      width: 30,
+      height: 30,
+      borderRadius: 8,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    levelArrowIcon: {
+      fontSize: 18,
+      fontWeight: "700",
+      lineHeight: 22,
+      color: colors.accentLight,
     },
   });

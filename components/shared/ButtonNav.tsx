@@ -2,22 +2,13 @@ import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text } from "react-native";
 
-/**
- * Props for the `ButtonNav` component.
- */
 export type ButtonNavProps = {
-  /** The text to display on the button. */
   title?: string;
-  /** Function to be called when the button is pressed. */
   onPress?: () => void;
 };
 
-/**
- * A general-purpose navigation button.
- * Used on the home screen to navigate to different sections like "Stats" or "Instructions".
- */
 const ButtonNav = ({ title, onPress }: ButtonNavProps) => {
   const { colors, styles } = useStyles(createStyles);
   const { onClickHapticHeavy } = useHaptic();
@@ -27,11 +18,9 @@ const ButtonNav = ({ title, onPress }: ButtonNavProps) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Pressable style={styles.button} onPress={handleOnPress}>
-        <Text style={styles.buttonText}>{title}</Text>
-      </Pressable>
-    </View>
+    <Pressable style={styles.buttonContainer} onPress={handleOnPress}>
+      <Text style={styles.buttonText}>{title}</Text>
+    </Pressable>
   );
 };
 
@@ -42,16 +31,19 @@ const createStyles = (colors: TColors) =>
     container: {
       margin: 8,
     },
-    button: {
-      backgroundColor: colors.button,
-      padding: 10,
-      paddingHorizontal: 16,
-      paddingVertical: 8,
-      borderRadius: 8,
+    buttonContainer: {
+      backgroundColor: colors.surface,
+      flex: 1,
+      height: 44,
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
     },
     buttonText: {
       ...textVar.base,
-      color: colors.dark, //TODO
+      color: colors.text, //TODO
       textAlign: "center",
     },
   });

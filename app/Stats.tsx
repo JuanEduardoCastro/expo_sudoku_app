@@ -8,13 +8,6 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-/**
- * The `Stats` screen presents the player's game statistics.
- * It features a standard header with a back button for navigation.
- * The main content is a scrollable view that showcases two key components:
- * - `GlobalScores`: Displays overall statistics across all games.
- * - `ScoresByLevel`: Breaks down scores by game difficulty level.
- */
 const Stats = () => {
   const { colors, styles } = useStyles(createStyles);
 

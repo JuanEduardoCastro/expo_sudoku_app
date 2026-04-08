@@ -3,20 +3,11 @@ import useStyles from "@/hooks/useStyles";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-/**
- * Props for the `ButtonBack` component.
- */
 export type ButtonBackProps = {
-  /** The text to display on the button. @deprecated This prop is not used; the text is hardcoded to "Back". */
   title?: string;
-  /** Function to be called when the button is pressed. */
   onPress?: () => void;
 };
 
-/**
- * A simple, reusable "Back" button component.
- * It's typically used in headers to provide navigation to the previous screen.
- */
 const ButtonBack = ({ title, onPress }: ButtonBackProps) => {
   const { colors, styles } = useStyles(createStyles);
 

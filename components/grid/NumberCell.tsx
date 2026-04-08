@@ -1,4 +1,5 @@
 import { CellProps } from "@/app/Game";
+import { CELL_SIZE } from "@/constants/dimensions";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React, { useEffect } from "react";
@@ -8,42 +9,23 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
+  withSequence,
   withTiming,
 } from "react-native-reanimated";
 
-/**
- * Props for the `NumberCell` component.
- */
 export type NumberCellProps = {
-  /** The data object for the cell, containing its row, column, value, and editable status. */
   cell: CellProps;
-  /** A boolean indicating if the cell is currently selected by the user. */
   selected?: boolean;
-  /** A boolean indicating if the cell should be highlighted as part of a selected row, column, or grid. */
   highlighted?: boolean;
-  /** A boolean indicating if this cell is part of a set that should animate (rotate). */
   rotatesCells?: boolean;
-  /** A boolean indicating if the cell's value is user-editable. */
   editable?: boolean;
-  /** Callback function triggered when the cell is pressed. */
   onPress: (cell: CellProps) => void;
-  /** A boolean that triggers the rotation animation. */
   rotate?: boolean;
-  /** Callback to reset the rotation trigger after the animation completes. */
   setRotate?: (rotate: boolean) => void;
-  /** Callback to deselect the cell after the animation. */
-  setSelectedCell?: (cell: CellProps | null) => void;
-  /** Callback to clear all highlighted cells after the animation. */
-  setHighlightedCells?: (highlightedCells: Set<string>) => void;
 };
 
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
-/**
- * `NumberCell` is a component that renders a single cell in the Sudoku grid.
- * It handles its own styling based on whether it's selected, highlighted, or part of a completed
- * line/grid. It also contains the animation logic for when a line/grid is completed.
- */
 const NumberCell = ({
   cell,
   selected,
@@ -53,28 +35,25 @@ const NumberCell = ({
   onPress,
   rotate,
   setRotate,
-  setSelectedCell,
-  setHighlightedCells,
 }: NumberCellProps) => {
   const { colors, styles } = useStyles(createStyles);
   const rotation = useSharedValue(0);
+  const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ rotate: `${rotation.value}deg` }],
-      // fontSize: 36,
+      transform: [{ rotate: `${rotation.value}deg` }, { scale: scale.value }],
     };
   });
 
-  /**
-   * Effect to trigger the rotation animation when the `rotate` prop is true.
-   * The cleanup function resets the animation and the related board state
-   * (selection, highlights) after the animation has finished.
-   */
   useEffect(() => {
     if (rotate === true) {
+      scale.value = withSequence(
+        withTiming(1.3, { duration: 100, easing: Easing.out(Easing.quad) }),
+        withTiming(1, { duration: 100, easing: Easing.in(Easing.quad) }),
+      );
       rotation.value = withRepeat(
-        withTiming(360, { duration: 700, easing: Easing.linear }),
+        withTiming(360, { duration: 800, easing: Easing.inOut(Easing.cubic) }),
         1,
         false,
       );
@@ -83,8 +62,6 @@ const NumberCell = ({
       setTimeout(() => {
         rotation.value = 0;
         setRotate && setRotate(false);
-        setSelectedCell && setSelectedCell(null);
-        setHighlightedCells && setHighlightedCells(new Set());
       }, 701);
     };
   }, [rotate]);
@@ -93,10 +70,18 @@ const NumberCell = ({
     <Pressable
       style={[
         styles.container,
-        highlighted && { backgroundColor: colors.gray },
-        selected && { backgroundColor: colors.tint, borderWidth: 3, borderColor: colors.negative },
-        cell.col === 2 || cell.col === 5 ? { borderRightWidth: 2 } : { borderRightWidth: 1 },
-        cell.row === 2 || cell.row === 5 ? { borderBottomWidth: 2 } : { borderBottomWidth: 1 },
+        highlighted && { backgroundColor: colors.accentBase + 28 },
+        selected && {
+          backgroundColor: colors.accentBase,
+          // borderWidth: 3,
+          // borderColor: colors.border,
+        },
+        cell.col === 2 || cell.col === 5
+          ? { borderRightWidth: 2, borderRightColor: colors.border }
+          : { borderRightWidth: 0.5, borderRightColor: colors.border },
+        cell.row === 2 || cell.row === 5
+          ? { borderBottomWidth: 2, borderBottomColor: colors.border }
+          : { borderBottomWidth: 0.5, borderBottomColor: colors.border },
       ]}
       onPress={() => onPress(cell)}
     >
@@ -105,7 +90,7 @@ const NumberCell = ({
           styles.numberText,
           rotatesCells && animatedStyle,
           selected && animatedStyle,
-          selected && { color: colors.negative },
+          selected && { color: colors.accentLight },
         ]}
       >
         {cell.value !== null && cell.value !== 0 ? cell.value : ""}
@@ -119,11 +104,11 @@ export default NumberCell;
 const createStyles = (colors: TColors) =>
   StyleSheet.create({
     container: {
-      width: 40,
-      height: 40,
+      width: CELL_SIZE,
+      height: CELL_SIZE,
       alignItems: "center",
       justifyContent: "center",
-      borderColor: colors.negative,
+      // borderColor: colors.border,
     },
 
     numberText: {

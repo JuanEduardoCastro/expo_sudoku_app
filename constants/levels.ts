@@ -1,3 +1,5 @@
+import { LevelSchemeProps } from "./types";
+
 export type LevelConfig = {
   id: number;
   name: string;
@@ -36,6 +38,13 @@ export const LEVEL_CONFIG: Record<number, LevelConfig> = {
     scoreMultiplier: 150,
   },
 };
+
+export const getLevels = (style: LevelSchemeProps) => [
+  { ...LEVEL_CONFIG[1], color: style.easy, sub: "A gentle start" },
+  { ...LEVEL_CONFIG[2], color: style.medium, sub: "Getting interesting" },
+  { ...LEVEL_CONFIG[3], color: style.hard, sub: "True focus required" },
+  { ...LEVEL_CONFIG[4], color: style.expert, sub: "For the dedicated ones" },
+];
 
 export const TEST_LEVEL: LevelConfig = {
   id: 0,

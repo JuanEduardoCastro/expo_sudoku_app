@@ -6,11 +6,6 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-/**
- * The `Instructions` screen displays a static page with the rules of Sudoku.
- * It includes a header with a back button and a main content area
- * that lists the game's objectives and controls.
- */
 const Instructions = () => {
   const { colors, styles } = useStyles(createStyles);
   const router = useRouter();

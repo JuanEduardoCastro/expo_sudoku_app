@@ -165,12 +165,13 @@ const PAD_SIZE = Math.floor((BOARD_WIDTH - PAD_GAP * 8) / 9);
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
 
-type Tab = "home" | "game" | "stats" | "tokens";
+type Tab = "home" | "game" | "stats" | "tokens" | "modals";
 const TABS: { key: Tab; label: string }[] = [
-  { key: "home", label: "Home" },
-  { key: "game", label: "Game" },
-  { key: "stats", label: "Stats" },
+  { key: "home",   label: "Home"   },
+  { key: "game",   label: "Game"   },
+  { key: "stats",  label: "Stats"  },
   { key: "tokens", label: "Tokens" },
+  { key: "modals", label: "Modals" },
 ];
 
 // ─── ROOT ─────────────────────────────────────────────────────────────────────
@@ -260,10 +261,11 @@ const DesignPreview = () => {
           contentContainerStyle={{ paddingBottom: 60 }}
           showsVerticalScrollIndicator={false}
         >
-          {tab === "home" && <HomeScreen c={c} isDark={isDark} scheme={scheme} levels={levels} />}
-          {tab === "game" && <GameScreen c={c} isDark={isDark} scheme={scheme} levels={levels} />}
-          {tab === "stats" && <StatsScreen c={c} isDark={isDark} scheme={scheme} levels={levels} />}
+          {tab === "home"   && <HomeScreen   c={c} isDark={isDark} scheme={scheme} levels={levels} />}
+          {tab === "game"   && <GameScreen   c={c} isDark={isDark} scheme={scheme} levels={levels} />}
+          {tab === "stats"  && <StatsScreen  c={c} isDark={isDark} scheme={scheme} levels={levels} />}
           {tab === "tokens" && <TokensScreen c={c} isDark={isDark} scheme={scheme} />}
+          {tab === "modals" && <ModalsScreen c={c} isDark={isDark} scheme={scheme} levels={levels} />}
         </ScrollView>
       </SafeAreaView>
     </>
@@ -637,6 +639,131 @@ const TokensScreen = ({ c, isDark, scheme }: { c: C; isDark: boolean; scheme: Le
         </Text>
         <Text style={[s.typeCaption, { color: c.textMuted }]}>Timer · 20 / 600 / muted</Text>
       </View>
+    </View>
+  );
+};
+
+// ─── MODALS SCREEN ────────────────────────────────────────────────────────────
+
+const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
+  const easyColor = scheme.easy;
+
+  return (
+    <View style={[s.screen, { backgroundColor: c.bg }]}>
+      <Text style={[s.pageTitle, { color: c.text }]}>Modals</Text>
+      <Text style={[s.tokenSubtitle, { color: c.textMuted }]}>
+        Confirmation dialogs · Game complete · No clues
+      </Text>
+
+      {/* ── Exit confirmation ── */}
+      <View style={{ height: 32 }} />
+      <Text style={[s.sectionLabel, { color: c.textMuted }]}>EXIT CONFIRMATION</Text>
+      <View style={{ height: 16 }} />
+
+      <View style={s.modalSceneWrap}>
+        {/* Dimmed backdrop */}
+        <View style={[s.modalBackdrop, { backgroundColor: isDark ? "#00000088" : "#1A1A3844" }]} />
+
+        {/* Modal card */}
+        <View style={[s.modalCard, { backgroundColor: c.surface, borderColor: c.border, shadowColor: isDark ? "#000" : "#5B6AF0" }]}>
+
+          {/* Icon */}
+          <View style={[s.modalIconWrap, { backgroundColor: PALETTE.accentLight }]}>
+            <Text style={{ fontSize: 26 }}>🚪</Text>
+          </View>
+
+          <Text style={[s.modalTitle, { color: c.text }]}>Leave the game?</Text>
+          <Text style={[s.modalMessage, { color: c.textMuted }]}>
+            Your current progress will be lost. Are you sure you want to exit?
+          </Text>
+
+          <View style={s.modalBtnRow}>
+            {/* Cancel */}
+            <View style={[s.modalBtnOutline, { borderColor: c.border, backgroundColor: c.surface2 }]}>
+              <Text style={[s.modalBtnOutlineText, { color: c.textMuted }]}>Stay</Text>
+            </View>
+            {/* Confirm */}
+            <View style={[s.modalBtnFilled, { backgroundColor: PALETTE.accent }]}>
+              <Text style={s.modalBtnFilledText}>Leave</Text>
+            </View>
+          </View>
+        </View>
+      </View>
+
+      {/* ── Game complete ── */}
+      <View style={{ height: 40 }} />
+      <Text style={[s.sectionLabel, { color: c.textMuted }]}>GAME COMPLETE</Text>
+      <View style={{ height: 16 }} />
+
+      <View style={s.modalSceneWrap}>
+        <View style={[s.modalBackdrop, { backgroundColor: isDark ? "#00000088" : "#1A1A3844" }]} />
+
+        <View style={[s.modalCard, { backgroundColor: c.surface, borderColor: c.border, shadowColor: isDark ? "#000" : "#5B6AF0" }]}>
+
+          {/* Icon */}
+          <View style={[s.modalIconWrap, { backgroundColor: easyColor + "33" }]}>
+            <Text style={{ fontSize: 26 }}>🎉</Text>
+          </View>
+
+          <Text style={[s.modalTitle, { color: c.text }]}>Puzzle Complete!</Text>
+
+          {/* Stats row */}
+          <View style={[s.modalStatsRow, { backgroundColor: c.surface2, borderColor: c.border }]}>
+            <View style={s.modalStat}>
+              <Text style={[s.modalStatValue, { color: c.text }]}>1,840</Text>
+              <Text style={[s.modalStatLabel, { color: c.textMuted }]}>Score</Text>
+            </View>
+            <View style={[s.modalStatDivider, { backgroundColor: c.border }]} />
+            <View style={s.modalStat}>
+              <Text style={[s.modalStatValue, { color: c.text }]}>04:22</Text>
+              <Text style={[s.modalStatLabel, { color: c.textMuted }]}>Time</Text>
+            </View>
+            <View style={[s.modalStatDivider, { backgroundColor: c.border }]} />
+            <View style={s.modalStat}>
+              <Text style={[s.modalStatValue, { color: c.text }]}>1</Text>
+              <Text style={[s.modalStatLabel, { color: c.textMuted }]}>Errors</Text>
+            </View>
+          </View>
+
+          {/* Factor pill */}
+          <View style={[s.modalFactorRow]}>
+            <Text style={[s.modalFactorLabel, { color: c.textMuted }]}>Factor</Text>
+            <View style={[s.factorPillSmall, { backgroundColor: PALETTE.accentLight }]}>
+              <Text style={[s.factorPillText, { color: PALETTE.accent }]}>× 18</Text>
+            </View>
+          </View>
+
+          <View style={[s.modalBtnFilled, { backgroundColor: PALETTE.accent, marginTop: 8 }]}>
+            <Text style={s.modalBtnFilledText}>Continue</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* ── No clues ── */}
+      <View style={{ height: 40 }} />
+      <Text style={[s.sectionLabel, { color: c.textMuted }]}>NO CLUES LEFT</Text>
+      <View style={{ height: 16 }} />
+
+      <View style={s.modalSceneWrap}>
+        <View style={[s.modalBackdrop, { backgroundColor: isDark ? "#00000088" : "#1A1A3844" }]} />
+
+        <View style={[s.modalCard, { backgroundColor: c.surface, borderColor: c.border, shadowColor: isDark ? "#000" : "#5B6AF0" }]}>
+          <View style={[s.modalIconWrap, { backgroundColor: "#FEF3C7" }]}>
+            <Text style={{ fontSize: 26 }}>💡</Text>
+          </View>
+
+          <Text style={[s.modalTitle, { color: c.text }]}>No clues left</Text>
+          <Text style={[s.modalMessage, { color: c.textMuted }]}>
+            You've used all your clues for this game. Keep going — you've got this!
+          </Text>
+
+          <View style={[s.modalBtnFilled, { backgroundColor: PALETTE.accent, marginTop: 8 }]}>
+            <Text style={s.modalBtnFilledText}>Got it</Text>
+          </View>
+        </View>
+      </View>
+
+      <View style={{ height: 40 }} />
     </View>
   );
 };
@@ -1036,6 +1163,128 @@ const s = StyleSheet.create({
     height: StyleSheet.hairlineWidth,
     marginVertical: 18,
     marginHorizontal: -20,
+  },
+
+  // Modals
+  modalSceneWrap: {
+    borderRadius: 20,
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 32,
+  },
+  modalBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 20,
+  },
+  modalCard: {
+    width: "100%",
+    borderRadius: 24,
+    borderWidth: 1,
+    padding: 24,
+    alignItems: "center",
+    gap: 12,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.12,
+    shadowRadius: 20,
+    elevation: 6,
+  },
+  modalIconWrap: {
+    width: 60,
+    height: 60,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 4,
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: "800",
+    textAlign: "center",
+    letterSpacing: 0.2,
+  },
+  modalMessage: {
+    fontSize: 14,
+    lineHeight: 21,
+    textAlign: "center",
+  },
+  modalBtnRow: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 8,
+    width: "100%",
+  },
+  modalBtnOutline: {
+    flex: 1,
+    height: 48,
+    borderRadius: 14,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalBtnOutlineText: {
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  modalBtnFilled: {
+    flex: 1,
+    height: 48,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modalBtnFilledText: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#FFFFFF",
+  },
+  modalStatsRow: {
+    flexDirection: "row",
+    borderRadius: 16,
+    borderWidth: 1,
+    overflow: "hidden",
+    width: "100%",
+    marginTop: 4,
+  },
+  modalStat: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 14,
+    gap: 4,
+  },
+  modalStatValue: {
+    fontSize: 20,
+    fontWeight: "800",
+  },
+  modalStatLabel: {
+    fontSize: 11,
+    fontWeight: "600",
+    letterSpacing: 0.8,
+  },
+  modalStatDivider: {
+    width: StyleSheet.hairlineWidth,
+    alignSelf: "stretch",
+    marginVertical: 10,
+  },
+  modalFactorRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginTop: 2,
+  },
+  modalFactorLabel: {
+    fontSize: 13,
+    fontWeight: "600",
+    letterSpacing: 0.5,
+  },
+  factorPillSmall: {
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  factorPillText: {
+    fontSize: 16,
+    fontWeight: "800",
   },
 });
 

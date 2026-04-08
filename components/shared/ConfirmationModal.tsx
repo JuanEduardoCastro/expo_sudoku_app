@@ -3,36 +3,19 @@ import useStyles from "@/hooks/useStyles";
 import React from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
-/**
- * Props for the `ConfirmationModal` component.
- */
 type ConfirmationModalProps = {
-  /** Controls the visibility of the modal. */
   visible: boolean;
-  /** Function to close the modal, typically by pressing the 'X' button. */
   handleOpenModal: () => void;
-  /** The title of the modal. @deprecated This prop is not currently used. */
   title?: string;
-  /** The main message or question to display in the modal body. */
   content?: string;
-  /** Determines if the cancel button should be displayed. Defaults to `true`. */
   cancel?: boolean;
-  /** The text for the cancel button. Defaults to "Cancel". */
   cancelText?: string;
-  /** Function to execute when the cancel button is pressed. */
   cancelOnPress?: () => void;
-  /** Determines if the accept button should be displayed. Defaults to `true`. */
   accept?: boolean;
-  /** The text for the accept button. Defaults to "Ok". */
   acceptText?: string;
-  /** Function to execute when the accept button is pressed. */
   acceptOnPress?: () => void;
 };
 
-/**
- * A reusable modal component to ask the user for confirmation.
- * It can be configured with custom text and actions for accept/cancel buttons.
- */
 const ConfirmationModal = ({
   visible,
   handleOpenModal,
@@ -65,7 +48,7 @@ const ConfirmationModal = ({
               <Pressable
                 style={[
                   styles.button,
-                  { backgroundColor: "transparent", borderWidth: 1, borderColor: colors.tint },
+                  { backgroundColor: "transparent", borderWidth: 1, borderColor: colors.border },
                 ]}
                 onPress={cancelOnPress}
               >
@@ -99,7 +82,7 @@ const createStyles = (colors: TColors) =>
     cardContainer: {
       width: "80%",
       height: "30%",
-      backgroundColor: colors.background2,
+      backgroundColor: colors.surface2,
       borderRadius: 8,
     },
     header: {
