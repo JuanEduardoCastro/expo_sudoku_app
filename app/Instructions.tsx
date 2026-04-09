@@ -1,4 +1,5 @@
 import ButtonBack from "@/components/shared/ButtonBack";
+import { H_PAD } from "@/constants/dimensions";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
@@ -14,9 +15,16 @@ const Instructions = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={() => router.back()} />
+        <Text style={styles.pageTitle}>How to Play Sudoku</Text>
       </View>
+
+      <View style={{ height: 42 }} />
+
+      {/* <View style={styles.header}>
+        <ButtonBack onPress={() => router.back()} />
+      </View> */}
       <View style={styles.content}>
-        <Text style={styles.title}>How to Play Sudoku</Text>
+        {/* <Text style={styles.title}>How to Play Sudoku</Text> */}
         <Text style={styles.ruleText}>
           • The goal is to fill a 9x9 grid with digits so that each column, each row, and each of
           the nine 3x3 subgrids that compose the grid contain all of the digits from 1 to 9.
@@ -40,18 +48,22 @@ const createStyles = (colors: TColors) =>
     container: {
       flex: 1,
       backgroundColor: colors.background,
-      alignItems: "center",
       justifyContent: "flex-start",
-      gap: 10,
+      padding: H_PAD,
     },
     header: {
       width: "100%",
-      height: 60,
+      height: 30,
       flexDirection: "row",
       alignItems: "center",
-      justifyContent: "space-between",
-      paddingHorizontal: 16,
+      gap: 24,
     },
+    pageTitle: {
+      fontSize: 30,
+      fontWeight: "700",
+      color: colors.text,
+    },
+
     content: {
       flex: 1,
       paddingHorizontal: 24,
@@ -66,7 +78,7 @@ const createStyles = (colors: TColors) =>
     },
     ruleText: {
       fontSize: 18,
-      color: colors.text,
       lineHeight: 26,
+      color: colors.text,
     },
   });

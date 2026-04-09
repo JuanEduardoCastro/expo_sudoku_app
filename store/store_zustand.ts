@@ -23,7 +23,7 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
       name: "Easy",
       maxPoints: 0,
       totalGames: 0,
-      besttime: 0,
+      bestTime: 0,
       streak: 0,
     },
     {
@@ -31,7 +31,7 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
       name: "Medium",
       maxPoints: 0,
       totalGames: 0,
-      besttime: 0,
+      bestTime: 0,
       streak: 0,
     },
     {
@@ -39,7 +39,7 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
       name: "Hard",
       maxPoints: 0,
       totalGames: 0,
-      besttime: 0,
+      bestTime: 0,
       streak: 0,
     },
     {
@@ -47,7 +47,7 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
       name: "Expert",
       maxPoints: 0,
       totalGames: 0,
-      besttime: 0,
+      bestTime: 0,
       streak: 0,
     },
   ],
@@ -77,7 +77,7 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
           name: "Easy",
           maxPoints: 0,
           totalGames: 0,
-          besttime: 0,
+          bestTime: 0,
           streak: 0,
         },
         {
@@ -85,7 +85,7 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
           name: "Medium",
           maxPoints: 0,
           totalGames: 0,
-          besttime: 0,
+          bestTime: 0,
           streak: 0,
         },
         {
@@ -93,7 +93,7 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
           name: "Hard",
           maxPoints: 0,
           totalGames: 0,
-          besttime: 0,
+          bestTime: 0,
           streak: 0,
         },
         {
@@ -101,7 +101,7 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
           name: "Expert",
           maxPoints: 0,
           totalGames: 0,
-          besttime: 0,
+          bestTime: 0,
           streak: 0,
         },
       ],
@@ -131,7 +131,7 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
           name: stat.name,
           maxPoints: stat.maxPoints,
           totalGames: stat.totalGames,
-          besttime: stat.bestTime,
+          bestTime: stat.bestTime,
           streak: stat.currentStreak,
         })),
       });

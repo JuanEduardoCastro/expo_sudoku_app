@@ -1,6 +1,8 @@
 import { SCHEMES } from "@/constants/colors";
 import { getLevels, TEST_LEVEL } from "@/constants/levels";
+import { SHADOW } from "@/constants/shadows";
 import { TColors } from "@/constants/types";
+import { useColorMode } from "@/context/ColorModeContext";
 import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
@@ -10,6 +12,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 const LevelBox = () => {
   const { colors, styles } = useStyles(createStyles);
   const { onClickHapticHeavy } = useHaptic();
+  const { colorMode } = useColorMode();
 
   const levels = getLevels(SCHEMES);
 
@@ -22,14 +25,25 @@ const LevelBox = () => {
   return (
     <View style={styles.levelBox}>
       {Object.values(levels).map((level) => (
-        <Pressable key={level.id} onPress={() => handleClick(level.id)} style={styles.levelCard}>
+        <Pressable
+          key={level.id}
+          onPress={() => handleClick(level.id)}
+          style={[styles.levelCard, SHADOW.standar]}
+        >
           <View style={[styles.levelDot, { backgroundColor: level.color }]} />
           <View style={{ flex: 1, gap: 2 }}>
             <Text style={styles.levelText}>{level.name}</Text>
             <Text style={styles.levelTextSub}>{level.sub}</Text>
           </View>
           <View style={styles.levelArrow}>
-            <Text style={styles.levelArrowIcon}>›</Text>
+            <Text
+              style={[
+                styles.levelArrowIcon,
+                { color: colorMode === "dark" ? colors.accentLight : colors.gray },
+              ]}
+            >
+              ›
+            </Text>
           </View>
         </Pressable>
       ))}
@@ -85,6 +99,5 @@ const createStyles = (colors: TColors) =>
       fontSize: 18,
       fontWeight: "700",
       lineHeight: 22,
-      color: colors.accentLight,
     },
   });

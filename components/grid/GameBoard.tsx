@@ -1,7 +1,8 @@
 import { Board, CellProps } from "@/app/Game";
-import { BNW, SCHEMES } from "@/constants/colors";
+import { SCHEMES } from "@/constants/colors";
 import { BOARD_WIDTH, H_PAD } from "@/constants/dimensions";
-import { TEST_LEVEL } from "@/constants/levels";
+import { getLevels, TEST_LEVEL } from "@/constants/levels";
+import { SHADOW } from "@/constants/shadows";
 import { TColors } from "@/constants/types";
 import useHaptic from "@/hooks/useHaptic";
 import useLevel from "@/hooks/useLevel";
@@ -18,6 +19,7 @@ import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameL
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import ConfirmationModal from "../shared/ConfirmationModal";
 import NumberCell from "./NumberCell";
 import NumberPad from "./NumberPad";
 
@@ -40,13 +42,15 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
   const { score, setScore, errors, setErrors, resetBoard, factor, setFactor } = useBoardStore();
 
   const { timer, timerRunning, setTimerRunning, formatTimer, timerMultiply } = useTimer();
-  const { levelString, clueCount, scoreMultiply, difficulty } = useLevel(level);
+  const { levelString, clueCount, scoreMultiply } = useLevel(level);
 
   const [remainingClues, setRemainingClues] = useState(clueCount);
   const [noCluesModal, setNoCluesModal] = useState(false);
 
   const [gameCompleteModal, setGameCompleteModal] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
+
+  const [streakBrokeModal, setStreakBrokeModal] = useState(true);
 
   const [board, setBoard] = useState<Board>(generatedBoard);
 
@@ -57,8 +61,7 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
 
   const [clueCell, setClueCell] = useState<number | null>(null);
 
-  const [isFinished, setIsFinished] = useState<boolean>(false);
-  const [colorScheme, setColorScheme] = useState("");
+  const levels = getLevels(SCHEMES);
 
   const solutionBoard = solution;
 
@@ -74,8 +77,10 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
   }, [timerMultiply, scoreMultiply]);
 
   useEffect(() => {
-    levelColorSelect(levelString);
-  }, []);
+    if (errors > 3) {
+      setStreakBrokeModal(true);
+    }
+  }, [errors]);
 
   useEffect(() => {
     function checkCells() {
@@ -126,7 +131,6 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
       setTimerRunning(false);
       setSelectedCell(null);
       setHighlightedCells(new Set());
-      setIsFinished(true);
 
       const allCells = new Set<string>();
       for (let r = 0; r < 9; r++) {
@@ -257,42 +261,31 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
     }
   };
 
-  const levelColorSelect = (levelColor: string) => {
-    switch (levelColor) {
-      case "Easy":
-        setColorScheme(SCHEMES.easy);
-        break;
-      case "Medium":
-        setColorScheme(SCHEMES.medium);
-        break;
-      case "Hard":
-        setColorScheme(SCHEMES.hard);
-        break;
-      case "Expert":
-        setColorScheme(SCHEMES.expert);
-        break;
-      default:
-        setColorScheme(BNW.lightgray);
-        break;
-    }
-  };
-
   return (
     <View style={styles.container}>
-      <View style={styles.topBar}>
+      <View style={[styles.topBar, SHADOW.standar]}>
         <Pressable onPress={backButton}>
           <Text style={styles.levelBackArrow}>‹</Text>
         </Pressable>
-        <View style={[styles.levelPill, { backgroundColor: colorScheme + "28" }]}>
-          <View style={[styles.levelPillDot, { backgroundColor: colorScheme }]} />
-          <Text style={[styles.levelPillText, { color: colorScheme }]}>{levelString} </Text>
+        <View style={[styles.levelPill, { backgroundColor: levels[level - 1].color + "28" }]}>
+          <View
+            style={[
+              styles.levelPillDot,
+              {
+                backgroundColor: levels[level - 1].color,
+              },
+            ]}
+          />
+          <Text style={[styles.levelPillText, { color: levels[level - 1].color }]}>
+            {levelString}
+          </Text>
         </View>
         <Text style={styles.timeLabel}>{formatTimer(timer!)}</Text>
       </View>
 
       <View style={{ height: 14 }} />
 
-      <View style={styles.scoreCard}>
+      <View style={[styles.scoreCard, SHADOW.standar]}>
         <View style={styles.scoreBlock}>
           <Text style={styles.scoreCaption}>SCORE</Text>
           <Text style={styles.scoreNum}>{score}</Text>
@@ -319,7 +312,7 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
 
       <View style={{ height: 14 }} />
 
-      <View style={styles.boardWrap}>
+      <View style={[styles.boardWrap, SHADOW.standar]}>
         {board.map((row, rowIndex) => (
           <View key={rowIndex} style={{ flexDirection: "row" }}>
             {row.map((cell, colIndex) => (
@@ -373,45 +366,46 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
       <View style={{ height: 14 }} />
 
       <NumberPad onPress={handleClickNumberPad} clueCell={clueCell} />
+
+      {
+        <ConfirmationModal
+          visible={noCluesModal}
+          title={"No clues left!"}
+          icon={"💡"}
+          content={"You've used all your clues for this game."}
+          content2={"Keep going - you've got this!"}
+          acceptOnPress={() => setNoCluesModal(false)}
+          acceptText={"Got it!"}
+          // future: add "watch ad" button here
+        />
+      }
+      {
+        <ConfirmationModal
+          visible={gameCompleteModal}
+          isFinishedModal={true}
+          icon={"🎉"}
+          title={"Game complete!"}
+          acceptOnPress={() => {
+            setGameCompleteModal(false);
+            router.back();
+            resetBoard();
+          }}
+          acceptText={"Continue"}
+          finishedData={{ score, timer, errors }}
+        />
+      }
+      {
+        <ConfirmationModal
+          visible={streakBrokeModal}
+          icon={"⚠️"}
+          title={"Oh no!"}
+          content={"You lost your streak!"}
+          content2={"Keep going - the game is not over!"}
+          acceptOnPress={() => setStreakBrokeModal(false)}
+          acceptText={"Continue"}
+        />
+      }
     </View>
-
-    // <View style={styles.container}>
-    //   <View>
-    //     <View style={styles.headerGrid}>
-    //       {errors > 0 && <Text style={styles.levelText}>Errors: {errors}</Text>}
-    //       {errors > 3 && (
-    //         <Text style={[styles.levelText, { fontWeight: "bold" }]}>Lost streak! </Text>
-    //       )}
-
-    //   {notification.type && <NotificationModal />}
-
-    //   {
-    //     <ConfirmationModal
-    //       visible={noCluesModal}
-    //       handleOpenModal={() => setNoCluesModal(false)}
-    //       content={"No more clues available!"}
-    //       acceptOnPress={() => setNoCluesModal(false)}
-    //       acceptText={"OK"}
-    //       cancel={false}
-    //       // future: add "watch ad" button here
-    //     />
-    //   }
-    //   {
-    //     <ConfirmationModal
-    //       visible={gameCompleteModal}
-    //       handleOpenModal={() => {}}
-    //       content={`Game complete!\nTime: ${formatTimer(timer)}\nScore: ${finalScore}\nLevel: ${levelString}`}
-    //       acceptOnPress={() => {
-    //         setGameCompleteModal(false);
-    //         router.back();
-    //         resetBoard();
-    //       }}
-    //       acceptText={"Continue"}
-    //       cancel={false}
-    //       // future: add "watch ad" button here
-    //     />
-    //   }
-    // </View>
   );
 };
 

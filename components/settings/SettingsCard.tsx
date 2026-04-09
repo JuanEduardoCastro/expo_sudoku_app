@@ -2,27 +2,14 @@ import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React, { ReactElement } from "react";
 import { Pressable, StyleSheet, Text } from "react-native";
-/**
- * Defines the properties for the `SettingsCard` component.
- */
+
 type SettingsCardProps = {
-  /** The main text or label for the setting. */
   title: string;
-  /** An optional dynamic value to display, such as the current state of a setting. */
   value?: string | number;
-  /** An optional icon to display next to the title. */
   icon?: ReactElement;
-  /** An optional function to execute when the card is pressed. */
   onPress?: () => void;
 };
 
-/**
- * `SettingsCard` is a reusable component that renders a single setting option as a pressable row.
- * It is designed to be used within a list of settings, like in the `SettingsBlock` component.
- *
- * @param {SettingsCardProps} props - The properties for the component.
- * @returns {React.ReactElement} A pressable row displaying a setting's details.
- */
 const SettingsCard = ({ title, value, icon, onPress }: SettingsCardProps) => {
   const { colors, styles } = useStyles(createStyles);
 
@@ -40,9 +27,14 @@ export default SettingsCard;
 const createStyles = (colors: TColors) =>
   StyleSheet.create({
     settingsLine: {
+      backgroundColor: colors.surface,
       alignItems: "center",
       flexDirection: "row",
-      gap: 24,
+      padding: 16,
+      borderRadius: 14,
+      borderWidth: 1,
+      borderColor: colors.border,
+      gap: 16,
     },
     settingsText: {
       flex: 1,

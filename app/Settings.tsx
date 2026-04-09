@@ -1,5 +1,6 @@
 import SettingsBlock from "@/components/settings/SettingsBlock";
 import ButtonBack from "@/components/shared/ButtonBack";
+import { H_PAD } from "@/constants/dimensions";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
@@ -7,11 +8,6 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-/**
- * The `Settings` screen allows users to configure application-wide preferences.
- * It features a header with a back button and displays various setting options
- * through the `SettingsBlock` component.
- */
 const Settings = () => {
   const { colors, styles } = useStyles(createStyles);
   const router = useRouter();
@@ -19,9 +15,16 @@ const Settings = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={() => router.back()} />
+        <Text style={styles.pageTitle}>Settings</Text>
       </View>
-      <Text style={styles.statsTitle}>Settings</Text>
-      <ScrollView style={{ flex: 1, width: "100%" }} showsVerticalScrollIndicator={false}>
+
+      <View style={{ height: 22 }} />
+
+      <ScrollView
+        scrollEnabled={false}
+        style={{ flex: 1, width: "100%" }}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.content}>
           <SettingsBlock />
         </View>
@@ -37,18 +40,22 @@ const createStyles = (colors: TColors) =>
     container: {
       flex: 1,
       backgroundColor: colors.background,
-      alignItems: "center",
       justifyContent: "flex-start",
-      gap: 10,
+      padding: H_PAD,
     },
     header: {
       width: "100%",
-      height: 60,
+      height: 30,
       flexDirection: "row",
       alignItems: "center",
-      justifyContent: "space-between",
-      paddingHorizontal: 16,
+      gap: 24,
     },
+    pageTitle: {
+      fontSize: 30,
+      fontWeight: "700",
+      color: colors.text,
+    },
+
     statsTitle: {
       width: "100%",
       paddingHorizontal: 16,
@@ -61,7 +68,6 @@ const createStyles = (colors: TColors) =>
       width: "100%",
       alignItems: "center",
       justifyContent: "flex-start",
-      paddingHorizontal: 24,
       gap: 20,
     },
   });

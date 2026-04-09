@@ -1,11 +1,12 @@
 import ButtonBack from "@/components/shared/ButtonBack";
 import GlobalScores from "@/components/stats/GlobalScores";
 import ScoresByLevel from "@/components/stats/ScoresByLevel";
+import { H_PAD } from "@/constants/dimensions";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Stats = () => {
@@ -17,12 +18,16 @@ const Stats = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={() => router.back()} />
+        <Text style={styles.pageTitle}>Statistics</Text>
       </View>
+
+      <View style={{ height: 22 }} />
+
       <ScrollView style={{ flex: 1, width: "100%" }} showsVerticalScrollIndicator={false}>
-        <View style={styles.statsContainer}>
-          <GlobalScores />
-          <ScoresByLevel />
-        </View>
+        <GlobalScores />
+        <View style={{ height: 22 }} />
+        <ScoresByLevel />
+        <View style={styles.statsContainer}></View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -35,17 +40,20 @@ const createStyles = (colors: TColors) =>
     container: {
       flex: 1,
       backgroundColor: colors.background,
-      alignItems: "center",
       justifyContent: "flex-start",
-      gap: 10,
+      padding: H_PAD,
     },
     header: {
       width: "100%",
-      height: 60,
+      height: 30,
       flexDirection: "row",
       alignItems: "center",
-      justifyContent: "space-between",
-      paddingHorizontal: 16,
+      gap: 24,
+    },
+    pageTitle: {
+      fontSize: 30,
+      fontWeight: "700",
+      color: colors.text,
     },
     statsContainer: {
       flex: 1,

@@ -13,18 +13,6 @@ import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import SettingsCard from "./SettingsCard";
 
-/**
- * `SettingsBlock` is a component that groups and displays various application settings.
- * It provides interactive options for users to customize their experience.
- *
- * This component manages and renders individual settings for:
- * - **Color Mode**: Toggles between light and dark themes using `useColorMode` context.
- * - **Vibration**: Enables or disables haptic feedback using the `useHaptic` hook.
- * - **Sound**: Toggles in-game sound effects (currently managed via local state).
- *
- * Each setting is presented using a `SettingsCard` component, which displays the
- * setting's title, its current state, and an icon.
- */
 const SettingsBlock = () => {
   const { colors, styles } = useStyles(createStyles);
   const { vibEnabled, setVibEnabled } = useHaptic();
@@ -50,16 +38,16 @@ const SettingsBlock = () => {
       <SettingsCard
         onPress={handleToggleColorMode}
         title={`${colorMode === "light" ? "Dark" : "Light"} mode`}
-        icon={<ColorModeIcon width={24} height={24} color={colors.tint} />}
+        icon={<ColorModeIcon width={24} height={24} color={colors.accentBase} />}
       />
       <SettingsCard
         onPress={handleToggleVib}
         title={`Vibration tick ${vibEnabled ? "disabled" : "enabled"}`}
         icon={
-          vibEnabled ? (
-            <VibEnabledIcon width={24} height={24} color={colors.tint} />
+          !vibEnabled ? (
+            <VibEnabledIcon width={24} height={24} color={colors.accentBase} />
           ) : (
-            <VibDisabledIcon width={24} height={24} color={colors.tint} />
+            <VibDisabledIcon width={24} height={24} color={colors.accentBase} />
           )
         }
       />
@@ -67,10 +55,10 @@ const SettingsBlock = () => {
         onPress={handleToggleSound}
         title={`Sound ${soundEnabled ? "disabled" : "enabled"}`}
         icon={
-          soundEnabled ? (
-            <SoundEnabledIcon width={24} height={24} color={colors.tint} />
+          !soundEnabled ? (
+            <SoundEnabledIcon width={24} height={24} color={colors.accentBase} />
           ) : (
-            <SoundDisabledIcon width={24} height={24} color={colors.tint} />
+            <SoundDisabledIcon width={24} height={24} color={colors.accentBase} />
           )
         }
       />
@@ -84,6 +72,6 @@ const createStyles = (colors: TColors) =>
   StyleSheet.create({
     statsSection: {
       width: "100%",
-      gap: 26,
+      gap: 16,
     },
   });

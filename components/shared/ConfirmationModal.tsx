@@ -5,28 +5,34 @@ import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 type ConfirmationModalProps = {
   visible: boolean;
-  handleOpenModal: () => void;
-  title?: string;
+  title: string;
+  icon?: string;
   content?: string;
-  cancel?: boolean;
-  cancelText?: string;
+  content2?: string;
+  cancelText?: string | null;
   cancelOnPress?: () => void;
-  accept?: boolean;
-  acceptText?: string;
+  acceptText?: string | null;
   acceptOnPress?: () => void;
+  isFinishedModal?: boolean;
+  finishedData?: {
+    score: number;
+    timer: number;
+    errors: number;
+  };
 };
 
 const ConfirmationModal = ({
   visible,
-  handleOpenModal,
   title,
+  icon,
   content,
-  cancel = true,
-  cancelText = "Cancel",
+  content2,
+  cancelText = null,
   cancelOnPress,
-  accept = true,
   acceptText = "Ok",
   acceptOnPress,
+  isFinishedModal = false,
+  finishedData,
 }: ConfirmationModalProps) => {
   const { colors, styles } = useStyles(createStyles);
 
@@ -34,30 +40,48 @@ const ConfirmationModal = ({
     <Modal animationType="fade" transparent={true} visible={visible}>
       <View style={styles.container}>
         <View style={styles.cardContainer}>
-          <View style={styles.header}>
-            <Text style={styles.headerCloseText}></Text>
-            <Pressable style={styles.headerCloseButton} onPress={() => handleOpenModal()}>
-              <Text style={styles.headerCloseText}>X</Text>
-            </Pressable>
+          <View style={styles.iconWrap}>
+            <Text style={{ fontSize: 26 }}>{icon}</Text>
           </View>
-          <View style={styles.content}>
-            <Text style={styles.contentText}>{content}</Text>
-          </View>
+
+          <View style={{ height: 16 }} />
+
+          <Text style={styles.modalTitle}>{title}</Text>
+
+          <View style={{ height: 16 }} />
+          {!isFinishedModal ? (
+            <>
+              <Text style={styles.modalContent}>{content}</Text>
+              <Text style={styles.modalContent}>{content2}</Text>
+            </>
+          ) : (
+            <View style={styles.statsRow}>
+              <View style={styles.statBox}>
+                <Text style={styles.statValue}>{finishedData?.score}</Text>
+                <Text style={styles.statLabel}>Score</Text>
+              </View>
+              <View style={styles.statBox}>
+                <Text style={styles.statValue}>{finishedData?.timer}</Text>
+                <Text style={styles.statLabel}>Time</Text>
+              </View>
+              <View style={styles.statBox}>
+                <Text style={styles.statValue}>{finishedData?.errors}</Text>
+                <Text style={styles.statLabel}>Errors</Text>
+              </View>
+            </View>
+          )}
+
+          <View style={{ height: 16 }} />
+
           <View style={styles.buttonBox}>
-            {cancel && (
-              <Pressable
-                style={[
-                  styles.button,
-                  { backgroundColor: "transparent", borderWidth: 1, borderColor: colors.border },
-                ]}
-                onPress={cancelOnPress}
-              >
-                <Text style={[styles.buttonText, { color: colors.text }]}>{cancelText} </Text>
+            {cancelText && (
+              <Pressable style={[styles.buttonCancel]} onPress={cancelOnPress}>
+                <Text style={styles.buttonCancelText}>{cancelText} </Text>
               </Pressable>
             )}
-            {accept && (
-              <Pressable style={styles.button} onPress={acceptOnPress}>
-                <Text style={styles.buttonText}>{acceptText}</Text>
+            {acceptText && (
+              <Pressable style={styles.buttonAccept} onPress={acceptOnPress}>
+                <Text style={styles.buttonAcceptText}>{acceptText}</Text>
               </Pressable>
             )}
           </View>
@@ -81,59 +105,98 @@ const createStyles = (colors: TColors) =>
     },
     cardContainer: {
       width: "80%",
-      height: "30%",
-      backgroundColor: colors.surface2,
-      borderRadius: 8,
-    },
-    header: {
-      flexDirection: "row",
-      justifyContent: "space-between",
+      minHeight: "30%",
       alignItems: "center",
-      paddingHorizontal: 8,
-      paddingVertical: 8,
+      padding: 24,
+      backgroundColor: colors.surface,
+      borderRadius: 24,
+      borderWidth: 1,
+      borderColor: colors.border,
     },
-    headerCloseButton: {
-      paddingHorizontal: 8,
-      paddingVertical: 4,
-      color: colors.text,
-    },
-    headerCloseText: {
-      fontSize: 20,
-      fontWeight: "bold",
-      color: colors.text,
-    },
-    content: {
-      flexGrow: 1,
+    iconWrap: {
+      backgroundColor: colors.accentLight,
+      width: 60,
+      height: 60,
+      borderRadius: 18,
       alignItems: "center",
       justifyContent: "center",
+      marginBottom: 4,
     },
-    contentText: {
-      fontSize: 16,
+    modalTitle: {
+      fontSize: 22,
+      fontWeight: "800",
+      textAlign: "center",
+      letterSpacing: 0.2,
       color: colors.text,
+    },
+    modalContent: {
+      fontSize: 14,
+      lineHeight: 21,
+      textAlign: "center",
+      color: colors.textMuted,
+    },
+    statsRow: {
+      backgroundColor: colors.surface2,
+      flexDirection: "row",
+      borderRadius: 16,
+      borderWidth: 1,
+      overflow: "hidden",
+      width: "100%",
+      marginTop: 4,
+      borderColor: colors.border,
+    },
+    statBox: {
+      flex: 1,
+      alignItems: "center",
+      paddingVertical: 14,
+      gap: 4,
+    },
+    statValue: {
+      fontSize: 20,
+      fontWeight: "800",
+      color: colors.text,
+    },
+    statLabel: {
+      fontSize: 11,
+      fontWeight: "600",
+      letterSpacing: 0.8,
+      color: colors.textMuted,
     },
     buttonBox: {
-      width: "100%",
-      height: 100,
-      paddingHorizontal: 16,
-      paddingVertical: 8,
       flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: 16,
-    },
-    button: {
-      width: 90,
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: "lightblue",
-      padding: 10,
-      paddingHorizontal: 16,
+      width: "100%",
+      paddingHorizontal: 12,
       paddingVertical: 8,
-      borderRadius: 8,
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 10,
     },
-    buttonText: {
-      fontSize: 16,
-      color: colors.dark,
-      fontWeight: "bold",
+    buttonCancel: {
+      backgroundColor: colors.surface2,
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      height: 48,
+      borderRadius: 14,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    buttonCancelText: {
+      fontSize: 15,
+      fontWeight: "600",
+      color: colors.textMuted,
+    },
+    buttonAccept: {
+      backgroundColor: colors.accentBase,
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      height: 48,
+      borderRadius: 14,
+    },
+    buttonAcceptText: {
+      fontSize: 15,
+      fontWeight: "700",
+      color: colors.almostWhite,
     },
   });

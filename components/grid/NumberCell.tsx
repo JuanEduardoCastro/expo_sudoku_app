@@ -1,6 +1,7 @@
 import { CellProps } from "@/app/Game";
 import { CELL_SIZE } from "@/constants/dimensions";
 import { TColors } from "@/constants/types";
+import { useColorMode } from "@/context/ColorModeContext";
 import useStyles from "@/hooks/useStyles";
 import React, { useEffect } from "react";
 import { Pressable, StyleSheet, Text } from "react-native";
@@ -37,6 +38,7 @@ const NumberCell = ({
   setRotate,
 }: NumberCellProps) => {
   const { colors, styles } = useStyles(createStyles);
+  const { colorMode } = useColorMode();
   const rotation = useSharedValue(0);
   const scale = useSharedValue(1);
 
@@ -70,18 +72,32 @@ const NumberCell = ({
     <Pressable
       style={[
         styles.container,
-        highlighted && { backgroundColor: colors.accentBase + 28 },
+        highlighted && {
+          backgroundColor: colorMode === "dark" ? colors.accentBase + 28 : colors.accentLight,
+        },
         selected && {
           backgroundColor: colors.accentBase,
           // borderWidth: 3,
           // borderColor: colors.border,
         },
         cell.col === 2 || cell.col === 5
-          ? { borderRightWidth: 2, borderRightColor: colors.border }
-          : { borderRightWidth: 0.5, borderRightColor: colors.border },
+          ? {
+              borderRightWidth: 2,
+              borderRightColor: colorMode === "dark" ? colors.border : colors.veryLightGray,
+            }
+          : {
+              borderRightWidth: 0.5,
+              borderRightColor: colorMode === "dark" ? colors.border : colors.veryLightGray,
+            },
         cell.row === 2 || cell.row === 5
-          ? { borderBottomWidth: 2, borderBottomColor: colors.border }
-          : { borderBottomWidth: 0.5, borderBottomColor: colors.border },
+          ? {
+              borderBottomWidth: 2,
+              borderBottomColor: colorMode === "dark" ? colors.border : colors.veryLightGray,
+            }
+          : {
+              borderBottomWidth: 0.5,
+              borderBottomColor: colorMode === "dark" ? colors.border : colors.veryLightGray,
+            },
       ]}
       onPress={() => onPress(cell)}
     >

@@ -30,10 +30,10 @@ const Game = () => {
 
   const { board, solution } = useMemo(() => generatesBoard(difficulty), [difficulty]);
 
-  const { setBoardState, setLevel, score, resetBoard, factor } = useBoardStore();
+  const { setBoardState, setLevel, resetBoard } = useBoardStore();
   const { onClickHapticHeavy } = useHaptic();
 
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [confirmExitGame, setConfirmExitGame] = useState<boolean>(false);
 
   useEffect(() => {
     setBoardState({ boardStored: board, solutionBoardStored: solution });
@@ -42,29 +42,24 @@ const Game = () => {
   }, []);
 
   const handleBackButton = () => {
-    setOpenModal(true);
+    setConfirmExitGame(true);
     onClickHapticHeavy();
   };
 
   const handleOpenModal = () => {
     onClickHapticHeavy();
-    setOpenModal(!openModal);
+    setConfirmExitGame(!confirmExitGame);
   };
 
   const goBackCommand = () => {
     onClickHapticHeavy();
-    setOpenModal(false);
+    setConfirmExitGame(false);
     resetBoard();
     router.back();
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.header}>
-        <ButtonBack onPress={handleBackButton} />
-        <Text style={styles.factorText}>X: {factor}</Text>
-        <Text style={styles.scoreText}>Score: {score}</Text>
-      </View> */}
       <View style={styles.gridContainer}>
         <GameBoard
           generatedBoard={board}
@@ -73,18 +68,18 @@ const Game = () => {
           backButton={handleBackButton}
         />
       </View>
-      {/**
-       * Renders a confirmation modal when the user attempts to exit the game.
-       */}
-      {openModal && (
+
+      {confirmExitGame && (
         <ConfirmationModal
-          visible={openModal}
-          handleOpenModal={handleOpenModal}
-          content="Are you sure you want to exit?"
-          cancelOnPress={handleOpenModal}
+          title={"Leave the game?"}
+          icon="🚪"
+          visible={confirmExitGame}
+          content="Your current progress will be lost."
+          content2="Are you sure you want exit?"
+          acceptText="Yes"
           acceptOnPress={goBackCommand}
           cancelText="No"
-          acceptText="Yes"
+          cancelOnPress={handleOpenModal}
         />
       )}
     </SafeAreaView>

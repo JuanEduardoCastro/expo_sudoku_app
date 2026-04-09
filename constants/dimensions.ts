@@ -7,4 +7,4 @@ const CELL_SIZE = Math.floor(BOARD_WIDTH / 9);
 const PAD_GAP = 6;
 const PAD_SIZE = Math.floor((BOARD_WIDTH - PAD_GAP * 8) / 9);
 
-export { BOARD_WIDTH, CELL_SIZE, H_PAD, PAD_GAP, PAD_SIZE };
+export { BOARD_WIDTH, CELL_SIZE, H_PAD, PAD_GAP, PAD_SIZE, SW };

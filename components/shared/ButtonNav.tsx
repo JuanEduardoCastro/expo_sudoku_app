@@ -1,4 +1,4 @@
-import { textVar } from "@/constants/textVar";
+import { SHADOW } from "@/constants/shadows";
 import { TColors } from "@/constants/types";
 import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
@@ -18,7 +18,7 @@ const ButtonNav = ({ title, onPress }: ButtonNavProps) => {
   };
 
   return (
-    <Pressable style={styles.buttonContainer} onPress={handleOnPress}>
+    <Pressable style={[styles.buttonContainer, SHADOW.standar]} onPress={handleOnPress}>
       <Text style={styles.buttonText}>{title}</Text>
     </Pressable>
   );
@@ -42,7 +42,8 @@ const createStyles = (colors: TColors) =>
       borderColor: colors.border,
     },
     buttonText: {
-      ...textVar.base,
+      fontSize: 14,
+      fontWeight: "500",
       color: colors.text, //TODO
       textAlign: "center",
     },

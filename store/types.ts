@@ -68,31 +68,6 @@ interface ScoresLevels {
   name: string;
   maxPoints: number;
   totalGames: number;
-  besttime: number;
+  bestTime: number;
   streak: number;
 }
-
-/* 
-
-scoreByGame {
-  user ->
-  id ->
-  level
-  score
-  time
-  errorCount
-  lostStreak
-  createdAt
-
-  ------
- ?boardState {
-    boardStored
-    solutionBoardStored
-  }
-  level
-  factor
-  errors
-  score
-}
-
-*/
