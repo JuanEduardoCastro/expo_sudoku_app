@@ -97,27 +97,9 @@ const createStyles = (colors: TColors) =>
       justifyContent: "flex-start",
       gap: 10,
     },
-    header: {
-      width: "100%",
-      height: 60,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      paddingHorizontal: 16,
-    },
     gridContainer: {
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
-    },
-    factorText: {
-      fontSize: 18,
-      color: colors.text,
-    },
-    scoreText: {
-      alignItems: "flex-end",
-      width: 90,
-      fontSize: 18,
-      color: colors.text,
     },
   });

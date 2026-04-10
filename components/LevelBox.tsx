@@ -13,6 +13,7 @@ const LevelBox = () => {
   const { colors, styles } = useStyles(createStyles);
   const { onClickHapticHeavy } = useHaptic();
   const { colorMode } = useColorMode();
+  const router = useRouter();
 
   const levels = getLevels(SCHEMES);
 
@@ -21,7 +22,6 @@ const LevelBox = () => {
     onClickHapticHeavy();
   };
 
-  const router = useRouter();
   return (
     <View style={styles.levelBox}>
       {Object.values(levels).map((level) => (

@@ -61,6 +61,7 @@ export interface UseGameScoresTypes {
   }) => void;
   setScoresByLevels: (scoresByLevels: ScoresLevels[]) => void;
   loadFromDatabase: () => Promise<void>;
+  resetGameScores: () => Promise<void>;
 }
 
 interface ScoresLevels {

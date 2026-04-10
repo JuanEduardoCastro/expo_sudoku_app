@@ -6,9 +6,6 @@ import * as schema from "./schema";
 const expo = openDatabaseSync("sudoku.db");
 export const db = drizzle(expo, { schema });
 
-/**
- * Settings operations
- */
 export const settingsService = {
   async get(key: string): Promise<string | null> {
     const result = await db
@@ -35,9 +32,6 @@ export const settingsService = {
   },
 };
 
-/**
- * Game scores operations
- */
 export const gameScoresService = {
   async create(gameScore: schema.NewGameScores): Promise<schema.GameScores> {
     const result = await db.insert(schema.gameScores).values(gameScore).returning();
@@ -48,10 +42,11 @@ export const gameScoresService = {
     return await db.select().from(schema.gameScores);
   },
 
-  async getByLevel(limit: number = 10): Promise<schema.GameScores[]> {
+  async getByLevel(limit: number = 10, level: number): Promise<schema.GameScores[]> {
     return await db
       .select()
       .from(schema.gameScores)
+      .where(eq(schema.gameScores.level, level))
       .orderBy(desc(schema.gameScores.completedAt))
       .limit(limit);
   },
@@ -65,9 +60,6 @@ export const gameScoresService = {
   },
 };
 
-/**
- * Global statistics operations
- */
 export const globalStatsService = {
   async get(): Promise<schema.GlobalStats | null> {
     const result = await db
@@ -104,9 +96,6 @@ export const globalStatsService = {
   },
 };
 
-/**
- * Level statistics operations
- */
 export const levelStatsService = {
   async getAll(): Promise<schema.LevelStats[]> {
     return await db.select().from(schema.levelStats).orderBy(schema.levelStats.level);
@@ -150,9 +139,6 @@ export const levelStatsService = {
   },
 };
 
-/**
- * Saved games operations (optional feature)
- */
 export const savedGamesService = {
   async save(gameState: schema.NewSavedGames): Promise<schema.SavedGames> {
     await db.delete(schema.savedGames);
@@ -175,9 +161,6 @@ export const savedGamesService = {
   },
 };
 
-/**
- * Complete game save - updates all related tables
- */
 export const saveCompletedGame = async (gameData: {
   level: number;
   points: number;

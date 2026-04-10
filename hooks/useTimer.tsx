@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const useTimer = () => {
   const [timer, setTimer] = useState<number>(0);
   const [timerRunning, setTimerRunning] = useState<boolean>(false);
-  const [timerMultiply, setTimerMultiply] = useState<number | null>(0);
+  const [timerMultiply, setTimerMultiply] = useState<number>(0);
 
   useEffect(() => {
     let interval: number | undefined = undefined;
@@ -20,7 +20,7 @@ const useTimer = () => {
 
   useEffect(() => {
     if (timer > 0 && timer % 30 === 0) {
-      setTimerMultiply((prev) => (prev === null ? 1 : prev + 1));
+      setTimerMultiply((prev) => prev + 1);
     }
   }, [timer]);
 

@@ -50,7 +50,7 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
   const [gameCompleteModal, setGameCompleteModal] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
 
-  const [streakBrokeModal, setStreakBrokeModal] = useState(true);
+  const [streakBrokeModal, setStreakBrokeModal] = useState(false);
 
   const [board, setBoard] = useState<Board>(generatedBoard);
 
@@ -62,6 +62,7 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
   const [clueCell, setClueCell] = useState<number | null>(null);
 
   const levels = getLevels(SCHEMES);
+  const levelDisplay = levels[level - 1] ? levels[level - 1].color : colors.lightgray;
 
   const solutionBoard = solution;
 
@@ -72,7 +73,7 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
   }, [notification.message]);
 
   useEffect(() => {
-    const raw = scoreMultiply - (timerMultiply ?? 0);
+    const raw = scoreMultiply - timerMultiply;
     setFactor(Math.max(1, raw));
   }, [timerMultiply, scoreMultiply]);
 
@@ -115,13 +116,17 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
           setRotate(true);
         }
         if (bonus > 0) {
-          setScore(score! + bonus);
+          // setScore(score! + bonus);
+          return score + bonus;
         }
         setRotatedCells(rotateSelection);
       }
     }
 
-    checkCells();
+    const currentScore = checkCells();
+    if (currentScore !== undefined && currentScore > 0) {
+      setScore(currentScore);
+    }
 
     if (checkGame(board)) {
       const computed = score + Math.floor(timer! * level);
@@ -155,14 +160,10 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
           .catch((error) => {
             console.error("Error saving game:", error);
           });
-        // setTimeout(() => {
-        //   router.back();
-        //   resetBoard();
-        // }, 4800);
       }
       setTimeout(() => setGameCompleteModal(true), 950);
     }
-  }, [board]);
+  }, [board, score, factor, timer, level]);
 
   const handleCellPress = (cell: CellProps) => {
     if (!timerRunning) {
@@ -222,8 +223,6 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
               : cell,
           ),
         );
-        // board[selectedCell!.row][selectedCell!.col].value = number;
-        // board[selectedCell!.row][selectedCell!.col].editable = false;
         lastPlacedCell.current = selectedCell;
 
         setBoard(newBoard);
@@ -233,7 +232,7 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
         setHighlightedCells(new Set());
       } else {
         setErrors(errors! + 1);
-        setScore(score < 3 ? 0 : score! - 5 * factor);
+        setScore(Math.max(0, score - 5 * factor));
         playSound();
         onClickHapticHeavy();
         setNotification({
@@ -267,18 +266,16 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
         <Pressable onPress={backButton}>
           <Text style={styles.levelBackArrow}>‹</Text>
         </Pressable>
-        <View style={[styles.levelPill, { backgroundColor: levels[level - 1].color + "28" }]}>
+        <View style={[styles.levelPill, { backgroundColor: levelDisplay + "28" }]}>
           <View
             style={[
               styles.levelPillDot,
               {
-                backgroundColor: levels[level - 1].color,
+                backgroundColor: levelDisplay,
               },
             ]}
           />
-          <Text style={[styles.levelPillText, { color: levels[level - 1].color }]}>
-            {levelString}
-          </Text>
+          <Text style={[styles.levelPillText, { color: levelDisplay }]}>{levelString}</Text>
         </View>
         <Text style={styles.timeLabel}>{formatTimer(timer!)}</Text>
       </View>

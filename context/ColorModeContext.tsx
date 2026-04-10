@@ -17,7 +17,9 @@ const ColorModeContext = createContext<ColorModeContextProps | undefined>(undefi
 
 export const ColorModeProvider = ({ children }: ColorModeProviderProps) => {
   const systemColorScheme = useColorScheme();
-  const [colorMode, setColorMode] = useState<ColorModeProps>(systemColorScheme || "light");
+  const [colorMode, setColorMode] = useState<ColorModeProps>(
+    (systemColorScheme as ColorModeProps) || "light",
+  );
 
   useEffect(() => {
     const checkLocalStorage = async () => {
@@ -26,11 +28,11 @@ export const ColorModeProvider = ({ children }: ColorModeProviderProps) => {
       if (storedMode) {
         setColorMode(storedMode);
       } else {
-        setColorMode(systemColorScheme || "light");
+        setColorMode((systemColorScheme as ColorModeProps) || "light");
       }
     };
     checkLocalStorage();
-  }, [systemColorScheme]);
+  }, []);
 
   const toggleColorMode = async () => {
     const newMode = colorMode === "light" ? "dark" : "light";

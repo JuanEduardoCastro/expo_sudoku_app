@@ -64,7 +64,7 @@ const NumberCell = ({
       setTimeout(() => {
         rotation.value = 0;
         setRotate && setRotate(false);
-      }, 701);
+      }, 830);
     };
   }, [rotate]);
 

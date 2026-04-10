@@ -42,9 +42,9 @@ const SettingsBlock = () => {
       />
       <SettingsCard
         onPress={handleToggleVib}
-        title={`Vibration tick ${vibEnabled ? "disabled" : "enabled"}`}
+        title={`Vibration tick ${vibEnabled ? "enabled" : "disabled"}`}
         icon={
-          !vibEnabled ? (
+          vibEnabled ? (
             <VibEnabledIcon width={24} height={24} color={colors.accentBase} />
           ) : (
             <VibDisabledIcon width={24} height={24} color={colors.accentBase} />
@@ -53,9 +53,9 @@ const SettingsBlock = () => {
       />
       <SettingsCard
         onPress={handleToggleSound}
-        title={`Sound ${soundEnabled ? "disabled" : "enabled"}`}
+        title={`Sound ${soundEnabled ? "enabled" : "disabled"}`}
         icon={
-          !soundEnabled ? (
+          soundEnabled ? (
             <SoundEnabledIcon width={24} height={24} color={colors.accentBase} />
           ) : (
             <SoundDisabledIcon width={24} height={24} color={colors.accentBase} />
