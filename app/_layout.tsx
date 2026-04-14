@@ -1,7 +1,8 @@
 import { ColorModeProvider } from "@/context/ColorModeContext";
 import migrations from "@/drizzle/migrations";
+import { savedGamesService } from "@/store/dbServices";
 import * as schema from "@/store/schema";
-import { useGameScoresStore } from "@/store/store_zustand";
+import { useBoardStore, useGameScoresStore } from "@/store/store_zustand";
 import { migrateSettings } from "@/utils/migrateSettings";
 import { drizzle } from "drizzle-orm/expo-sqlite";
 import { migrate } from "drizzle-orm/expo-sqlite/migrator";
@@ -27,6 +28,12 @@ export default function RootLayout() {
       await seedInitialData(drizzleDB);
       await migrateSettings();
       await useGameScoresStore.getState().loadFromDatabase();
+      const savedGame = await savedGamesService.load();
+      if (savedGame) {
+        useBoardStore.getState().setHasSavedGame(true);
+        useBoardStore.getState().setSavedGameLevel(savedGame.level ?? null);
+      }
+
       console.log("DB initialized");
     } catch (error) {
       __DEV__ && console.log(error);

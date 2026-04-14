@@ -1,10 +1,6 @@
 import { sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-/**
- * Settings table - stores user preferences
- * Replaces AsyncStorage for centralized data management
- */
 export const settings = sqliteTable("settings", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   key: text("key").notNull().unique(),
@@ -14,10 +10,6 @@ export const settings = sqliteTable("settings", {
     .default(sql`(unixepoch())`),
 });
 
-/**
- * Game scores table - individual game records
- * Each row represents one completed game
- */
 export const gameScores = sqliteTable("game_scores", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   level: integer("level").notNull(), // 1=Easy, 2=Medium, 3=Hard, 4=Expert
@@ -32,11 +24,6 @@ export const gameScores = sqliteTable("game_scores", {
     .default(sql`(unixepoch())`),
 });
 
-/**
- * Global statistics table - computed aggregate data
- * Single row updated after each game
- */
-
 export const globalStats = sqliteTable("global_stats", {
   id: integer("id").primaryKey().default(1), // Allways 1 row
   maxPoints: integer("max_points").notNull().default(0),
@@ -50,10 +37,6 @@ export const globalStats = sqliteTable("global_stats", {
     .default(sql`(unixepoch())`),
 });
 
-/**
- * Level statistics table - stats per difficulty level
- * 4 rows (one for each level)
- */
 export const levelStats = sqliteTable("level_stats", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   level: integer("level").notNull().unique(),
@@ -67,10 +50,6 @@ export const levelStats = sqliteTable("level_stats", {
     .default(sql`(unixepoch())`),
 });
 
-/**
- * Optional: Saved games table - for resume game feature
- * Stores paused/interrupted game state
- */
 export const savedGames = sqliteTable("saved_games", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   level: integer("level").notNull(),
@@ -79,6 +58,7 @@ export const savedGames = sqliteTable("saved_games", {
   currentScore: integer("current_score").notNull(),
   currentError: integer("current_error").notNull(),
   elapsedTime: integer("elapsed_time").notNull(), // seconds
+  remainingClues: integer("remaining_clues").notNull().default(0),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .default(sql`(unixepoch())`),
@@ -87,7 +67,6 @@ export const savedGames = sqliteTable("saved_games", {
     .default(sql`(unixepoch())`),
 });
 
-// Export types for TypeScript
 export type Settings = typeof settings.$inferSelect;
 export type NewSettings = typeof settings.$inferInsert;
 

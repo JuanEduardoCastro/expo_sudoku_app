@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { clearAllData, globalStatsService, levelStatsService } from "./dbServices";
-import { UseBoardStateTypes, UseGameScoresTypes, UseNotificationMessageStateTypes } from "./types";
+import { SavedGameAwareness, UseGameScoresTypes, UseNotificationMessageStateTypes } from "./types";
 
 export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
   gameScore: {
@@ -139,11 +139,6 @@ export const useGameScoresStore = create<UseGameScoresTypes>((set: any) => ({
   },
 }));
 
-/**
- * Zustand store for managing in-app notifications.
- * The current notification object. Contains a message and a type (e.g., 'success', 'error').
- * Setter and reset of notifications.
- */
 export const useNotificationMessageStore = create<UseNotificationMessageStateTypes>((set) => ({
   notification: {
     message: null,
@@ -153,14 +148,11 @@ export const useNotificationMessageStore = create<UseNotificationMessageStateTyp
   resetNotification: () => set({ notification: { message: null, type: null } }),
 }));
 
-/**
- * Zustand store for managing the state of the Sudoku game board.
- * Contains the initial generated board and the complete solution board.
- * @params level, factor, errors, score for the current game.
- * Setters and reset params.
- */
-export const useBoardStore = create<UseBoardStateTypes>((set) => ({
-  /**  */
+export const useBoardStore = create<SavedGameAwareness>((set) => ({
+  hasSavedGame: false,
+  savedGameLevel: null,
+  setHasSavedGame: (hasSavedGame) => set({ hasSavedGame }),
+  setSavedGameLevel: (level) => set({ savedGameLevel: level }),
   boardState: {
     boardStored: [],
     solutionBoardStored: [],

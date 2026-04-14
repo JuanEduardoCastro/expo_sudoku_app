@@ -3,12 +3,14 @@ import ButtonNav from "@/components/shared/ButtonNav";
 import { H_PAD } from "@/constants/dimensions";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
+import { useBoardStore } from "@/store/store_zustand";
 import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 const index = () => {
   const { colors, styles } = useStyles(createStyles);
+  const { hasSavedGame, savedGameLevel } = useBoardStore();
   const router = useRouter();
 
   return (
@@ -20,7 +22,11 @@ const index = () => {
       <View style={{ height: 36 }} />
       <Text style={styles.sectionLabel}>Choose your level:</Text>
       <View style={{ height: 12 }} />
-      <LevelBox />
+      <LevelBox hasSavedGame={hasSavedGame} />
+      <View style={{ height: 14 }} />
+      {hasSavedGame && (
+        <ButtonNav title={`Continue playing!`} onPress={() => router.push(`/Game?resume=true`)} />
+      )}
       <View style={{ height: 28 }} />
 
       <View style={styles.buttonBox}>

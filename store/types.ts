@@ -72,3 +72,10 @@ interface ScoresLevels {
   bestTime: number;
   streak: number;
 }
+
+export interface SavedGameAwareness extends UseBoardStateTypes {
+  hasSavedGame: boolean;
+  savedGameLevel: number | null;
+  setHasSavedGame: (hasSavedGame: boolean) => void;
+  setSavedGameLevel: (level: number | null) => void;
+}

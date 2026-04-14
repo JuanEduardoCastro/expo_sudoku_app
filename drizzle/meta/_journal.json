@@ -8,6 +8,13 @@
       "when": 1766846608622,
       "tag": "0000_cute_excalibur",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1776179449997,
+      "tag": "0001_moaning_squirrel_girl",
+      "breakpoints": true
     }
   ]
 }

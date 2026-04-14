@@ -1,0 +1,1 @@
+ALTER TABLE `saved_games` ADD `remaining_clues` integer DEFAULT 0 NOT NULL;

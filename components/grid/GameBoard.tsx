@@ -9,7 +9,7 @@ import useLevel from "@/hooks/useLevel";
 import useLoadSound from "@/hooks/useLoadSound";
 import useStyles from "@/hooks/useStyles";
 import useTimer from "@/hooks/useTimer";
-import { saveCompletedGame } from "@/store/dbServices";
+import { saveCompletedGame, savedGamesService } from "@/store/dbServices";
 import {
   useBoardStore,
   useGameScoresStore,
@@ -17,8 +17,8 @@ import {
 } from "@/store/store_zustand";
 import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
 import { useRouter } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { AppState, Pressable, StyleSheet, Text, View } from "react-native";
 import ConfirmationModal from "../shared/ConfirmationModal";
 import NumberCell from "./NumberCell";
 import NumberPad from "./NumberPad";
@@ -27,24 +27,42 @@ type GameBoardProps = {
   generatedBoard: Board;
   solution: Board;
   level: number;
-  backButton?: () => void;
+  initialTimer?: number;
+  initialClues?: number;
 };
 
-const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardProps) => {
+const GameBoard = ({
+  generatedBoard,
+  solution,
+  level,
+  initialTimer,
+  initialClues,
+}: GameBoardProps) => {
   const { colors, styles } = useStyles(createStyles);
   const { onClickHapticHeavy } = useHaptic();
   const { playSound } = useLoadSound();
+  const isMounted = useRef(false);
   const lastPlacedCell = useRef<CellProps | null>(null);
 
   const router = useRouter();
 
   const { notification, setNotification, resetNotification } = useNotificationMessageStore();
-  const { score, setScore, errors, setErrors, resetBoard, factor, setFactor } = useBoardStore();
+  const {
+    score,
+    setScore,
+    errors,
+    setErrors,
+    resetBoard,
+    factor,
+    setFactor,
+    setHasSavedGame,
+    setSavedGameLevel,
+  } = useBoardStore();
 
-  const { timer, timerRunning, setTimerRunning, formatTimer, timerMultiply } = useTimer();
+  const { timer, setTimer, timerRunning, setTimerRunning, formatTimer, timerMultiply } = useTimer();
   const { levelString, clueCount, scoreMultiply } = useLevel(level);
 
-  const [remainingClues, setRemainingClues] = useState(clueCount);
+  const [remainingClues, setRemainingClues] = useState(initialClues ?? clueCount);
   const [noCluesModal, setNoCluesModal] = useState(false);
 
   const [gameCompleteModal, setGameCompleteModal] = useState(false);
@@ -67,6 +85,34 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
   const solutionBoard = solution;
 
   useEffect(() => {
+    if (initialTimer && initialTimer > 0) {
+      setTimer(initialTimer);
+    }
+  }, []);
+
+  const saveCurrentGame = useCallback(async () => {
+    await savedGamesService.save({
+      level,
+      boardState: JSON.stringify(board),
+      solutionState: JSON.stringify(solutionBoard),
+      currentScore: score,
+      currentError: errors,
+      elapsedTime: timer,
+      remainingClues: remainingClues,
+    });
+  }, [level, board, solutionBoard, score, errors, timer, remainingClues]);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (nextState) => {
+      if (nextState === "background") {
+        saveCurrentGame();
+      }
+    });
+
+    return () => sub.remove();
+  }, [saveCurrentGame]);
+
+  useEffect(() => {
     if (!notification.message) return;
     const t = setTimeout(() => resetNotification(), 2000);
     return () => clearTimeout(t);
@@ -78,6 +124,10 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
   }, [timerMultiply, scoreMultiply]);
 
   useEffect(() => {
+    if (!isMounted.current) {
+      isMounted.current = true;
+      return;
+    }
     if (errors > 3) {
       setStreakBrokeModal(true);
     }
@@ -156,6 +206,9 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
           .then(() => {
             console.log("game saved to database");
             useGameScoresStore.getState().loadFromDatabase();
+            savedGamesService.delete();
+            setHasSavedGame(false);
+            setSavedGameLevel(null);
           })
           .catch((error) => {
             console.error("Error saving game:", error);
@@ -243,6 +296,14 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
     }
   };
 
+  const handleGoBackAndSaveCurrent = async () => {
+    await saveCurrentGame();
+    setHasSavedGame(true);
+    setSavedGameLevel(level);
+    resetBoard();
+    router.back();
+  };
+
   const handleClueCount = () => {
     if (remainingClues === 0) {
       setNoCluesModal(true);
@@ -263,7 +324,7 @@ const GameBoard = ({ generatedBoard, solution, level, backButton }: GameBoardPro
   return (
     <View style={styles.container}>
       <View style={[styles.topBar, SHADOW.standar]}>
-        <Pressable onPress={backButton}>
+        <Pressable onPress={handleGoBackAndSaveCurrent}>
           <Text style={styles.levelBackArrow}>‹</Text>
         </Pressable>
         <View style={[styles.levelPill, { backgroundColor: levelDisplay + "28" }]}>

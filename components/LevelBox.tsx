@@ -9,7 +9,11 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-const LevelBox = () => {
+type LevelBoxProps = {
+  hasSavedGame?: boolean;
+};
+
+const LevelBox = ({ hasSavedGame }: LevelBoxProps) => {
   const { colors, styles } = useStyles(createStyles);
   const { onClickHapticHeavy } = useHaptic();
   const { colorMode } = useColorMode();
@@ -26,9 +30,10 @@ const LevelBox = () => {
     <View style={styles.levelBox}>
       {Object.values(levels).map((level) => (
         <Pressable
+          disabled={!!hasSavedGame}
           key={level.id}
           onPress={() => handleClick(level.id)}
-          style={[styles.levelCard, SHADOW.standar]}
+          style={[styles.levelCard, SHADOW.standar, { opacity: hasSavedGame ? 0.6 : 1 }]}
         >
           <View style={[styles.levelDot, { backgroundColor: level.color }]} />
           <View style={{ flex: 1, gap: 2 }}>
