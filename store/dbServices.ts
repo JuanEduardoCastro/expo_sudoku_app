@@ -181,7 +181,7 @@ export const saveCompletedGame = async (gameData: {
   await globalStatsService.incrementAfterGame(gameScore);
   await levelStatsService.incrementAfterGame(gameScore);
 
-  console.log("Game saved successfully:", gameScore);
+  __DEV__ && console.log("Game saved successfully:", gameScore);
 };
 
 export const clearAllData = async (): Promise<void> => {
@@ -208,5 +208,5 @@ export const clearAllData = async (): Promise<void> => {
     });
   }
 
-  console.log("All data cleared successfully.");
+  __DEV__ && console.log("All data cleared successfully.");
 };

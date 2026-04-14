@@ -1,5 +1,6 @@
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
+import { formatSeconds } from "@/utils/gameLogic";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -57,7 +58,9 @@ const LevelStatCard = ({ levelStats, levelColor }: LevelStatsPropps) => {
             <View style={styles.expandBody}>
               <View style={styles.expandGrid}>
                 <View style={styles.expandTile}>
-                  <Text style={styles.expandTileValue}>{levelStats.besttime}</Text>
+                  <Text style={styles.expandTileValue}>
+                    {levelStats.besttime ? formatSeconds(levelStats.besttime) : "--"}
+                  </Text>
                   <Text style={styles.expandTileLabel}>Best time</Text>
                 </View>
                 <View style={styles.expandTile}>

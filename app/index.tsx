@@ -55,11 +55,13 @@ const index = () => {
       <View style={{ height: 36 }} />
       <Text style={styles.sectionLabel}>Choose your level:</Text>
       <View style={{ height: 12 }} />
-      <LevelBox hasSavedGame={hasSavedGame} onDisabledPress={handleDisabledLevelPress} />
+      <LevelBox
+        hasSavedGame={hasSavedGame}
+        onDisabledPress={handleDisabledLevelPress}
+        savedGameLevel={savedGameLevel || null}
+      />
       <View style={{ height: 14 }} />
-      {hasSavedGame && (
-        <ButtonNav title={`Continue playing!`} onPress={() => router.push(`/Game?resume=true`)} />
-      )}
+
       <View style={{ height: 28 }} />
 
       <View style={styles.buttonBox}>
@@ -81,7 +83,7 @@ const index = () => {
         content2={`You will also lose your current streak of ${savedLevelStreak} on ${savedLevelName}.`}
         cancelText={"Keep playing"}
         cancelOnPress={handleCancelWarning}
-        acceptText={"Start new game!"}
+        acceptText={"New game!"}
         acceptOnPress={handleConfirmNewGame}
       />
     </View>

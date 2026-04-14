@@ -1,12 +1,11 @@
 import GameBoard from "@/components/grid/GameBoard";
 import { TColors } from "@/constants/types";
-import useHaptic from "@/hooks/useHaptic";
 import useLevel from "@/hooks/useLevel";
 import useStyles from "@/hooks/useStyles";
 import { savedGamesService } from "@/store/dbServices";
 import { useBoardStore } from "@/store/store_zustand";
 import { generatesBoard } from "@/utils/gameLogic";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -23,15 +22,12 @@ export type Board = CellProps[][];
 const Game = () => {
   const { colors, styles } = useStyles(createStyles);
   const { level, resume } = useLocalSearchParams();
-  const router = useRouter();
 
   const levelId = Number(level);
   const { difficulty } = useLevel(levelId);
   const [boardToUse, setBoardToUse] = useState<Board | null>(null);
   const [solutionToUse, setSolutionToUse] = useState<Board | null>(null);
   const [initialCLues, setInitialCLues] = useState<number | null>(null);
-
-  // const { board, solution } = useMemo(() => generatesBoard(difficulty), [difficulty]);
 
   const { board, solution } = useMemo(() => {
     if (resume) {
@@ -41,10 +37,8 @@ const Game = () => {
     }
   }, [difficulty, resume]);
 
-  const { setBoardState, setLevel, resetBoard, setScore, setErrors } = useBoardStore();
-  const { onClickHapticHeavy } = useHaptic();
+  const { setBoardState, setLevel, setScore, setErrors } = useBoardStore();
 
-  // const [confirmExitGame, setConfirmExitGame] = useState<boolean>(false);
   const [isReady, setIsReady] = useState(false);
   const [resolvedLevel, setResolvedLevel] = useState(0);
   const [initialTimer, setInitialTimer] = useState(0);
@@ -72,47 +66,10 @@ const Game = () => {
       });
     }
     if (!resume) {
-      // generatesBoard(difficulty);
-      // setBoardState({ boardStored: board, solutionBoardStored: solution });
       setLevel(levelId);
       setIsReady(true);
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (!isResume) return;
-  //   savedGamesService.load().then((saved) => {
-  //     if (!saved) return;
-  //     const loadedBoard = JSON.parse(saved.boardState);
-  //     const loadedSolution = JSON.parse(saved.solutionState);
-  //     setBoardState({ boardStored: loadedBoard, solutionBoardStored: loadedSolution });
-  //     setScore(saved.currentScore);
-  //     setErrors(saved.currentError);
-  //   });
-  // }, [isResume]);
-
-  // useEffect(() => {
-  //   setBoardState({ boardStored: board, solutionBoardStored: solution });
-  //   setLevel(Number(level));
-  //   return () => resetBoard();
-  // }, []);
-
-  // const handleBackButton = () => {
-  //   setConfirmExitGame(true);
-  //   onClickHapticHeavy();
-  // };
-
-  // const handleOpenModal = () => {
-  //   onClickHapticHeavy();
-  //   setConfirmExitGame(!confirmExitGame);
-  // };
-
-  const goBackCommand = () => {
-    onClickHapticHeavy();
-    // setConfirmExitGame(false);
-    resetBoard();
-    router.back();
-  };
 
   if (!isReady)
     return (
@@ -132,20 +89,6 @@ const Game = () => {
           initialClues={initialCLues ?? undefined}
         />
       </View>
-
-      {/* {confirmExitGame && (
-        <ConfirmationModal
-          title={"Leave the game?"}
-          icon="🚪"
-          visible={confirmExitGame}
-          content="Your current progress will be lost."
-          content2="Are you sure you want exit?"
-          acceptText="Yes"
-          acceptOnPress={goBackCommand}
-          cancelText="No"
-          cancelOnPress={handleOpenModal}
-        />
-      )} */}
     </SafeAreaView>
   );
 };

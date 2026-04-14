@@ -34,7 +34,7 @@ export default function RootLayout() {
         useBoardStore.getState().setSavedGameLevel(savedGame.level ?? null);
       }
 
-      console.log("DB initialized");
+      __DEV__ && console.log("DB initialized");
     } catch (error) {
       __DEV__ && console.log(error);
     } finally {

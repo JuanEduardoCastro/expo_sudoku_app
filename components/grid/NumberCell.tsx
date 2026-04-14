@@ -20,6 +20,7 @@ export type NumberCellProps = {
   highlighted?: boolean;
   rotatesCells?: boolean;
   editable?: boolean;
+  isError?: boolean;
   onPress: (cell: CellProps) => void;
   rotate?: boolean;
   setRotate?: (rotate: boolean) => void;
@@ -31,6 +32,7 @@ const NumberCell = ({
   cell,
   selected,
   editable,
+  isError,
   highlighted,
   rotatesCells,
   onPress,
@@ -98,6 +100,7 @@ const NumberCell = ({
               borderBottomWidth: 0.5,
               borderBottomColor: colorMode === "dark" ? colors.border : colors.veryLightGray,
             },
+        isError && { backgroundColor: colors.danger + 16 },
       ]}
       onPress={() => onPress(cell)}
     >

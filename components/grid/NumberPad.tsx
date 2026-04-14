@@ -7,9 +7,10 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 export type NumberPadProps = {
   onPress: (number: number) => void;
   clueCell?: number | null;
+  completedNumbers?: Set<number>;
 };
 
-const NumberPad = ({ onPress, clueCell }: NumberPadProps) => {
+const NumberPad = ({ onPress, clueCell, completedNumbers }: NumberPadProps) => {
   const { colors, styles } = useStyles(createStyles);
 
   return (
@@ -18,15 +19,22 @@ const NumberPad = ({ onPress, clueCell }: NumberPadProps) => {
         <Pressable
           style={[
             styles.numberBox,
+            completedNumbers?.has(number) && { opacity: 0.4 },
             number === clueCell && {
               backgroundColor: colors.accentBase,
               borderColor: colors.accentSoft,
             },
           ]}
           key={index}
-          onPress={() => onPress(number)}
+          onPress={() => !completedNumbers?.has(number) && onPress(number)}
         >
-          <Text style={[styles.numberText, number === clueCell && { color: colors.accentLight }]}>
+          <Text
+            style={[
+              styles.numberText,
+              { color: number === clueCell ? colors.accentLight : colors.text },
+              completedNumbers?.has(number) && { color: colors.cellGiven },
+            ]}
+          >
             {number}
           </Text>
         </Pressable>

@@ -23,6 +23,6 @@ export async function shareBackup(): Promise<void> {
   if (await Sharing.isAvailableAsync()) {
     await Sharing.shareAsync(fileUri);
   } else {
-    console.log("Sharing not available");
+    __DEV__ && console.log("Sharing not available");
   }
 }

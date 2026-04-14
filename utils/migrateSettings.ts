@@ -7,12 +7,12 @@ export async function migrateSettings(): Promise<void> {
   const migrate = await AsyncStorage.getItem(MIGRATION_KEY);
 
   if (migrate === "true") {
-    console.log("Settings already migrated");
+    __DEV__ && console.log("Settings already migrated");
     return;
   }
 
   try {
-    console.log("Migrating settings from AsyncStorage to SQLite...");
+    __DEV__ && console.log("Migrating settings from AsyncStorage to SQLite...");
 
     const colorMode = await AsyncStorage.getItem("colorMode");
     if (colorMode) {
@@ -25,8 +25,8 @@ export async function migrateSettings(): Promise<void> {
     }
 
     await AsyncStorage.setItem(MIGRATION_KEY, "true");
-    console.log("Settings migrated successfully");
+    __DEV__ && console.log("Settings migrated successfully");
   } catch (error) {
-    console.error("Settings migration failed:", error);
+    __DEV__ && console.error("Settings migration failed:", error);
   }
 }

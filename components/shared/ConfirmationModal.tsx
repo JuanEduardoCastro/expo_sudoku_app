@@ -1,5 +1,6 @@
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
+import { formatSeconds } from "@/utils/gameLogic";
 import React from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -61,7 +62,9 @@ const ConfirmationModal = ({
                 <Text style={styles.statLabel}>Score</Text>
               </View>
               <View style={styles.statBox}>
-                <Text style={styles.statValue}>{finishedData?.timer}</Text>
+                <Text style={styles.statValue}>
+                  {finishedData?.timer ? formatSeconds(finishedData?.timer) : "--"}
+                </Text>
                 <Text style={styles.statLabel}>Time</Text>
               </View>
               <View style={styles.statBox}>

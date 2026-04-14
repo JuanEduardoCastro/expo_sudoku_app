@@ -17,7 +17,7 @@ import {
 } from "@/store/store_zustand";
 import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
 import { useRouter } from "expo-router";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AppState, Pressable, StyleSheet, Text, View } from "react-native";
 import ConfirmationModal from "../shared/ConfirmationModal";
 import NumberCell from "./NumberCell";
@@ -43,6 +43,7 @@ const GameBoard = ({
   const { playSound } = useLoadSound();
   const isMounted = useRef(false);
   const lastPlacedCell = useRef<CellProps | null>(null);
+  const gameCompletedRef = useRef(false);
 
   const router = useRouter();
 
@@ -78,6 +79,8 @@ const GameBoard = ({
   const [rotate, setRotate] = useState<boolean>(false);
 
   const [clueCell, setClueCell] = useState<number | null>(null);
+  const [activeNumber, setActiveNumber] = useState<number | null>(null);
+  const [errorCell, setErrorCell] = useState<{ row: number; col: number } | null>(null);
 
   const levels = getLevels(SCHEMES);
   const levelDisplay = levels[level - 1] ? levels[level - 1].color : colors.lightgray;
@@ -136,11 +139,13 @@ const GameBoard = ({
   useEffect(() => {
     function checkCells() {
       const cell = lastPlacedCell.current;
+      lastPlacedCell.current = null;
+
       if (cell !== null) {
         const rotateSelection = new Set<string>();
         let bonus = 0;
 
-        if (checkRow(board, cell.row)) {
+        if (checkRow(board, cell!.row)) {
           for (let i = 0; i < 9; i++) {
             rotateSelection.add(`${cell!.row},${i}`);
           }
@@ -165,11 +170,13 @@ const GameBoard = ({
           bonus += 10 * factor;
           setRotate(true);
         }
+
+        setRotatedCells(rotateSelection);
+
         if (bonus > 0) {
           // setScore(score! + bonus);
           return score + bonus;
         }
-        setRotatedCells(rotateSelection);
       }
     }
 
@@ -178,7 +185,8 @@ const GameBoard = ({
       setScore(currentScore);
     }
 
-    if (checkGame(board)) {
+    if (checkGame(board) && !gameCompletedRef.current) {
+      gameCompletedRef.current = true;
       const computed = score + Math.floor(timer! * level);
       setFinalScore(computed);
       setScore(computed);
@@ -204,7 +212,7 @@ const GameBoard = ({
           errorCount: errors,
         })
           .then(() => {
-            console.log("game saved to database");
+            __DEV__ && console.log("game saved to database");
             useGameScoresStore.getState().loadFromDatabase();
             savedGamesService.delete();
             setHasSavedGame(false);
@@ -229,9 +237,18 @@ const GameBoard = ({
       setHighlightedCells(new Set());
       return;
     }
+
     setSelectedCell(cell);
+
+    if (cell.value !== null) {
+      setActiveNumber(cell.value);
+    } else {
+      setActiveNumber(null);
+    }
+
     if (level < 3) {
       setHighlightedCells(calculateHighlightedCells(cell));
+      setActiveNumber(null);
     }
   };
 
@@ -255,6 +272,7 @@ const GameBoard = ({
   };
 
   const handleClickNumberPad = (number: number) => {
+    setActiveNumber(number);
     if (!selectedCell) {
       setNotification({
         message: "Select a cell first",
@@ -282,8 +300,11 @@ const GameBoard = ({
         setClueCell(null);
         setScore(score! + number * factor);
         setSelectedCell(null);
+        setActiveNumber(null);
         setHighlightedCells(new Set());
       } else {
+        setErrorCell({ row: selectedCell.row, col: selectedCell.col });
+        setTimeout(() => setErrorCell(null), 1000);
         setErrors(errors! + 1);
         setScore(Math.max(0, score - 5 * factor));
         playSound();
@@ -320,6 +341,22 @@ const GameBoard = ({
       });
     }
   };
+
+  const completedNumbers = useMemo(() => {
+    const counts: Record<number, number> = {};
+    board.forEach((row) =>
+      row.forEach((cell) => {
+        if (cell.value !== null) {
+          counts[cell.value] = (counts[cell.value] ?? 0) + 1;
+        }
+      }),
+    );
+    const completed = new Set<number>();
+    for (const [num, count] of Object.entries(counts)) {
+      if (count === 9) completed.add(Number(num));
+    }
+    return completed;
+  }, [board]);
 
   return (
     <View style={styles.container}>
@@ -378,12 +415,16 @@ const GameBoard = ({
                 key={`${rowIndex},${colIndex}`}
                 cell={cell}
                 onPress={handleCellPress}
-                highlighted={highlightedCells.has(`${rowIndex},${colIndex}`)}
+                highlighted={
+                  highlightedCells.has(`${rowIndex},${colIndex}`) ||
+                  (activeNumber !== null && cell.value === activeNumber)
+                }
                 rotatesCells={rotatedCells.has(`${rowIndex},${colIndex}`)}
                 selected={selectedCell?.row === cell.row && selectedCell?.col === cell.col}
                 rotate={rotate}
                 setRotate={setRotate}
                 editable={cell.editable}
+                isError={errorCell?.row === cell.row && errorCell?.col === cell.col}
               />
             ))}
           </View>
@@ -423,7 +464,11 @@ const GameBoard = ({
 
       <View style={{ height: 14 }} />
 
-      <NumberPad onPress={handleClickNumberPad} clueCell={clueCell} />
+      <NumberPad
+        onPress={handleClickNumberPad}
+        clueCell={clueCell}
+        completedNumbers={completedNumbers}
+      />
 
       {
         <ConfirmationModal

@@ -1,5 +1,5 @@
 import { SCHEMES } from "@/constants/colors";
-import { getLevels, TEST_LEVEL } from "@/constants/levels";
+import { getLevels } from "@/constants/levels";
 import { SHADOW } from "@/constants/shadows";
 import { TColors } from "@/constants/types";
 import { useColorMode } from "@/context/ColorModeContext";
@@ -11,10 +11,11 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type LevelBoxProps = {
   hasSavedGame?: boolean;
+  savedGameLevel?: number | null;
   onDisabledPress?: (levelId: number) => void;
 };
 
-const LevelBox = ({ hasSavedGame, onDisabledPress }: LevelBoxProps) => {
+const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxProps) => {
   const { colors, styles } = useStyles(createStyles);
   const { onClickHapticHeavy } = useHaptic();
   const { colorMode } = useColorMode();
@@ -57,11 +58,35 @@ const LevelBox = ({ hasSavedGame, onDisabledPress }: LevelBoxProps) => {
           </View>
         </Pressable>
       ))}
-      {__DEV__ && (
+      {hasSavedGame && (
+        <Pressable
+          onPress={() => router.push(`/Game?resume=true`)}
+          style={[styles.levelCard, SHADOW.standar]}
+        >
+          <View style={[styles.levelDot, { backgroundColor: "transparent" }]} />
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text style={styles.levelText}>Continue playing!</Text>
+            <Text style={styles.levelTextSub}>
+              {savedGameLevel ? levels[savedGameLevel].name + " level" : ""}
+            </Text>
+          </View>
+          <View style={styles.levelArrow}>
+            <Text
+              style={[
+                styles.levelArrowIcon,
+                { color: colorMode === "dark" ? colors.accentLight : colors.gray },
+              ]}
+            >
+              ›
+            </Text>
+          </View>
+        </Pressable>
+      )}
+      {/* {__DEV__ && (
         <Pressable onPress={() => handleClick(TEST_LEVEL.id)} style={styles.levelCard}>
           <Text style={styles.levelText}>For test</Text>
         </Pressable>
-      )}
+      )} */}
     </View>
   );
 };
