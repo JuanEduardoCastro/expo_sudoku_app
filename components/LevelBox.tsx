@@ -11,9 +11,10 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type LevelBoxProps = {
   hasSavedGame?: boolean;
+  onDisabledPress?: (levelId: number) => void;
 };
 
-const LevelBox = ({ hasSavedGame }: LevelBoxProps) => {
+const LevelBox = ({ hasSavedGame, onDisabledPress }: LevelBoxProps) => {
   const { colors, styles } = useStyles(createStyles);
   const { onClickHapticHeavy } = useHaptic();
   const { colorMode } = useColorMode();
@@ -22,18 +23,22 @@ const LevelBox = ({ hasSavedGame }: LevelBoxProps) => {
   const levels = getLevels(SCHEMES);
 
   const handleClick = (level: number) => {
-    router.push({ pathname: "/Game", params: { level } });
-    onClickHapticHeavy();
+    if (hasSavedGame) {
+      onDisabledPress?.(level);
+      return;
+    } else {
+      router.push({ pathname: "/Game", params: { level } });
+      onClickHapticHeavy();
+    }
   };
 
   return (
     <View style={styles.levelBox}>
       {Object.values(levels).map((level) => (
         <Pressable
-          disabled={!!hasSavedGame}
           key={level.id}
           onPress={() => handleClick(level.id)}
-          style={[styles.levelCard, SHADOW.standar, { opacity: hasSavedGame ? 0.6 : 1 }]}
+          style={[styles.levelCard, SHADOW.standar, { opacity: hasSavedGame ? 0.5 : 1 }]}
         >
           <View style={[styles.levelDot, { backgroundColor: level.color }]} />
           <View style={{ flex: 1, gap: 2 }}>

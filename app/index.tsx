@@ -1,17 +1,50 @@
 import LevelBox from "@/components/LevelBox";
 import ButtonNav from "@/components/shared/ButtonNav";
+import ConfirmationModal from "@/components/shared/ConfirmationModal";
+import { SCHEMES } from "@/constants/colors";
 import { H_PAD } from "@/constants/dimensions";
+import { getLevels } from "@/constants/levels";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
-import { useBoardStore } from "@/store/store_zustand";
+import { savedGamesService } from "@/store/dbServices";
+import { useBoardStore, useGameScoresStore } from "@/store/store_zustand";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 const index = () => {
   const { colors, styles } = useStyles(createStyles);
-  const { hasSavedGame, savedGameLevel } = useBoardStore();
+  const { hasSavedGame, savedGameLevel, setHasSavedGame, setSavedGameLevel } = useBoardStore();
+  const { scoresByLevels } = useGameScoresStore();
+
   const router = useRouter();
+  const levels = getLevels(SCHEMES);
+
+  const savedLevelName: string =
+    levels.find((level) => level.id === savedGameLevel)?.name ?? "current";
+  const savedLevelStreak: number =
+    scoresByLevels.find((score) => score.level === savedGameLevel)?.streak ?? 0;
+
+  const [warningModal, setWarningModal] = useState(false);
+  const [pendingLevel, setPendingLevel] = useState<number | null>(null);
+
+  const handleDisabledLevelPress = (levelId: number) => {
+    setPendingLevel(levelId);
+    setWarningModal(true);
+  };
+
+  const handleConfirmNewGame = async () => {
+    await savedGamesService.delete();
+    setHasSavedGame(false);
+    setSavedGameLevel(null);
+    setWarningModal(false);
+    router.push({ pathname: "/Game", params: { level: pendingLevel } });
+  };
+
+  const handleCancelWarning = () => {
+    setWarningModal(false);
+    setPendingLevel(null);
+  };
 
   return (
     <View style={styles.container}>
@@ -22,7 +55,7 @@ const index = () => {
       <View style={{ height: 36 }} />
       <Text style={styles.sectionLabel}>Choose your level:</Text>
       <View style={{ height: 12 }} />
-      <LevelBox hasSavedGame={hasSavedGame} />
+      <LevelBox hasSavedGame={hasSavedGame} onDisabledPress={handleDisabledLevelPress} />
       <View style={{ height: 14 }} />
       {hasSavedGame && (
         <ButtonNav title={`Continue playing!`} onPress={() => router.push(`/Game?resume=true`)} />
@@ -40,6 +73,17 @@ const index = () => {
           <ButtonNav title="DesignPreview" onPress={() => router.push("/DesignPreview")} />
         </View>
       )}
+      <ConfirmationModal
+        visible={warningModal}
+        title={"Abandon saved game?"}
+        icon={"⚠️"}
+        content={`Your ${savedLevelName} game in progress will be deleted.`}
+        content2={`You will also lose your current streak of ${savedLevelStreak} on ${savedLevelName}.`}
+        cancelText={"Keep playing"}
+        cancelOnPress={handleCancelWarning}
+        acceptText={"Start new game!"}
+        acceptOnPress={handleConfirmNewGame}
+      />
     </View>
   );
 };
