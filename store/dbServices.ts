@@ -155,10 +155,10 @@ export const savedGamesService = {
     await db.delete(schema.savedGames);
   },
 
-  async exists(): Promise<boolean> {
-    const result = await db.select().from(schema.savedGames).limit(1);
-    return result.length > 0;
-  },
+  // async exists(): Promise<boolean> {
+  //   const result = await db.select().from(schema.savedGames).limit(1);
+  //   return result.length > 0;
+  // },
 };
 
 export const saveCompletedGame = async (gameData: {

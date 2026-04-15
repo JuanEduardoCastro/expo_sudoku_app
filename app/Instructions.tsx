@@ -30,7 +30,8 @@ const Instructions = () => {
           the nine 3x3 subgrids that compose the grid contain all of the digits from 1 to 9.
         </Text>
         <Text style={styles.ruleText}>
-          • Tap on an empty cell to select it. The row, column, and 3x3 grid will be highlighted.
+          • On Easy and Medium levels, selecting an empty cell highlights its row, column and 3x3
+          grid.
         </Text>
         <Text style={styles.ruleText}>
           • Tap a number from the number pad at the bottom to place it in the selected cell.

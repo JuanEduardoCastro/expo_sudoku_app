@@ -144,9 +144,3 @@ export function checkGrid(
 export function checkCell(board: Board, row: number, col: number, num: number | null = null) {
   return board[row]?.[col]?.value ?? null;
 }
-
-export function formatSeconds(seconds: number): string {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${minutes < 10 ? "0" : ""}${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-}

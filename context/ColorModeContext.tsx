@@ -25,7 +25,7 @@ export const ColorModeProvider = ({ children }: ColorModeProviderProps) => {
     const checkLocalStorage = async () => {
       const storedMode = (await settingsService.get("colorMode")) as ColorModeProps | null;
 
-      if (storedMode) {
+      if (storedMode === "light" || storedMode === "dark") {
         setColorMode(storedMode);
       } else {
         setColorMode((systemColorScheme as ColorModeProps) || "light");

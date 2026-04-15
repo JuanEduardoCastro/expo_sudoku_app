@@ -1,4 +1,5 @@
 import GameBoard from "@/components/grid/GameBoard";
+import Loading from "@/components/shared/Loading";
 import { TColors } from "@/constants/types";
 import useLevel from "@/hooks/useLevel";
 import useStyles from "@/hooks/useStyles";
@@ -6,8 +7,8 @@ import { savedGamesService } from "@/store/dbServices";
 import { useBoardStore } from "@/store/store_zustand";
 import { generatesBoard } from "@/utils/gameLogic";
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect, useMemo, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export type CellProps = {
@@ -25,58 +26,61 @@ const Game = () => {
 
   const levelId = Number(level);
   const { difficulty } = useLevel(levelId);
+
+  const { setLevel, setScore, setErrors } = useBoardStore();
+
   const [boardToUse, setBoardToUse] = useState<Board | null>(null);
   const [solutionToUse, setSolutionToUse] = useState<Board | null>(null);
-  const [initialCLues, setInitialCLues] = useState<number | null>(null);
-
-  const { board, solution } = useMemo(() => {
-    if (resume) {
-      return { board: [], solution: [] };
-    } else {
-      return generatesBoard(difficulty);
-    }
-  }, [difficulty, resume]);
-
-  const { setBoardState, setLevel, setScore, setErrors } = useBoardStore();
-
+  const [initialClues, setInitialClues] = useState<number | null>(null);
   const [isReady, setIsReady] = useState(false);
   const [resolvedLevel, setResolvedLevel] = useState(0);
   const [initialTimer, setInitialTimer] = useState(0);
+  const [board, setBoard] = useState<Board>([]);
+  const [solution, setSolution] = useState<Board>([]);
 
   useEffect(() => {
-    if (resume) {
-      savedGamesService.load().then((game) => {
+    if (!resume) {
+      setLevel(levelId);
+      const { board: newBoard, solution: newSolution } = generatesBoard(difficulty);
+      setBoard(newBoard);
+      setSolution(newSolution);
+      setIsReady(true);
+    }
+  }, [difficulty, resume]);
+
+  useEffect(() => {
+    const loadGame = async () => {
+      try {
+        const game = await savedGamesService.load();
         if (game) {
-          let parsedBoardToUse = JSON.parse(game.boardState);
-          let parsedSolutionToUse = JSON.parse(game.solutionState);
-          setBoardToUse(parsedBoardToUse);
-          setSolutionToUse(parsedSolutionToUse);
+          setBoardToUse(JSON.parse(game.boardState));
+          setSolutionToUse(JSON.parse(game.solutionState));
           setResolvedLevel(game.level);
           setScore(game.currentScore);
           setErrors(game.currentError);
           setInitialTimer(game.elapsedTime);
-          setBoardState({
-            boardStored: parsedBoardToUse,
-            solutionBoardStored: parsedSolutionToUse,
-          });
           setLevel(game.level);
           setIsReady(true);
-          setInitialCLues(game.remainingClues);
+          setInitialClues(game.remainingClues);
+        } else {
+          setLevel(levelId);
         }
-      });
-    }
+      } catch (error) {
+        __DEV__ && console.error("Failed to load saved game:", error);
+        setLevel(levelId);
+      } finally {
+        setIsReady(true);
+      }
+    };
     if (!resume) {
       setLevel(levelId);
       setIsReady(true);
+    } else {
+      loadGame();
     }
   }, []);
 
-  if (!isReady)
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
+  if (!isReady) return <Loading />;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -86,7 +90,7 @@ const Game = () => {
           solution={solutionToUse ?? solution}
           level={resolvedLevel || levelId}
           initialTimer={initialTimer}
-          initialClues={initialCLues ?? undefined}
+          initialClues={initialClues ?? undefined}
         />
       </View>
     </SafeAreaView>

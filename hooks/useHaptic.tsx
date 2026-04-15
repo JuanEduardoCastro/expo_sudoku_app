@@ -15,7 +15,7 @@ const useHaptic = () => {
           setVibEnabled(JSON.parse(storedValue));
         }
       } catch (error) {
-        console.error("Failed to load vibration setting from storage", error);
+        __DEV__ && console.error("Failed to load vibration setting from storage", error);
       }
     };
     loadVibrationSetting();
@@ -39,7 +39,7 @@ const useHaptic = () => {
       setVibEnabled(newValue);
       await settingsService.set(VIBRATION_ENABLED_KEY, JSON.stringify(newValue));
     },
-    [vibEnabled]
+    [vibEnabled],
   );
 
   return {

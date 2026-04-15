@@ -4,7 +4,7 @@ import { savedGamesService } from "@/store/dbServices";
 import * as schema from "@/store/schema";
 import { useBoardStore, useGameScoresStore } from "@/store/store_zustand";
 import { migrateSettings } from "@/utils/migrateSettings";
-import { drizzle } from "drizzle-orm/expo-sqlite";
+import { drizzle, ExpoSQLiteDatabase } from "drizzle-orm/expo-sqlite";
 import { migrate } from "drizzle-orm/expo-sqlite/migrator";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -20,8 +20,7 @@ SplashScreen.setOptions({
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  // TODO: check type of db
-  const initializeDB = async (rawDb: any) => {
+  const initializeDB = async (rawDb: SQLite.SQLiteDatabase) => {
     try {
       const drizzleDB = drizzle(rawDb, { schema });
       await migrate(drizzleDB, migrations);
@@ -42,7 +41,7 @@ export default function RootLayout() {
     }
   };
 
-  const seedInitialData = async (db: any) => {
+  const seedInitialData = async (db: ExpoSQLiteDatabase<typeof schema>) => {
     const levels = [
       { level: 1, name: "Easy" },
       { level: 2, name: "Medium" },

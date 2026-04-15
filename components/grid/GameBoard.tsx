@@ -1,29 +1,19 @@
-import { Board, CellProps } from "@/app/Game";
+import { Board } from "@/app/Game";
 import { SCHEMES } from "@/constants/colors";
 import { BOARD_WIDTH, H_PAD } from "@/constants/dimensions";
-import { getLevels, TEST_LEVEL } from "@/constants/levels";
+import { getLevels } from "@/constants/levels";
 import { SHADOW } from "@/constants/shadows";
 import { TColors } from "@/constants/types";
-import useHaptic from "@/hooks/useHaptic";
-import useLevel from "@/hooks/useLevel";
-import useLoadSound from "@/hooks/useLoadSound";
+import useGameBoard from "@/hooks/useGameBoard";
 import useStyles from "@/hooks/useStyles";
-import useTimer from "@/hooks/useTimer";
-import { saveCompletedGame, savedGamesService } from "@/store/dbServices";
-import {
-  useBoardStore,
-  useGameScoresStore,
-  useNotificationMessageStore,
-} from "@/store/store_zustand";
-import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
 import { useRouter } from "expo-router";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AppState, Pressable, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import ConfirmationModal from "../shared/ConfirmationModal";
 import NumberCell from "./NumberCell";
 import NumberPad from "./NumberPad";
 
-type GameBoardProps = {
+export type GameBoardProps = {
   generatedBoard: Board;
   solution: Board;
   level: number;
@@ -31,333 +21,45 @@ type GameBoardProps = {
   initialClues?: number;
 };
 
-const GameBoard = ({
-  generatedBoard,
-  solution,
-  level,
-  initialTimer,
-  initialClues,
-}: GameBoardProps) => {
+const GameBoard = (props: GameBoardProps) => {
   const { colors, styles } = useStyles(createStyles);
-  const { onClickHapticHeavy } = useHaptic();
-  const { playSound } = useLoadSound();
-  const isMounted = useRef(false);
-  const lastPlacedCell = useRef<CellProps | null>(null);
-  const gameCompletedRef = useRef(false);
-
   const router = useRouter();
 
-  const { notification, setNotification, resetNotification } = useNotificationMessageStore();
-  const {
-    score,
-    setScore,
-    errors,
-    setErrors,
-    resetBoard,
-    factor,
-    setFactor,
-    setHasSavedGame,
-    setSavedGameLevel,
-  } = useBoardStore();
-
-  const { timer, setTimer, timerRunning, setTimerRunning, formatTimer, timerMultiply } = useTimer();
-  const { levelString, clueCount, scoreMultiply } = useLevel(level);
-
-  const [remainingClues, setRemainingClues] = useState(initialClues ?? clueCount);
-  const [noCluesModal, setNoCluesModal] = useState(false);
-
-  const [gameCompleteModal, setGameCompleteModal] = useState(false);
-  const [finalScore, setFinalScore] = useState(0);
-
-  const [streakBrokeModal, setStreakBrokeModal] = useState(false);
-
-  const [board, setBoard] = useState<Board>(generatedBoard);
-
-  const [selectedCell, setSelectedCell] = useState<CellProps | null>(null);
-  const [highlightedCells, setHighlightedCells] = useState<Set<string>>(new Set());
-  const [rotatedCells, setRotatedCells] = useState<Set<string>>(new Set());
-  const [rotate, setRotate] = useState<boolean>(false);
-
-  const [clueCell, setClueCell] = useState<number | null>(null);
-  const [activeNumber, setActiveNumber] = useState<number | null>(null);
-  const [errorCell, setErrorCell] = useState<{ row: number; col: number } | null>(null);
-
   const levels = getLevels(SCHEMES);
-  const levelDisplay = levels[level - 1] ? levels[level - 1].color : colors.lightgray;
 
-  const solutionBoard = solution;
+  const levelDisplay = levels[props.level - 1] ? levels[props.level - 1].color : colors.lightgray;
 
-  useEffect(() => {
-    if (initialTimer && initialTimer > 0) {
-      setTimer(initialTimer);
-    }
-  }, []);
-
-  const saveCurrentGame = useCallback(async () => {
-    await savedGamesService.save({
-      level,
-      boardState: JSON.stringify(board),
-      solutionState: JSON.stringify(solutionBoard),
-      currentScore: score,
-      currentError: errors,
-      elapsedTime: timer,
-      remainingClues: remainingClues,
-    });
-  }, [level, board, solutionBoard, score, errors, timer, remainingClues]);
-
-  useEffect(() => {
-    const sub = AppState.addEventListener("change", (nextState) => {
-      if (nextState === "background") {
-        saveCurrentGame();
-      }
-    });
-
-    return () => sub.remove();
-  }, [saveCurrentGame]);
-
-  useEffect(() => {
-    if (!notification.message) return;
-    const t = setTimeout(() => resetNotification(), 2000);
-    return () => clearTimeout(t);
-  }, [notification.message]);
-
-  useEffect(() => {
-    const raw = scoreMultiply - timerMultiply;
-    setFactor(Math.max(1, raw));
-  }, [timerMultiply, scoreMultiply]);
-
-  useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true;
-      return;
-    }
-    if (errors > 3) {
-      setStreakBrokeModal(true);
-    }
-  }, [errors]);
-
-  useEffect(() => {
-    function checkCells() {
-      const cell = lastPlacedCell.current;
-      lastPlacedCell.current = null;
-
-      if (cell !== null) {
-        const rotateSelection = new Set<string>();
-        let bonus = 0;
-
-        if (checkRow(board, cell!.row)) {
-          for (let i = 0; i < 9; i++) {
-            rotateSelection.add(`${cell!.row},${i}`);
-          }
-          bonus += 10 * factor;
-          setRotate(true);
-        }
-        if (checkCol(board, cell!.col)) {
-          for (let i = 0; i < 9; i++) {
-            rotateSelection.add(`${i},${cell!.col}`);
-          }
-          bonus += 10 * factor;
-          setRotate(true);
-        }
-        if (checkGrid(board, cell!.row, cell!.col)) {
-          const startRow = Math.floor(cell!.row / 3) * 3;
-          const startCol = Math.floor(cell!.col / 3) * 3;
-          for (let row = startRow; row < startRow + 3; row++) {
-            for (let col = startCol; col < startCol + 3; col++) {
-              rotateSelection.add(`${row},${col}`);
-            }
-          }
-          bonus += 10 * factor;
-          setRotate(true);
-        }
-
-        setRotatedCells(rotateSelection);
-
-        if (bonus > 0) {
-          // setScore(score! + bonus);
-          return score + bonus;
-        }
-      }
-    }
-
-    const currentScore = checkCells();
-    if (currentScore !== undefined && currentScore > 0) {
-      setScore(currentScore);
-    }
-
-    if (checkGame(board) && !gameCompletedRef.current) {
-      gameCompletedRef.current = true;
-      const computed = score + Math.floor(timer! * level);
-      setFinalScore(computed);
-      setScore(computed);
-
-      setTimerRunning(false);
-      setSelectedCell(null);
-      setHighlightedCells(new Set());
-
-      const allCells = new Set<string>();
-      for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-          allCells.add(`${r},${c}`);
-        }
-      }
-      setRotatedCells(allCells);
-      setRotate(true);
-
-      if (level !== TEST_LEVEL.id) {
-        saveCompletedGame({
-          level: level,
-          points: computed,
-          timeSeconds: timer!,
-          errorCount: errors,
-        })
-          .then(() => {
-            __DEV__ && console.log("game saved to database");
-            useGameScoresStore.getState().loadFromDatabase();
-            savedGamesService.delete();
-            setHasSavedGame(false);
-            setSavedGameLevel(null);
-          })
-          .catch((error) => {
-            console.error("Error saving game:", error);
-          });
-      }
-      setTimeout(() => setGameCompleteModal(true), 950);
-    }
-  }, [board, score, factor, timer, level]);
-
-  const handleCellPress = (cell: CellProps) => {
-    if (!timerRunning) {
-      setTimerRunning(true);
-    }
-    if (!cell.editable === true) return;
-
-    if (selectedCell?.row === cell.row && selectedCell?.col === cell.col) {
-      setSelectedCell(null);
-      setHighlightedCells(new Set());
-      return;
-    }
-
-    setSelectedCell(cell);
-
-    if (cell.value !== null) {
-      setActiveNumber(cell.value);
-    } else {
-      setActiveNumber(null);
-    }
-
-    if (level < 3) {
-      setHighlightedCells(calculateHighlightedCells(cell));
-      setActiveNumber(null);
-    }
-  };
-
-  const calculateHighlightedCells = (cell: CellProps) => {
-    const newHighlightedCells = new Set<string>();
-    const { row, col } = cell;
-
-    for (let i = 0; i < 9; i++) {
-      newHighlightedCells.add(`${row},${i}`);
-      newHighlightedCells.add(`${i},${col}`);
-    }
-
-    const startRow = Math.floor(row / 3) * 3;
-    const startCol = Math.floor(col / 3) * 3;
-    for (let row = startRow; row < startRow + 3; row++) {
-      for (let col = startCol; col < startCol + 3; col++) {
-        newHighlightedCells.add(`${row},${col}`);
-      }
-    }
-    return newHighlightedCells;
-  };
-
-  const handleClickNumberPad = (number: number) => {
-    setActiveNumber(number);
-    if (!selectedCell) {
-      setNotification({
-        message: "Select a cell first",
-        type: "warning",
-      });
-      playSound();
-      onClickHapticHeavy();
-      return;
-    } else {
-      const checkNumberInCell = isValid(board, selectedCell!.row, selectedCell!.col, number);
-
-      if (checkNumberInCell) {
-        playSound();
-        onClickHapticHeavy();
-        const newBoard = board.map((row, rowIndex) =>
-          row.map((cell, cellIndex) =>
-            rowIndex === selectedCell!.row && cellIndex === selectedCell!.col
-              ? { ...cell, value: number, editable: false }
-              : cell,
-          ),
-        );
-        lastPlacedCell.current = selectedCell;
-
-        setBoard(newBoard);
-        setClueCell(null);
-        setScore(score! + number * factor);
-        setSelectedCell(null);
-        setActiveNumber(null);
-        setHighlightedCells(new Set());
-      } else {
-        setErrorCell({ row: selectedCell.row, col: selectedCell.col });
-        setTimeout(() => setErrorCell(null), 1000);
-        setErrors(errors! + 1);
-        setScore(Math.max(0, score - 5 * factor));
-        playSound();
-        onClickHapticHeavy();
-        setNotification({
-          message: "Invalid number",
-          type: "warning",
-        });
-      }
-    }
-  };
-
-  const handleGoBackAndSaveCurrent = async () => {
-    await saveCurrentGame();
-    setHasSavedGame(true);
-    setSavedGameLevel(level);
-    resetBoard();
-    router.back();
-  };
-
-  const handleClueCount = () => {
-    if (remainingClues === 0) {
-      setNoCluesModal(true);
-      return;
-    }
-    if (selectedCell !== null) {
-      setRemainingClues((prev) => prev - 1);
-      setScore(Math.max(0, score - 3 * factor));
-      setClueCell(solutionBoard[selectedCell!.row][selectedCell!.col].value);
-    } else {
-      setNotification({
-        message: "Select a cell first",
-        type: "warning",
-      });
-    }
-  };
-
-  const completedNumbers = useMemo(() => {
-    const counts: Record<number, number> = {};
-    board.forEach((row) =>
-      row.forEach((cell) => {
-        if (cell.value !== null) {
-          counts[cell.value] = (counts[cell.value] ?? 0) + 1;
-        }
-      }),
-    );
-    const completed = new Set<number>();
-    for (const [num, count] of Object.entries(counts)) {
-      if (count === 9) completed.add(Number(num));
-    }
-    return completed;
-  }, [board]);
-
+  const {
+    board,
+    selectedCell,
+    highlightedCells,
+    rotatedCells,
+    rotate,
+    setRotate,
+    clueCell,
+    activeNumber,
+    errorCell,
+    remainingClues,
+    noCluesModal,
+    setNoCluesModal,
+    gameCompleteModal,
+    setGameCompleteModal,
+    streakBrokeModal,
+    setStreakBrokeModal,
+    handleCellPress,
+    handleClickNumberPad,
+    handleGoBackAndSaveCurrent,
+    handleClueCount,
+    completedNumbers,
+    levelString,
+    score,
+    errors,
+    factor,
+    timer,
+    formatTimer,
+    notification,
+    resetBoard,
+  } = useGameBoard(props);
   return (
     <View style={styles.container}>
       <View style={[styles.topBar, SHADOW.standar]}>

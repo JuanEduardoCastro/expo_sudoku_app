@@ -8,8 +8,9 @@ import {
 import { TColors } from "@/constants/types";
 import { useColorMode } from "@/context/ColorModeContext";
 import useHaptic from "@/hooks/useHaptic";
+import useLoadSound from "@/hooks/useLoadSound";
 import useStyles from "@/hooks/useStyles";
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import SettingsCard from "./SettingsCard";
 
@@ -18,7 +19,7 @@ const SettingsBlock = () => {
   const { vibEnabled, setVibEnabled } = useHaptic();
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const [soundEnabled, setSoundEnabled] = useState(true);
+  const { soundEnabled, setSoundEnabled } = useLoadSound();
 
   const handleToggleColorMode = () => {
     toggleColorMode();

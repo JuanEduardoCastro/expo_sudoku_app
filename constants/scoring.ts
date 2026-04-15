@@ -1,0 +1,7 @@
+export const ROW_BONUS_MULTIPLAYER = 10;
+export const COL_BONUS_MULTIPLAYER = 10;
+export const GRID_BONUS_MULTIPLAYER = 10;
+
+export const CORRECT_PLACEMENT_MULTIPLAYER = 1;
+export const ERROR_PENALTY_MULTIPLAYER = 5;
+export const CLUE_COST_MULTIPLAYER = 3;

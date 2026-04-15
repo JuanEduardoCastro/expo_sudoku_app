@@ -1,5 +1,3 @@
-import { Board } from "@/app/Game";
-
 export interface UseNotificationMessageStateTypes {
   notification: {
     message: string | null;
@@ -13,15 +11,10 @@ export interface UseNotificationMessageStateTypes {
 }
 
 export interface UseBoardStateTypes {
-  boardState: {
-    boardStored: Board;
-    solutionBoardStored: Board;
-  };
   level: number;
   factor: number;
   errors: number;
   score: number;
-  setBoardState: (boardState: { boardStored: Board; solutionBoardStored: Board }) => void;
   setLevel: (level: number) => void;
   setFactor: (factor: number) => void;
   setErrors: (errors: number) => void;

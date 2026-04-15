@@ -1,10 +1,10 @@
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
-import { formatSeconds } from "@/utils/gameLogic";
+import { formatSeconds } from "@/utils/formatters";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-type LevelStatsPropps = {
+type LevelStatsProps = {
   levelStats: {
     besttime?: number;
     level?: number;
@@ -16,7 +16,7 @@ type LevelStatsPropps = {
   levelColor: string;
 };
 
-const LevelStatCard = ({ levelStats, levelColor }: LevelStatsPropps) => {
+const LevelStatCard = ({ levelStats, levelColor }: LevelStatsProps) => {
   const { colors, styles } = useStyles(createStyles);
 
   const [toggleCard, setToggleCard] = useState(false);
