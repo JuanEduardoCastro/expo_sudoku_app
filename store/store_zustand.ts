@@ -153,10 +153,6 @@ export const useBoardStore = create<SavedGameAwareness>((set) => ({
   savedGameLevel: null,
   setHasSavedGame: (hasSavedGame) => set({ hasSavedGame }),
   setSavedGameLevel: (level) => set({ savedGameLevel: level }),
-  boardState: {
-    boardStored: [],
-    solutionBoardStored: [],
-  },
   level: 0,
   factor: 0,
   errors: 0,

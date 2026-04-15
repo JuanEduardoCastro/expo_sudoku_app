@@ -1,6 +1,7 @@
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useGameScoresStore } from "@/store/store_zustand";
+import { formatSeconds } from "@/utils/formatters";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import GlobalStatsCard from "./GlobalStatsCard";
@@ -20,7 +21,10 @@ const GlobalScores = () => {
         <GlobalStatsCard title="Total games" value={globalScores.totalGames} />
         <GlobalStatsCard title="Max points" value={globalScores.maxPoints} />
         <GlobalStatsCard title="Perfect games" value={globalScores.perfectGames} />
-        <GlobalStatsCard title="Total time played" value={globalScores.totalTimePlay} />
+        <GlobalStatsCard
+          title="Total time played"
+          value={formatSeconds(globalScores.totalTimePlay)}
+        />
 
         {/* --------- ??  */}
         <GlobalStatsCard title="Good games" value={globalScores.goodGames} />

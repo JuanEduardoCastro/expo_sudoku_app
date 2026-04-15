@@ -52,7 +52,15 @@ const useGameBoard = ({
     setSavedGameLevel,
   } = useBoardStore();
 
-  const { timer, setTimer, timerRunning, setTimerRunning, formatTimer, timerMultiply } = useTimer();
+  const {
+    timer,
+    setTimer,
+    timerRunning,
+    setTimerRunning,
+    formatTimer,
+    timerMultiply,
+    setTimerMultiply,
+  } = useTimer();
   const { levelString, clueCount, scoreMultiply } = useLevel(level);
 
   const [remainingClues, setRemainingClues] = useState(initialClues ?? clueCount);
@@ -93,6 +101,7 @@ const useGameBoard = ({
   useEffect(() => {
     if (initialTimer && initialTimer > 0) {
       setTimer(initialTimer);
+      setTimerMultiply(Math.floor(initialTimer / 30));
     }
   }, []);
 
@@ -171,14 +180,16 @@ const useGameBoard = ({
       }
     }
 
-    const currentScore = checkCells();
-    if (currentScore !== undefined && currentScore > 0) {
-      setScore(currentScore);
+    const bonusScore = checkCells();
+    const scoreAfterBonus = bonusScore ?? score;
+
+    if (bonusScore !== undefined && bonusScore > 0) {
+      setScore(bonusScore);
     }
 
     if (checkGame(board) && !gameCompletedRef.current) {
       gameCompletedRef.current = true;
-      const computed = score + Math.floor(timer! * level);
+      const computed = scoreAfterBonus + Math.floor(timer! * level);
       setFinalScore(computed);
       setScore(computed);
 

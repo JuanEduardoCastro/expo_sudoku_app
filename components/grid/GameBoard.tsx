@@ -19,6 +19,7 @@ export type GameBoardProps = {
   level: number;
   initialTimer?: number;
   initialClues?: number;
+  initialTimerMultiplier?: number;
 };
 
 const GameBoard = (props: GameBoardProps) => {

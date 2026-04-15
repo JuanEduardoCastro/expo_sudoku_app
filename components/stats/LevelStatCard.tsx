@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 type LevelStatsProps = {
   levelStats: {
-    besttime?: number;
+    bestTime?: number;
     level?: number;
     maxPoints?: number;
     name?: string;
@@ -59,7 +59,7 @@ const LevelStatCard = ({ levelStats, levelColor }: LevelStatsProps) => {
               <View style={styles.expandGrid}>
                 <View style={styles.expandTile}>
                   <Text style={styles.expandTileValue}>
-                    {levelStats.besttime ? formatSeconds(levelStats.besttime) : "--"}
+                    {levelStats.bestTime ? formatSeconds(levelStats.bestTime) : "--"}
                   </Text>
                   <Text style={styles.expandTileLabel}>Best time</Text>
                 </View>

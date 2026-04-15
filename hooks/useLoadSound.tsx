@@ -27,9 +27,17 @@ const useLoadSound = () => {
     if (!soundEnabled) return;
     player.seekTo(0);
     player.play();
-  }, [player]);
+  }, [player, soundEnabled]);
 
-  return { playSound, soundEnabled, setSoundEnabled };
+  const setSoundEnabledAndPersit = useCallback(async (value: boolean) => {
+    try {
+      await settingsService.set("soundEnabled", JSON.stringify(value));
+    } catch (error) {
+      __DEV__ && console.error("Failed to persist sound setting", error);
+    }
+  }, []);
+
+  return { playSound, soundEnabled, setSoundEnabled: setSoundEnabledAndPersit };
 };
 
 export default useLoadSound;

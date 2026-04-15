@@ -25,6 +25,7 @@ const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxPro
 
   const handleClick = (level: number) => {
     if (hasSavedGame) {
+      onClickHapticHeavy();
       onDisabledPress?.(level);
       return;
     } else {
@@ -39,7 +40,7 @@ const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxPro
         <Pressable
           key={level.id}
           onPress={() => handleClick(level.id)}
-          style={[styles.levelCard, SHADOW.standar, { opacity: hasSavedGame ? 0.5 : 1 }]}
+          style={[styles.levelCard, SHADOW.standar, { opacity: hasSavedGame ? 0.7 : 1 }]}
         >
           <View style={[styles.levelDot, { backgroundColor: level.color }]} />
           <View style={{ flex: 1, gap: 2 }}>
@@ -67,7 +68,7 @@ const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxPro
           <View style={{ flex: 1, gap: 2 }}>
             <Text style={styles.levelText}>Continue playing!</Text>
             <Text style={styles.levelTextSub}>
-              {savedGameLevel ? levels[savedGameLevel].name + " level" : ""}
+              {savedGameLevel ? levels[savedGameLevel - 1]?.name + " level" : ""}
             </Text>
           </View>
           <View style={styles.levelArrow}>

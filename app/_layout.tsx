@@ -1,3 +1,4 @@
+import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
 import { ColorModeProvider } from "@/context/ColorModeContext";
 import migrations from "@/drizzle/migrations";
 import { savedGamesService } from "@/store/dbServices";
@@ -57,24 +58,26 @@ export default function RootLayout() {
   };
 
   return (
-    <SQLite.SQLiteProvider databaseName={DB_NAME} onInit={initializeDB}>
-      <ColorModeProvider>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false, title: "Home" }} />
-          <Stack.Screen name="Game" options={{ headerShown: false, title: "Game" }} />
-          <Stack.Screen name="Stats" options={{ headerShown: false, title: "Stats" }} />
-          <Stack.Screen
-            name="Instructions"
-            options={{ headerShown: false, title: "Instructions" }}
-          />
-          <Stack.Screen name="Settings" options={{ headerShown: false, title: "Settings" }} />
-          <Stack.Screen name="TestSQLite" options={{ headerShown: false, title: "TestSQLite" }} />
-          <Stack.Screen
-            name="DesignPreview"
-            options={{ headerShown: false, title: "DesignPreview" }}
-          />
-        </Stack>
-      </ColorModeProvider>
-    </SQLite.SQLiteProvider>
+    <ErrorBoundary>
+      <SQLite.SQLiteProvider databaseName={DB_NAME} onInit={initializeDB}>
+        <ColorModeProvider>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false, title: "Home" }} />
+            <Stack.Screen name="Game" options={{ headerShown: false, title: "Game" }} />
+            <Stack.Screen name="Stats" options={{ headerShown: false, title: "Stats" }} />
+            <Stack.Screen
+              name="Instructions"
+              options={{ headerShown: false, title: "Instructions" }}
+            />
+            <Stack.Screen name="Settings" options={{ headerShown: false, title: "Settings" }} />
+            <Stack.Screen name="TestSQLite" options={{ headerShown: false, title: "TestSQLite" }} />
+            <Stack.Screen
+              name="DesignPreview"
+              options={{ headerShown: false, title: "DesignPreview" }}
+            />
+          </Stack>
+        </ColorModeProvider>
+      </SQLite.SQLiteProvider>
+    </ErrorBoundary>
   );
 }

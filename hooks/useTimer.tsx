@@ -30,7 +30,15 @@ const useTimer = () => {
     return `${minutes < 10 ? 0 : ""}${minutes}:${seconds < 10 ? 0 : ""}${seconds}`;
   };
 
-  return { timer, setTimer, timerRunning, setTimerRunning, formatTimer, timerMultiply };
+  return {
+    timer,
+    setTimer,
+    timerRunning,
+    setTimerRunning,
+    formatTimer,
+    timerMultiply,
+    setTimerMultiply,
+  };
 };
 
 export default useTimer;
