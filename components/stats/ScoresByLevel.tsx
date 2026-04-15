@@ -8,7 +8,7 @@ import { StyleSheet, Text, View } from "react-native";
 import LevelStatCard from "./LevelStatCard";
 
 const ScoresByLevel = () => {
-  const { colors, styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
 
   const { scoresByLevels } = useGameScoresStore();
 

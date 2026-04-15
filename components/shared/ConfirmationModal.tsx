@@ -35,7 +35,7 @@ const ConfirmationModal = ({
   isFinishedModal = false,
   finishedData,
 }: ConfirmationModalProps) => {
-  const { colors, styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
 
   return (
     <Modal animationType="fade" transparent={true} visible={visible}>

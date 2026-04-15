@@ -15,7 +15,7 @@ type UserType = {
 };
 
 const TestSQLite = () => {
-  const { colors, styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
   const router = useRouter();
   const [dataFromDB, setDataFromDB] = useState<UserType[]>([]);
   const [gameScore, setGameScore] = useState<schema.GameScores[]>([]);

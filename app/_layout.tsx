@@ -62,7 +62,7 @@ export default function RootLayout() {
       <SQLite.SQLiteProvider databaseName={DB_NAME} onInit={initializeDB}>
         <ColorModeProvider>
           <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false, title: "Home" }} />
+            <Stack.Screen name="Index" options={{ headerShown: false, title: "Home" }} />
             <Stack.Screen name="Game" options={{ headerShown: false, title: "Game" }} />
             <Stack.Screen name="Stats" options={{ headerShown: false, title: "Stats" }} />
             <Stack.Screen

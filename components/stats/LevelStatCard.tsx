@@ -17,7 +17,7 @@ type LevelStatsProps = {
 };
 
 const LevelStatCard = ({ levelStats, levelColor }: LevelStatsProps) => {
-  const { colors, styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
 
   const [toggleCard, setToggleCard] = useState(false);
 

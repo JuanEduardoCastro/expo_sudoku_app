@@ -10,11 +10,14 @@ export type ButtonNavProps = {
 };
 
 const ButtonNav = ({ title, onPress }: ButtonNavProps) => {
-  const { colors, styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
   const { onClickHapticHeavy } = useHaptic();
 
   const handleOnPress = () => {
-    onPress && (onPress(), onClickHapticHeavy());
+    if (onPress) {
+      onPress();
+      onClickHapticHeavy();
+    }
   };
 
   return (

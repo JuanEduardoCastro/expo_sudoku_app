@@ -11,7 +11,7 @@ type SettingsCardProps = {
 };
 
 const SettingsCard = ({ title, value, icon, onPress }: SettingsCardProps) => {
-  const { colors, styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
 
   return (
     <Pressable onPress={onPress} style={styles.settingsLine}>

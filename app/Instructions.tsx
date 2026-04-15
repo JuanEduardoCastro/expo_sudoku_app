@@ -8,7 +8,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Instructions = () => {
-  const { colors, styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
   const router = useRouter();
 
   return (
@@ -20,23 +20,21 @@ const Instructions = () => {
 
       <View style={{ height: 42 }} />
 
-      {/* <View style={styles.header}>
-        <ButtonBack onPress={() => router.back()} />
-      </View> */}
       <View style={styles.content}>
-        {/* <Text style={styles.title}>How to Play Sudoku</Text> */}
         <Text style={styles.ruleText}>
-          • The goal is to fill a 9x9 grid with digits so that each column, each row, and each of
-          the nine 3x3 subgrids that compose the grid contain all of the digits from 1 to 9.
+          {`• The goal is to fill a 9x9 grid with digits so that each column, each row, and each of
+          the nine 3x3 subgrids that compose the grid contain all of the digits from 1 to 9.`}
         </Text>
         <Text style={styles.ruleText}>
-          • On Easy and Medium levels, selecting an empty cell highlights its row, column and 3x3
-          grid.
+          {`• On Easy and Medium levels, selecting an empty cell highlights its row, column and 3x3
+          grid.`}
         </Text>
         <Text style={styles.ruleText}>
-          • Tap a number from the number pad at the bottom to place it in the selected cell.
+          {`• Tap a number from the number pad at the bottom to place it in the selected cell.`}
         </Text>
-        <Text style={styles.ruleText}>• If you get stuck, use the "Clue" button for a hint!</Text>
+        <Text
+          style={styles.ruleText}
+        >{`• If you get stuck, use the "Clue" button for a hint!`}</Text>
       </View>
     </SafeAreaView>
   );

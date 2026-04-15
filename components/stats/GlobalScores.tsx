@@ -7,7 +7,7 @@ import { StyleSheet, Text, View } from "react-native";
 import GlobalStatsCard from "./GlobalStatsCard";
 
 const GlobalScores = () => {
-  const { colors, styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
 
   const { globalScores } = useGameScoresStore();
 

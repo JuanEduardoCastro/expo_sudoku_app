@@ -10,7 +10,7 @@ type GlobalStatsCardProps = {
 };
 
 const GlobalStatsCard = ({ title, value }: GlobalStatsCardProps) => {
-  const { colors, styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
 
   return (
     <View style={styles.statCard}>

@@ -21,7 +21,7 @@ export type CellProps = {
 export type Board = CellProps[][];
 
 const Game = () => {
-  const { colors, styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles);
   const { level, resume } = useLocalSearchParams();
 
   const levelId = Number(level);
