@@ -1,4 +1,4 @@
-import LevelBox from "@/components/LevelBox";
+import LevelBox from "@/components/levels/LevelBox";
 import ButtonNav from "@/components/shared/ButtonNav";
 import ConfirmationModal from "@/components/shared/ConfirmationModal";
 import { SCHEMES } from "@/constants/colors";

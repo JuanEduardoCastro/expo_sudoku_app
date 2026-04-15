@@ -167,9 +167,9 @@ const PAD_SIZE = Math.floor((BOARD_WIDTH - PAD_GAP * 8) / 9);
 
 type Tab = "home" | "game" | "stats" | "tokens" | "modals";
 const TABS: { key: Tab; label: string }[] = [
-  { key: "home",   label: "Home"   },
-  { key: "game",   label: "Game"   },
-  { key: "stats",  label: "Stats"  },
+  { key: "home", label: "Home" },
+  { key: "game", label: "Game" },
+  { key: "stats", label: "Stats" },
   { key: "tokens", label: "Tokens" },
   { key: "modals", label: "Modals" },
 ];
@@ -261,11 +261,13 @@ const DesignPreview = () => {
           contentContainerStyle={{ paddingBottom: 60 }}
           showsVerticalScrollIndicator={false}
         >
-          {tab === "home"   && <HomeScreen   c={c} isDark={isDark} scheme={scheme} levels={levels} />}
-          {tab === "game"   && <GameScreen   c={c} isDark={isDark} scheme={scheme} levels={levels} />}
-          {tab === "stats"  && <StatsScreen  c={c} isDark={isDark} scheme={scheme} levels={levels} />}
+          {tab === "home" && <HomeScreen c={c} isDark={isDark} scheme={scheme} levels={levels} />}
+          {tab === "game" && <GameScreen c={c} isDark={isDark} scheme={scheme} levels={levels} />}
+          {tab === "stats" && <StatsScreen c={c} isDark={isDark} scheme={scheme} levels={levels} />}
           {tab === "tokens" && <TokensScreen c={c} isDark={isDark} scheme={scheme} />}
-          {tab === "modals" && <ModalsScreen c={c} isDark={isDark} scheme={scheme} levels={levels} />}
+          {tab === "modals" && (
+            <ModalsScreen c={c} isDark={isDark} scheme={scheme} levels={levels} />
+          )}
         </ScrollView>
       </SafeAreaView>
     </>
@@ -490,17 +492,17 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
   const [expanded, setExpanded] = useState(false);
 
   const GLOBAL = [
-    { label: "Total Games", value: "48"      },
-    { label: "Best Score",  value: "3,840"   },
-    { label: "Perfect",     value: "12"      },
+    { label: "Total Games", value: "48" },
+    { label: "Best Score", value: "3,840" },
+    { label: "Perfect", value: "12" },
     { label: "Time Played", value: "14h 22m" },
   ];
 
   const LEVEL_STATS = [
     { ...levels[0], best: "03:14", games: 18, streak: 5, maxPoints: 3840, perfect: 6 },
     { ...levels[1], best: "05:48", games: 14, streak: 3 },
-    { ...levels[2], best: "09:22", games:  9, streak: 1 },
-    { ...levels[3], best: "—",     games:  7, streak: 0 },
+    { ...levels[2], best: "09:22", games: 9, streak: 1 },
+    { ...levels[3], best: "—", games: 7, streak: 0 },
   ];
 
   const easy = LEVEL_STATS[0];
@@ -517,7 +519,14 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
         {GLOBAL.map((stat) => (
           <View
             key={stat.label}
-            style={[s.statCard, { backgroundColor: c.surface, borderColor: c.border, shadowColor: isDark ? "#000" : "#A0A8D8" }]}
+            style={[
+              s.statCard,
+              {
+                backgroundColor: c.surface,
+                borderColor: c.border,
+                shadowColor: isDark ? "#000" : "#A0A8D8",
+              },
+            ]}
           >
             <Text style={[s.statCardValue, { color: c.text }]}>{stat.value}</Text>
             <Text style={[s.statCardLabel, { color: c.textMuted }]}>{stat.label}</Text>
@@ -555,11 +564,19 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
             </View>
           </View>
           <View style={[s.streakBadge, { backgroundColor: easy.color + "22" }]}>
-            <Text style={{ fontSize: 13, fontWeight: "700", color: easy.color }}>🔥 {easy.streak}</Text>
+            <Text style={{ fontSize: 13, fontWeight: "700", color: easy.color }}>
+              🔥 {easy.streak}
+            </Text>
           </View>
           {/* Chevron */}
           <View style={{ paddingRight: 14, paddingLeft: 4 }}>
-            <Text style={{ fontSize: 16, color: c.textMuted, transform: [{ rotate: expanded ? "180deg" : "0deg" }] }}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: c.textMuted,
+                transform: [{ rotate: expanded ? "180deg" : "0deg" }],
+              }}
+            >
               ⌄
             </Text>
           </View>
@@ -569,24 +586,38 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
         {expanded && (
           <>
             {/* Divider */}
-            <View style={{ height: StyleSheet.hairlineWidth, backgroundColor: easy.color + "44", marginHorizontal: 14 }} />
+            <View
+              style={{
+                height: StyleSheet.hairlineWidth,
+                backgroundColor: easy.color + "44",
+                marginHorizontal: 14,
+              }}
+            />
 
             <View style={s.expandBody}>
               {/* Stat tiles */}
               <View style={s.expandGrid}>
-                <View style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}>
+                <View
+                  style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}
+                >
                   <Text style={[s.expandTileValue, { color: c.text }]}>{easy.best}</Text>
                   <Text style={[s.expandTileLabel, { color: c.textMuted }]}>Best Time</Text>
                 </View>
-                <View style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}>
+                <View
+                  style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}
+                >
                   <Text style={[s.expandTileValue, { color: c.text }]}>3,840</Text>
                   <Text style={[s.expandTileLabel, { color: c.textMuted }]}>Max Points</Text>
                 </View>
-                <View style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}>
+                <View
+                  style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}
+                >
                   <Text style={[s.expandTileValue, { color: c.text }]}>{easy.games}</Text>
                   <Text style={[s.expandTileLabel, { color: c.textMuted }]}>Games</Text>
                 </View>
-                <View style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}>
+                <View
+                  style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}
+                >
                   <Text style={[s.expandTileValue, { color: easy.color }]}>6</Text>
                   <Text style={[s.expandTileLabel, { color: c.textMuted }]}>Perfect</Text>
                 </View>
@@ -596,7 +627,7 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
               <View style={s.expandStreakRow}>
                 <Text style={[s.expandStreakLabel, { color: c.textMuted }]}>Current streak</Text>
                 <View style={s.expandStreakDots}>
-                  {[1,2,3,4,5].map((i) => (
+                  {[1, 2, 3, 4, 5].map((i) => (
                     <View
                       key={i}
                       style={[
@@ -619,7 +650,14 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
       {LEVEL_STATS.slice(1).map((lvl) => (
         <View
           key={lvl.id}
-          style={[s.levelStatRow, { backgroundColor: c.surface, borderColor: c.border, shadowColor: isDark ? "#000" : "#A0A8D8" }]}
+          style={[
+            s.levelStatRow,
+            {
+              backgroundColor: c.surface,
+              borderColor: c.border,
+              shadowColor: isDark ? "#000" : "#A0A8D8",
+            },
+          ]}
         >
           <View style={[s.levelStatBar, { backgroundColor: lvl.color }]} />
           <View style={{ flex: 1, paddingLeft: 14, paddingVertical: 12, gap: 4 }}>
@@ -632,7 +670,9 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
           </View>
           {lvl.streak > 0 && (
             <View style={[s.streakBadge, { backgroundColor: lvl.color + "22" }]}>
-              <Text style={{ fontSize: 13, fontWeight: "700", color: lvl.color }}>🔥 {lvl.streak}</Text>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: lvl.color }}>
+                🔥 {lvl.streak}
+              </Text>
             </View>
           )}
         </View>
@@ -740,8 +780,16 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
         <View style={[s.modalBackdrop, { backgroundColor: isDark ? "#00000088" : "#1A1A3844" }]} />
 
         {/* Modal card */}
-        <View style={[s.modalCard, { backgroundColor: c.surface, borderColor: c.border, shadowColor: isDark ? "#000" : "#5B6AF0" }]}>
-
+        <View
+          style={[
+            s.modalCard,
+            {
+              backgroundColor: c.surface,
+              borderColor: c.border,
+              shadowColor: isDark ? "#000" : "#5B6AF0",
+            },
+          ]}
+        >
           {/* Icon */}
           <View style={[s.modalIconWrap, { backgroundColor: PALETTE.accentLight }]}>
             <Text style={{ fontSize: 26 }}>🚪</Text>
@@ -754,7 +802,9 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
 
           <View style={s.modalBtnRow}>
             {/* Cancel */}
-            <View style={[s.modalBtnOutline, { borderColor: c.border, backgroundColor: c.surface2 }]}>
+            <View
+              style={[s.modalBtnOutline, { borderColor: c.border, backgroundColor: c.surface2 }]}
+            >
               <Text style={[s.modalBtnOutlineText, { color: c.textMuted }]}>Stay</Text>
             </View>
             {/* Confirm */}
@@ -773,8 +823,16 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
       <View style={s.modalSceneWrap}>
         <View style={[s.modalBackdrop, { backgroundColor: isDark ? "#00000088" : "#1A1A3844" }]} />
 
-        <View style={[s.modalCard, { backgroundColor: c.surface, borderColor: c.border, shadowColor: isDark ? "#000" : "#5B6AF0" }]}>
-
+        <View
+          style={[
+            s.modalCard,
+            {
+              backgroundColor: c.surface,
+              borderColor: c.border,
+              shadowColor: isDark ? "#000" : "#5B6AF0",
+            },
+          ]}
+        >
           {/* Icon */}
           <View style={[s.modalIconWrap, { backgroundColor: easyColor + "33" }]}>
             <Text style={{ fontSize: 26 }}>🎉</Text>
@@ -822,14 +880,23 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
       <View style={s.modalSceneWrap}>
         <View style={[s.modalBackdrop, { backgroundColor: isDark ? "#00000088" : "#1A1A3844" }]} />
 
-        <View style={[s.modalCard, { backgroundColor: c.surface, borderColor: c.border, shadowColor: isDark ? "#000" : "#5B6AF0" }]}>
+        <View
+          style={[
+            s.modalCard,
+            {
+              backgroundColor: c.surface,
+              borderColor: c.border,
+              shadowColor: isDark ? "#000" : "#5B6AF0",
+            },
+          ]}
+        >
           <View style={[s.modalIconWrap, { backgroundColor: "#FEF3C7" }]}>
             <Text style={{ fontSize: 26 }}>💡</Text>
           </View>
 
           <Text style={[s.modalTitle, { color: c.text }]}>No clues left</Text>
           <Text style={[s.modalMessage, { color: c.textMuted }]}>
-            You've used all your clues for this game. Keep going — you've got this!
+            {`You've used all your clues for this game. Keep going — you've got this!`}
           </Text>
 
           <View style={[s.modalBtnFilled, { backgroundColor: PALETTE.accent, marginTop: 8 }]}>
