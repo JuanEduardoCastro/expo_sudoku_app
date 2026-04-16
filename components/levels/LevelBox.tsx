@@ -29,7 +29,7 @@ const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxPro
       onDisabledPress?.(level);
       return;
     } else {
-      router.push({ pathname: "/Game", params: { level } });
+      router.push({ pathname: "/Game", params: { level: savedGameLevel, resume: "true" } });
       onClickHapticHeavy();
     }
   };

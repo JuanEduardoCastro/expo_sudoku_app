@@ -17,6 +17,7 @@ const NumberPad = ({ onPress, clueCell, completedNumbers }: NumberPadProps) => {
     <View style={styles.container}>
       {numbersPad.map((number, index) => (
         <Pressable
+          disabled={completedNumbers?.has(number)}
           style={[
             styles.numberBox,
             completedNumbers?.has(number) && { opacity: 0.4 },
@@ -26,7 +27,7 @@ const NumberPad = ({ onPress, clueCell, completedNumbers }: NumberPadProps) => {
             },
           ]}
           key={index}
-          onPress={() => !completedNumbers?.has(number) && onPress(number)}
+          onPress={() => onPress(number)}
         >
           <Text
             style={[

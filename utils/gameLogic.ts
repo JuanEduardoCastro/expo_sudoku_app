@@ -39,6 +39,32 @@ function solvedBoard(board: Board, row = 0, col = 0): boolean {
   return false;
 }
 
+export const countSolutions = (board: Board, row = 0, col = 0, count = { n: 0 }): number => {
+  if (count.n > 1) return count.n;
+
+  if (row === 9) {
+    count.n++;
+    return count.n;
+  }
+
+  if (col === 9) return countSolutions(board, row + 1, 0, count);
+
+  if (board[row]?.[col]?.value !== null) {
+    return countSolutions(board, row, col + 1, count);
+  }
+
+  for (let num = 1; num <= 9; num++) {
+    if (isValid(board, row, col, num)) {
+      board[row][col].value = num;
+      countSolutions(board, row, col + 1, count);
+      board[row][col].value = null;
+      if (count.n > 1) break;
+    }
+  }
+
+  return count.n;
+};
+
 export function isValid(board: Board, row: number, col: number, num: number): boolean {
   if (
     !checkRow(board, row, num) ||
@@ -75,6 +101,31 @@ export const generatesBoard = (difficulty: number): GeneratesBoard => {
   const cellsToRemove = Math.floor(totalCells * difficulty);
 
   let removedCells = 0;
+  let attemps = 0;
+  const maxAttemps = 300;
+
+  while (removedCells < cellsToRemove && attemps < maxAttemps) {
+    const row = Math.floor(Math.random() * 9);
+    const col = Math.floor(Math.random() * 9);
+
+    if (board[row]?.[col]?.value !== null) {
+      const backup = board[row][col].value;
+      board[row][col].value = null;
+      board[row][col].editable = true;
+
+      const boardCopy: Board = JSON.parse(JSON.stringify(board));
+      const solutions = countSolutions(boardCopy);
+
+      if (solutions === 1) {
+        removedCells++;
+      } else {
+        board[row][col].value = backup;
+        board[row][col].editable = false;
+      }
+      attemps++;
+    }
+  }
+
   while (removedCells < cellsToRemove) {
     const row = Math.floor(Math.random() * 9);
     const col = Math.floor(Math.random() * 9);

@@ -63,6 +63,9 @@ const Game = () => {
           setIsReady(true);
           setInitialClues(game.remainingClues);
         } else {
+          const { board: newBoard, solution: newSolution } = generatesBoard(difficulty);
+          setBoard(newBoard);
+          setSolution(newSolution);
           setLevel(levelId);
         }
       } catch (error) {
@@ -72,12 +75,7 @@ const Game = () => {
         setIsReady(true);
       }
     };
-    if (!resume) {
-      setLevel(levelId);
-      setIsReady(true);
-    } else {
-      loadGame();
-    }
+    if (resume) loadGame();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!isReady) return <Loading />;
