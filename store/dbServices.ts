@@ -1,10 +1,16 @@
 import { desc, eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/expo-sqlite";
-import { openDatabaseSync } from "expo-sqlite";
+import { drizzle, ExpoSQLiteDatabase } from "drizzle-orm/expo-sqlite";
+import { SQLiteDatabase } from "expo-sqlite";
 import * as schema from "./schema";
 
-const expo = openDatabaseSync("sudoku.db");
-export const db = drizzle(expo, { schema });
+// const expo = openDatabaseSync("sudoku.db");
+// export const db = drizzle(expo, { schema });
+
+let db: ExpoSQLiteDatabase<typeof schema>;
+
+export const initializeDbInstance = (rawDb: SQLiteDatabase) => {
+  db = drizzle(rawDb, { schema });
+};
 
 export const settingsService = {
   async get(key: string): Promise<string | null> {

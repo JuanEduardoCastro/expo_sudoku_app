@@ -12,7 +12,7 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const Index = () => {
+const index = () => {
   const { styles } = useStyles(createStyles);
   const { hasSavedGame, savedGameLevel, setHasSavedGame, setSavedGameLevel } = useBoardStore();
   const { scoresByLevels } = useGameScoresStore();
@@ -90,7 +90,7 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default index;
 
 export const createStyles = (colors: TColors) =>
   StyleSheet.create({

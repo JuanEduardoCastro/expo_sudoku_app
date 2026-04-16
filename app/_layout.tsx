@@ -1,7 +1,7 @@
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
 import { ColorModeProvider } from "@/context/ColorModeContext";
 import migrations from "@/drizzle/migrations";
-import { savedGamesService } from "@/store/dbServices";
+import { initializeDbInstance, savedGamesService } from "@/store/dbServices";
 import * as schema from "@/store/schema";
 import { useBoardStore, useGameScoresStore } from "@/store/store_zustand";
 import { migrateSettings } from "@/utils/migrateSettings";
@@ -14,7 +14,7 @@ import * as SQLite from "expo-sqlite";
 const DB_NAME = "sudoku.db";
 
 SplashScreen.setOptions({
-  duration: 2000,
+  duration: 1000,
   fade: true,
 });
 
@@ -23,6 +23,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const initializeDB = async (rawDb: SQLite.SQLiteDatabase) => {
     try {
+      initializeDbInstance(rawDb);
       const drizzleDB = drizzle(rawDb, { schema });
       await migrate(drizzleDB, migrations);
       await seedInitialData(drizzleDB);
@@ -62,7 +63,7 @@ export default function RootLayout() {
       <SQLite.SQLiteProvider databaseName={DB_NAME} onInit={initializeDB}>
         <ColorModeProvider>
           <Stack>
-            <Stack.Screen name="Index" options={{ headerShown: false, title: "Home" }} />
+            <Stack.Screen name="index" options={{ headerShown: false, title: "Home" }} />
             <Stack.Screen name="Game" options={{ headerShown: false, title: "Game" }} />
             <Stack.Screen name="Stats" options={{ headerShown: false, title: "Stats" }} />
             <Stack.Screen
@@ -70,7 +71,7 @@ export default function RootLayout() {
               options={{ headerShown: false, title: "Instructions" }}
             />
             <Stack.Screen name="Settings" options={{ headerShown: false, title: "Settings" }} />
-            <Stack.Screen name="TestSQLite" options={{ headerShown: false, title: "TestSQLite" }} />
+
             <Stack.Screen
               name="DesignPreview"
               options={{ headerShown: false, title: "DesignPreview" }}
