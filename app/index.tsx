@@ -71,7 +71,7 @@ const Index = () => {
       </View>
       {__DEV__ && (
         <View style={styles.buttonBox}>
-          <ButtonNav title="TestSQLite" onPress={() => router.push("/TestSQLite")} />
+          <ButtonNav title="TestSQLite" onPress={() => {}} />
           <ButtonNav title="DesignPreview" onPress={() => router.push("/DesignPreview")} />
         </View>
       )}

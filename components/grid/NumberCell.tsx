@@ -68,7 +68,7 @@ const NumberCell = ({
         setRotate && setRotate(false);
       }, 830);
     };
-  }, [rotate]);
+  }, [rotate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Pressable

@@ -46,7 +46,7 @@ const Game = () => {
       setSolution(newSolution);
       setIsReady(true);
     }
-  }, [difficulty, resume]);
+  }, [difficulty, resume]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const loadGame = async () => {
@@ -78,7 +78,7 @@ const Game = () => {
     } else {
       loadGame();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!isReady) return <Loading />;
 
