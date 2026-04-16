@@ -20,6 +20,9 @@ const NumberPad = ({ onPress, clueCell, completedNumbers }: NumberPadProps) => {
       {numbersPad.map((number, index) => (
         <Pressable
           disabled={completedNumbers?.has(number)}
+          accessibilityLabel={`Number ${number}`}
+          accessibilityHint={completedNumbers?.has(number) ? "Already placed" : "Place this number"}
+          accessibilityRole="button"
           style={[
             styles.numberBox,
             completedNumbers?.has(number) && { opacity: 0.4 },

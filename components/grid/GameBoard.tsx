@@ -65,7 +65,11 @@ const GameBoard = (props: GameBoardProps) => {
   return (
     <View style={styles.container}>
       <View style={[styles.topBar, SHADOW.standar]}>
-        <Pressable onPress={handleGoBackAndSaveCurrent}>
+        <Pressable
+          accessibilityLabel="Save and go back"
+          accessibilityRole="button"
+          onPress={handleGoBackAndSaveCurrent}
+        >
           <Text style={styles.levelBackArrow}>‹</Text>
         </Pressable>
         <View style={[styles.levelPill, { backgroundColor: levelDisplay + "28" }]}>
@@ -140,7 +144,13 @@ const GameBoard = (props: GameBoardProps) => {
       <View style={{ height: verticalScale(14) }} />
 
       <View style={styles.bottomRow}>
-        <Pressable style={styles.clueRow} onPress={handleClueCount}>
+        <Pressable
+          accessibilityLabel={`Clues remaining: ${remainingClues}`}
+          accessibilityHint="One tap to reveal a number in the selected cell"
+          accessibilityRole="button"
+          style={styles.clueRow}
+          onPress={handleClueCount}
+        >
           <Text style={styles.clueCaption}>CLUES</Text>
           <View style={styles.dotRow}>
             {[0, 1, 2].map((i) => (

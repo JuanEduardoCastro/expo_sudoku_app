@@ -23,7 +23,12 @@ const ButtonNav = ({ title, onPress }: ButtonNavProps) => {
   };
 
   return (
-    <Pressable style={[styles.buttonContainer, SHADOW.standar]} onPress={handleOnPress}>
+    <Pressable
+      accessibilityLabel={title}
+      accessibilityRole="button"
+      style={[styles.buttonContainer, SHADOW.standar]}
+      onPress={handleOnPress}
+    >
       <Text style={styles.buttonText}>{title}</Text>
     </Pressable>
   );

@@ -39,6 +39,9 @@ const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxPro
     <View style={styles.levelBox}>
       {Object.values(levels).map((level) => (
         <Pressable
+          accessibilityLabel={`${level.name} difficulty`}
+          accessibilityHint={hasSavedGame ? "A game is alredy saved" : "Start a new game"}
+          accessibilityRole="button"
           key={level.id}
           onPress={() => handleClick(level.id)}
           style={[styles.levelCard, SHADOW.standar, { opacity: hasSavedGame ? 0.7 : 1 }]}
@@ -62,6 +65,8 @@ const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxPro
       ))}
       {hasSavedGame && (
         <Pressable
+          accessibilityLabel={`Resume ${savedGameLevel ? levels[savedGameLevel - 1]?.name : ""} game`}
+          accessibilityRole="button"
           onPress={() =>
             router.push({ pathname: "/Game", params: { level: savedGameLevel, resume: "true" } })
           }

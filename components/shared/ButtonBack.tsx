@@ -13,8 +13,16 @@ const ButtonBack = ({ title, onPress }: ButtonBackProps) => {
   const { colors, styles } = useStyles(createStyles);
 
   return (
-    <Pressable onPress={onPress} style={styles.backButton} hitSlop={12}>
-      <Text style={{ color: colors.accentBase, fontSize: 26, lineHeight: 30 }}>‹</Text>
+    <Pressable
+      accessibilityLabel="Go back"
+      accessibilityRole="button"
+      onPress={onPress}
+      style={styles.backButton}
+      hitSlop={12}
+    >
+      <Text style={{ color: colors.accentBase, fontSize: moderateScale(26), lineHeight: 30 }}>
+        ‹
+      </Text>
     </Pressable>
   );
 };

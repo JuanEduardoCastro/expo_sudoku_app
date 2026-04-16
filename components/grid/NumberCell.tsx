@@ -72,6 +72,14 @@ const NumberCell = ({
 
   return (
     <Pressable
+      accessibilityLabel={
+        cell.value
+          ? `Row ${cell.row + 1}, column ${cell.col + 1} value ${cell.value}${!cell.editable ? ", given" : ""}`
+          : `Row ${cell.row + 1}, column ${cell.col + 1}, empty`
+      }
+      accessibilityHint={cell.editable ? "Double tap to select" : undefined}
+      accessibilityRole="button"
+      accessibilityState={{ selected: selected }}
       style={[
         styles.container,
         highlighted && {
