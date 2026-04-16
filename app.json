@@ -20,7 +20,13 @@
         "foregroundImage": "./assets/images/icon/adaptive-icon.png",
         "backgroundColor": "#F8F8F8"
       },
-      "package": "com.anonymous.exposudokuapp"
+      "package": "com.anonymous.exposudokuapp",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -50,6 +56,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "bf2fef7a-67c6-4752-96c5-489e66f9c080"
+      }
     }
   }
 }

@@ -1,3 +1,4 @@
+import { moderateScale, scale } from "@/constants/dimensions";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React from "react";
@@ -25,10 +26,10 @@ const createStyles = (colors: TColors) =>
     backButton: {
       justifyContent: "center",
       alignItems: "center",
-      paddingHorizontal: 10,
+      paddingHorizontal: scale(10),
     },
     backButtonText: {
-      fontSize: 26,
+      fontSize: moderateScale(26),
       color: colors.text,
       fontWeight: "semibold",
     },

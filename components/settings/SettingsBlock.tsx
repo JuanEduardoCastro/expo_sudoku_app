@@ -5,6 +5,7 @@ import {
   VibDisabledIcon,
   VibEnabledIcon,
 } from "@/assets/svgs";
+import { verticalScale } from "@/constants/dimensions";
 import { TColors } from "@/constants/types";
 import { useColorMode } from "@/context/ColorModeContext";
 import useHaptic from "@/hooks/useHaptic";
@@ -35,7 +36,7 @@ const SettingsBlock = () => {
 
   return (
     <View style={styles.statsSection}>
-      <View style={{ height: 8 }} />
+      <View style={{ height: verticalScale(8) }} />
       <SettingsCard
         onPress={handleToggleColorMode}
         title={`${colorMode === "light" ? "Dark" : "Light"} mode`}
@@ -73,6 +74,6 @@ const createStyles = (colors: TColors) =>
   StyleSheet.create({
     statsSection: {
       width: "100%",
-      gap: 16,
+      gap: scale(16),
     },
   });

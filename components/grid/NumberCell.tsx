@@ -127,11 +127,11 @@ const createStyles = (colors: TColors) =>
       height: CELL_SIZE,
       alignItems: "center",
       justifyContent: "center",
-      // borderColor: colors.border,
     },
 
     numberText: {
-      fontSize: 24,
+      fontFamily: "SpaceMonoBold",
+      fontSize: Math.round(CELL_SIZE * 0.52),
       fontWeight: "bold",
       color: colors.text,
     },

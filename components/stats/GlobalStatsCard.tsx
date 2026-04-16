@@ -1,4 +1,5 @@
-import { H_PAD, SW } from "@/constants/dimensions";
+import { H_PAD, moderateScale, scale, SW, verticalScale } from "@/constants/dimensions";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React from "react";
@@ -28,21 +29,20 @@ const createStyles = (colors: TColors) =>
       backgroundColor: colors.surface,
       width: (SW - H_PAD * 2 - 10) / 2,
       flexGrow: 1,
-      padding: 18,
-      borderRadius: 16,
+      paddingVertical: verticalScale(18),
+      paddingHorizontal: scale(18),
+      borderRadius: moderateScale(16),
       paddingLeft: 24,
       borderWidth: 1,
       borderColor: colors.border,
       gap: 4,
     },
     statCardValue: {
-      fontSize: 30,
-      fontWeight: "800",
+      ...textVar.titleBold,
       color: colors.text,
     },
     statCardLabel: {
-      fontSize: 12,
-      fontWeight: "500",
+      ...textVar.small,
       color: colors.textMuted,
     },
   });

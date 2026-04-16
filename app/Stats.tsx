@@ -1,7 +1,8 @@
 import ButtonBack from "@/components/shared/ButtonBack";
 import GlobalScores from "@/components/stats/GlobalScores";
 import ScoresByLevel from "@/components/stats/ScoresByLevel";
-import { H_PAD } from "@/constants/dimensions";
+import { H_PAD, scale, verticalScale } from "@/constants/dimensions";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
@@ -21,11 +22,11 @@ const Stats = () => {
         <Text style={styles.pageTitle}>Statistics</Text>
       </View>
 
-      <View style={{ height: 22 }} />
+      <View style={{ height: verticalScale(22) }} />
 
       <ScrollView style={{ flex: 1, width: "100%" }} showsVerticalScrollIndicator={false}>
         <GlobalScores />
-        <View style={{ height: 22 }} />
+        <View style={{ height: verticalScale(22) }} />
         <ScoresByLevel />
         <View style={styles.statsContainer}></View>
       </ScrollView>
@@ -45,14 +46,13 @@ const createStyles = (colors: TColors) =>
     },
     header: {
       width: "100%",
-      height: 30,
+      height: verticalScale(36),
       flexDirection: "row",
       alignItems: "center",
-      gap: 24,
+      gap: scale(24),
     },
     pageTitle: {
-      fontSize: 30,
-      fontWeight: "700",
+      ...textVar.titleBold,
       color: colors.text,
     },
     statsContainer: {
@@ -60,8 +60,8 @@ const createStyles = (colors: TColors) =>
       width: "100%",
       alignItems: "center",
       justifyContent: "flex-start",
-      paddingHorizontal: 16,
-      paddingVertical: 16,
-      gap: 28,
+      paddingHorizontal: scale(16),
+      paddingVertical: verticalScale(16),
+      gap: scale(28),
     },
   });

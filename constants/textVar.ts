@@ -1,66 +1,89 @@
+import { moderateScale } from "./dimensions";
+
 export const textVar = {
   smallLight: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
+    fontWeight: "300" as const,
   },
   small: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
+    fontWeight: "500" as const,
   },
   smallBold: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
+    fontWeight: "700" as const,
   },
   mediumLight: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
+    fontWeight: "300" as const,
   },
   medium: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
+    fontWeight: "500" as const,
   },
   mediumBold: {
-    fontSize: 14,
+    fontSize: moderateScale(14),
+    fontWeight: "700" as const,
   },
 
   baseLight: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
+    fontWeight: "300" as const,
   },
   base: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
+    fontWeight: "500" as const,
   },
   baseBold: {
-    fontSize: 16,
+    fontSize: moderateScale(16),
+    fontWeight: "700" as const,
   },
   largeLight: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
+    fontWeight: "300" as const,
   },
   large: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
+    fontWeight: "500" as const,
   },
   largeBold: {
-    fontSize: 18,
+    fontSize: moderateScale(18),
+    fontWeight: "700" as const,
   },
   xlargeLight: {
-    fontSize: 22,
+    fontSize: moderateScale(20),
+    fontWeight: "300" as const,
   },
   xlarge: {
-    fontSize: 22,
+    fontSize: moderateScale(20),
+    fontWeight: "500" as const,
   },
   xlargeBold: {
-    fontSize: 22,
+    fontSize: moderateScale(20),
+    fontWeight: "700" as const,
   },
   xxlargeLight: {
-    fontSize: 24,
+    fontSize: moderateScale(24),
+    fontWeight: "300" as const,
   },
   xxlarge: {
-    fontSize: 24,
+    fontSize: moderateScale(24),
+    fontWeight: "500" as const,
   },
   xxlargeBold: {
-    fontSize: 24,
+    fontSize: moderateScale(24),
+    fontWeight: "700" as const,
   },
   titleLight: {
-    fontSize: 30,
+    fontSize: moderateScale(30),
+    fontWeight: "300" as const,
   },
   title: {
-    fontSize: 30,
+    fontSize: moderateScale(30),
+    fontWeight: "500" as const,
   },
   titleBold: {
-    fontSize: 30,
+    fontSize: moderateScale(30),
+    fontWeight: "700" as const,
   },
 };

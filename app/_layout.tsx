@@ -7,6 +7,7 @@ import { useBoardStore, useGameScoresStore } from "@/store/store_zustand";
 import { migrateSettings } from "@/utils/migrateSettings";
 import { drizzle, ExpoSQLiteDatabase } from "drizzle-orm/expo-sqlite";
 import { migrate } from "drizzle-orm/expo-sqlite/migrator";
+import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import * as SQLite from "expo-sqlite";
@@ -21,6 +22,10 @@ SplashScreen.setOptions({
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    SpaceMonoBold: require("../assets/fonts/SpaceMono-Bold.ttf"),
+  });
   const initializeDB = async (rawDb: SQLite.SQLiteDatabase) => {
     try {
       initializeDbInstance(rawDb);
@@ -29,6 +34,25 @@ export default function RootLayout() {
       await seedInitialData(drizzleDB);
       await migrateSettings();
       await useGameScoresStore.getState().loadFromDatabase();
+
+      // TEMP: hardcoded stats for screenshot — remove after
+      if (__DEV__) {
+        useGameScoresStore.getState().setGlobalScores({
+          maxPoints: 12480,
+          totalGames: 63,
+          perfectGames: 18,
+          goodGames: 44,
+          completedGames: 63,
+          totalTimePlay: 28493, // 8 hours in seconds
+        });
+        useGameScoresStore.getState().setScoresByLevels([
+          { level: 1, name: "Easy", maxPoints: 4200, totalGames: 24, bestTime: 142, streak: 8 },
+          { level: 2, name: "Medium", maxPoints: 7800, totalGames: 19, bestTime: 310, streak: 5 },
+          { level: 3, name: "Hard", maxPoints: 11200, totalGames: 14, bestTime: 520, streak: 3 },
+          { level: 4, name: "Expert", maxPoints: 12480, totalGames: 6, bestTime: 890, streak: 1 },
+        ]);
+      }
+
       const savedGame = await savedGamesService.load();
       if (savedGame) {
         useBoardStore.getState().setHasSavedGame(true);
@@ -42,6 +66,8 @@ export default function RootLayout() {
       await SplashScreen.hideAsync();
     }
   };
+
+  if (!fontsLoaded) return null;
 
   const seedInitialData = async (db: ExpoSQLiteDatabase<typeof schema>) => {
     const levels = [

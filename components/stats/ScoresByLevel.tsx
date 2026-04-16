@@ -1,5 +1,7 @@
 import { SCHEMES } from "@/constants/colors";
+import { verticalScale } from "@/constants/dimensions";
 import { getLevels } from "@/constants/levels";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useGameScoresStore } from "@/store/store_zustand";
@@ -17,7 +19,7 @@ const ScoresByLevel = () => {
   return (
     <View style={styles.statsSection}>
       <Text style={styles.statsTitle}>BY LEVEL</Text>
-      <View style={{ height: 12 }} />
+      <View style={{ height: verticalScale(12) }} />
 
       <View style={styles.statsGrid}>
         {scoresByLevels.map((levelStats) => (
@@ -40,8 +42,7 @@ const createStyles = (colors: TColors) =>
       width: "100%",
     },
     statsTitle: {
-      fontSize: 11,
-      fontWeight: "700",
+      ...textVar.smallBold,
       color: colors.textMuted,
       letterSpacing: 1.5,
     },

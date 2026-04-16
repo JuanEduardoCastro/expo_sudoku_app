@@ -1,7 +1,9 @@
+import { verticalScale } from "@/constants/dimensions";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useGameScoresStore } from "@/store/store_zustand";
-import { formatSeconds } from "@/utils/formatters";
+import { formatDecimal, formatSeconds } from "@/utils/formatters";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import GlobalStatsCard from "./GlobalStatsCard";
@@ -14,21 +16,20 @@ const GlobalScores = () => {
   return (
     <View style={styles.statsSection}>
       <Text style={styles.statsTitle}>GLOBAL</Text>
-      <View style={{ height: 12 }} />
-      {/* TODO: Format time value appropriately */}
+      <View style={{ height: verticalScale(12) }} />
 
       <View style={styles.statsGrid}>
         <GlobalStatsCard title="Total games" value={globalScores.totalGames} />
-        <GlobalStatsCard title="Max points" value={globalScores.maxPoints} />
+        <GlobalStatsCard title="Max points" value={formatDecimal.format(globalScores.maxPoints)} />
         <GlobalStatsCard title="Perfect games" value={globalScores.perfectGames} />
+        <GlobalStatsCard title="Complete games" value={globalScores.completedGames} />
         <GlobalStatsCard
           title="Total time played"
           value={formatSeconds(globalScores.totalTimePlay)}
         />
 
         {/* --------- ??  */}
-        <GlobalStatsCard title="Good games" value={globalScores.goodGames} />
-        <GlobalStatsCard title="Complete games" value={globalScores.completedGames} />
+        {/* <GlobalStatsCard title="Good games" value={globalScores.goodGames} /> */}
       </View>
     </View>
   );
@@ -43,8 +44,7 @@ const createStyles = (colors: TColors) =>
       // gap: 4,
     },
     statsTitle: {
-      fontSize: 11,
-      fontWeight: "700",
+      ...textVar.smallBold,
       color: colors.textMuted,
       letterSpacing: 1.5,
     },

@@ -1,6 +1,8 @@
+import { moderateScale, scale, verticalScale } from "@/constants/dimensions";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
-import { formatSeconds } from "@/utils/formatters";
+import { formatDecimal, formatSeconds } from "@/utils/formatters";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -21,32 +23,38 @@ const LevelStatCard = ({ levelStats, levelColor }: LevelStatsProps) => {
 
   const [toggleCard, setToggleCard] = useState(false);
 
-  const formatter = new Intl.NumberFormat("en-US", {
-    maximumFractionDigits: 2,
-  });
-
   return (
     <Pressable style={[styles.levelStatCard]} onPress={() => setToggleCard(!toggleCard)}>
       <View style={[styles.levelStatBar, { backgroundColor: levelColor }]} />
       <View style={styles.levelStatBody}>
         <View style={styles.resumeStatBody}>
-          <View style={{ justifyContent: "flex-start", alignItems: "flex-start" }}>
+          <View
+            style={{
+              justifyContent: "flex-start",
+              alignItems: "flex-start",
+              paddingVertical: verticalScale(4),
+              gap: 6,
+              // backgroundColor: "lightblue",
+            }}
+          >
             <Text style={styles.levelStatName}>{levelStats.name}</Text>
-            <View style={styles.levelStatData}>
-              {!toggleCard && (
-                <Text style={styles.levelStatMeta}>
-                  Best {formatter.format(levelStats.maxPoints!)}
-                </Text>
-              )}
-              {/* <Text style={styles.levelStatMeta}>-</Text>
-          <Text style={styles.levelStatMeta}>{levelStats.totalGames} games</Text> */}
-            </View>
+            {!toggleCard && (
+              <View style={styles.levelStatData}>
+                <>
+                  <Text style={styles.levelStatMeta}>
+                    Best {formatDecimal.format(levelStats.maxPoints!)}
+                  </Text>
+                  <Text style={styles.levelStatMeta}>-</Text>
+                  <Text style={styles.levelStatMeta}>{levelStats.totalGames} games</Text>
+                </>
+              </View>
+            )}
           </View>
           <View style={styles.expandArrowBlock}>
             <Text
               style={[
                 styles.expandArrow,
-                { transform: [{ rotate: toggleCard ? "-90deg" : "90deg" }] },
+                { transform: [{ rotate: !toggleCard ? "-90deg" : "90deg" }] },
               ]}
             >
               ‹
@@ -65,7 +73,7 @@ const LevelStatCard = ({ levelStats, levelColor }: LevelStatsProps) => {
                 </View>
                 <View style={styles.expandTile}>
                   <Text style={styles.expandTileValue}>
-                    {formatter.format(levelStats.maxPoints!)}
+                    {formatDecimal.format(levelStats.maxPoints!)}
                   </Text>
                   <Text style={styles.expandTileLabel}>Max points</Text>
                 </View>
@@ -93,7 +101,7 @@ const createStyles = (colors: TColors) =>
     levelStatCard: {
       flexDirection: "row",
       alignItems: "center",
-      borderRadius: 16,
+      borderRadius: moderateScale(16),
       borderWidth: 1,
       borderColor: colors.border,
       backgroundColor: colors.surface,
@@ -106,50 +114,46 @@ const createStyles = (colors: TColors) =>
     },
     levelStatBody: {
       flex: 1,
-      padding: 12,
+      padding: scale(12),
       alignItems: "flex-start",
       gap: 6,
     },
     resumeStatBody: {
       flexDirection: "row",
       width: "100%",
-      height: 36,
       alignItems: "center",
       justifyContent: "space-between",
     },
     levelStatName: {
-      fontSize: 16,
-      fontWeight: "600",
+      ...textVar.xlargeBold,
       color: colors.text,
     },
     levelStatData: {
       flexDirection: "row",
-      height: 16,
-      gap: 12,
+      height: verticalScale(16),
+      gap: 8,
     },
     levelStatMeta: {
-      fontSize: 14,
+      ...textVar.medium,
       color: colors.textMuted,
     },
     expandArrowBlock: {
-      paddingRight: 14,
-      paddingLeft: 8,
+      paddingRight: scale(14),
+      paddingLeft: scale(8),
     },
 
     expandArrow: {
-      textAlignVertical: "center",
-      fontSize: 16,
+      ...textVar.base,
       color: colors.textMuted,
+      textAlignVertical: "center",
     },
 
     expandContainer: {
       width: "100%",
     },
     expandBody: {
-      // width: "100%",
-      // paddingHorizontal: 14,
-      paddingVertical: 8,
-      gap: 14,
+      paddingVertical: verticalScale(8),
+      gap: scale(14),
     },
     expandGrid: {
       flexDirection: "row",
@@ -159,20 +163,18 @@ const createStyles = (colors: TColors) =>
       backgroundColor: colors.surface2,
       flex: 1,
       alignItems: "center",
-      paddingVertical: 12,
+      paddingVertical: verticalScale(12),
       borderRadius: 12,
       borderWidth: 1,
       borderColor: colors.border,
       gap: 4,
     },
     expandTileValue: {
-      fontSize: 18,
-      fontWeight: "800",
+      ...textVar.baseBold,
       color: colors.text,
     },
     expandTileLabel: {
-      fontSize: 10,
-      fontWeight: "600",
+      ...textVar.smallLight,
       letterSpacing: 0.5,
       color: colors.textMuted,
     },

@@ -41,10 +41,12 @@ const Game = () => {
   useEffect(() => {
     if (!resume) {
       setLevel(levelId);
-      const { board: newBoard, solution: newSolution } = generatesBoard(difficulty);
-      setBoard(newBoard);
-      setSolution(newSolution);
-      setIsReady(true);
+      setTimeout(() => {
+        const { board: newBoard, solution: newSolution } = generatesBoard(difficulty);
+        setBoard(newBoard);
+        setSolution(newSolution);
+        setIsReady(true);
+      }, 0);
     }
   }, [difficulty, resume]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -86,7 +88,7 @@ const Game = () => {
         <GameBoard
           generatedBoard={boardToUse ?? board}
           solution={solutionToUse ?? solution}
-          level={resolvedLevel || levelId}
+          level={resolvedLevel > 0 ? resolvedLevel : levelId}
           initialTimer={initialTimer}
           initialClues={initialClues ?? undefined}
         />

@@ -1,6 +1,7 @@
 import SettingsBlock from "@/components/settings/SettingsBlock";
 import ButtonBack from "@/components/shared/ButtonBack";
-import { H_PAD } from "@/constants/dimensions";
+import { H_PAD, verticalScale } from "@/constants/dimensions";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
@@ -18,7 +19,7 @@ const Settings = () => {
         <Text style={styles.pageTitle}>Settings</Text>
       </View>
 
-      <View style={{ height: 22 }} />
+      <View style={{ height: verticalScale(22) }} />
 
       <ScrollView
         scrollEnabled={false}
@@ -45,14 +46,13 @@ const createStyles = (colors: TColors) =>
     },
     header: {
       width: "100%",
-      height: 30,
+      height: verticalScale(36),
       flexDirection: "row",
       alignItems: "center",
-      gap: 24,
+      gap: scale(24),
     },
     pageTitle: {
-      fontSize: 30,
-      fontWeight: "700",
+      ...textVar.titleBold,
       color: colors.text,
     },
 
@@ -68,6 +68,6 @@ const createStyles = (colors: TColors) =>
       width: "100%",
       alignItems: "center",
       justifyContent: "flex-start",
-      gap: 20,
+      gap: scale(20),
     },
   });

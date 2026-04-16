@@ -1,3 +1,5 @@
+import { moderateScale, scale, verticalScale } from "@/constants/dimensions";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { formatSeconds } from "@/utils/formatters";
@@ -45,11 +47,11 @@ const ConfirmationModal = ({
             <Text style={{ fontSize: 26 }}>{icon}</Text>
           </View>
 
-          <View style={{ height: 16 }} />
+          <View style={{ height: verticalScale(16) }} />
 
           <Text style={styles.modalTitle}>{title}</Text>
 
-          <View style={{ height: 16 }} />
+          <View style={{ height: verticalScale(16) }} />
           {!isFinishedModal ? (
             <>
               <Text style={styles.modalContent}>{content}</Text>
@@ -74,7 +76,7 @@ const ConfirmationModal = ({
             </View>
           )}
 
-          <View style={{ height: 16 }} />
+          <View style={{ height: verticalScale(16) }} />
 
           <View style={styles.buttonBox}>
             {cancelText && (
@@ -107,12 +109,13 @@ const createStyles = (colors: TColors) =>
       backgroundColor: "rgba(0,0,0,0.7)",
     },
     cardContainer: {
-      width: "80%",
+      width: "90%",
       minHeight: "30%",
       alignItems: "center",
-      padding: 24,
+      paddingVertical: verticalScale(24),
+      paddingHorizontal: scale(18),
       backgroundColor: colors.surface,
-      borderRadius: 24,
+      borderRadius: moderateScale(20),
       borderWidth: 1,
       borderColor: colors.border,
     },
@@ -126,14 +129,14 @@ const createStyles = (colors: TColors) =>
       marginBottom: 4,
     },
     modalTitle: {
-      fontSize: 22,
-      fontWeight: "800",
+      ...textVar.xxlargeBold,
       textAlign: "center",
-      letterSpacing: 0.2,
+      letterSpacing: 0.4,
       color: colors.text,
     },
     modalContent: {
-      fontSize: 14,
+      ...textVar.mediumLight,
+      letterSpacing: 0.5,
       lineHeight: 21,
       textAlign: "center",
       color: colors.textMuted,
@@ -155,13 +158,11 @@ const createStyles = (colors: TColors) =>
       gap: 4,
     },
     statValue: {
-      fontSize: 20,
-      fontWeight: "800",
+      ...textVar.xlargeBold,
       color: colors.text,
     },
     statLabel: {
-      fontSize: 11,
-      fontWeight: "600",
+      ...textVar.small,
       letterSpacing: 0.8,
       color: colors.textMuted,
     },
@@ -179,14 +180,13 @@ const createStyles = (colors: TColors) =>
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
-      height: 48,
-      borderRadius: 14,
+      height: verticalScale(48),
+      borderRadius: moderateScale(14),
       borderWidth: 1,
       borderColor: colors.border,
     },
     buttonCancelText: {
-      fontSize: 15,
-      fontWeight: "600",
+      ...textVar.base,
       color: colors.textMuted,
     },
     buttonAccept: {
@@ -194,12 +194,11 @@ const createStyles = (colors: TColors) =>
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
-      height: 48,
-      borderRadius: 14,
+      height: verticalScale(48),
+      borderRadius: moderateScale(14),
     },
     buttonAcceptText: {
-      fontSize: 15,
-      fontWeight: "700",
+      ...textVar.baseBold,
       color: colors.almostWhite,
     },
   });

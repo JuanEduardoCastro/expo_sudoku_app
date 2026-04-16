@@ -1,5 +1,6 @@
 import ButtonBack from "@/components/shared/ButtonBack";
-import { H_PAD } from "@/constants/dimensions";
+import { H_PAD, scale, verticalScale } from "@/constants/dimensions";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
@@ -18,16 +19,14 @@ const Instructions = () => {
         <Text style={styles.pageTitle}>How to Play Sudoku</Text>
       </View>
 
-      <View style={{ height: 42 }} />
+      <View style={{ height: verticalScale(42) }} />
 
       <View style={styles.content}>
         <Text style={styles.ruleText}>
-          {`• The goal is to fill a 9x9 grid with digits so that each column, each row, and each of
-          the nine 3x3 subgrids that compose the grid contain all of the digits from 1 to 9.`}
+          {`• The goal is to fill a 9x9 grid with digits so that each column, each row, and each of the nine 3x3 subgrids that compose the grid contain all of the digits from 1 to 9.`}
         </Text>
         <Text style={styles.ruleText}>
-          {`• On Easy and Medium levels, selecting an empty cell highlights its row, column and 3x3
-          grid.`}
+          {`• On Easy and Medium levels, selecting an empty cell highlights its row, column and 3x3 grid.`}
         </Text>
         <Text style={styles.ruleText}>
           {`• Tap a number from the number pad at the bottom to place it in the selected cell.`}
@@ -52,21 +51,20 @@ const createStyles = (colors: TColors) =>
     },
     header: {
       width: "100%",
-      height: 30,
+      height: verticalScale(36),
       flexDirection: "row",
       alignItems: "center",
-      gap: 24,
+      gap: scale(24),
     },
     pageTitle: {
-      fontSize: 30,
-      fontWeight: "700",
+      ...textVar.titleBold,
       color: colors.text,
     },
 
     content: {
       flex: 1,
-      paddingHorizontal: 24,
-      gap: 20,
+      paddingHorizontal: scale(20),
+      gap: scale(20),
     },
     title: {
       fontSize: 28,
@@ -76,8 +74,10 @@ const createStyles = (colors: TColors) =>
       textAlign: "center",
     },
     ruleText: {
-      fontSize: 18,
+      ...textVar.largeLight,
       lineHeight: 26,
+      letterSpacing: 1.3,
       color: colors.text,
+      textAlign: "justify",
     },
   });

@@ -1,4 +1,6 @@
+import { PAD_SIZE } from "@/constants/dimensions";
 import { numbersPad } from "@/constants/initialGrid";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React from "react";
@@ -56,8 +58,8 @@ const createStyles = (colors: TColors) =>
     },
     numberBox: {
       backgroundColor: colors.surface,
-      width: 36,
-      height: 36,
+      width: PAD_SIZE,
+      height: PAD_SIZE,
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,
@@ -65,7 +67,7 @@ const createStyles = (colors: TColors) =>
       borderColor: colors.border,
     },
     numberText: {
-      fontSize: 20,
-      fontWeight: "bold",
+      fontFamily: "SpaceMonoBold",
+      ...textVar.largeBold,
     },
   });

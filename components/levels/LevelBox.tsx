@@ -1,4 +1,5 @@
 import { SCHEMES } from "@/constants/colors";
+import { scale } from "@/constants/dimensions";
 import { getLevels } from "@/constants/levels";
 import { SHADOW } from "@/constants/shadows";
 import { TColors } from "@/constants/types";
@@ -29,7 +30,7 @@ const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxPro
       onDisabledPress?.(level);
       return;
     } else {
-      router.push({ pathname: "/Game", params: { level: savedGameLevel, resume: "true" } });
+      router.push({ pathname: "/Game", params: { level } });
       onClickHapticHeavy();
     }
   };
@@ -61,7 +62,9 @@ const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxPro
       ))}
       {hasSavedGame && (
         <Pressable
-          onPress={() => router.push(`/Game?resume=true`)}
+          onPress={() =>
+            router.push({ pathname: "/Game", params: { level: savedGameLevel, resume: "true" } })
+          }
           style={[styles.levelCard, SHADOW.standar]}
         >
           <View style={[styles.levelDot, { backgroundColor: "transparent" }]} />
@@ -108,7 +111,7 @@ const createStyles = (colors: TColors) =>
       borderColor: colors.border,
       marginHorizontal: 8,
       marginBottom: 10,
-      gap: 14,
+      gap: scale(14),
     },
     levelDot: {
       width: 12,

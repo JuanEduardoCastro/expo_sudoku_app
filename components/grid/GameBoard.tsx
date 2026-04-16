@@ -1,8 +1,9 @@
 import { Board } from "@/app/Game";
 import { SCHEMES } from "@/constants/colors";
-import { BOARD_WIDTH, H_PAD } from "@/constants/dimensions";
+import { BOARD_WIDTH, H_PAD, moderateScale, scale, verticalScale } from "@/constants/dimensions";
 import { getLevels } from "@/constants/levels";
 import { SHADOW } from "@/constants/shadows";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useGameBoard from "@/hooks/useGameBoard";
 import useStyles from "@/hooks/useStyles";
@@ -81,12 +82,14 @@ const GameBoard = (props: GameBoardProps) => {
         <Text style={styles.timeLabel}>{formatTimer(timer!)}</Text>
       </View>
 
-      <View style={{ height: 14 }} />
+      <View style={{ height: verticalScale(14) }} />
 
       <View style={[styles.scoreCard, SHADOW.standar]}>
         <View style={styles.scoreBlock}>
           <Text style={styles.scoreCaption}>SCORE</Text>
-          <Text style={styles.scoreNum}>{score}</Text>
+          <Text style={styles.scoreNum} adjustsFontSizeToFit numberOfLines={1}>
+            {score}
+          </Text>
         </View>
         <View style={styles.factorPill}>
           <Text style={styles.factorX}>x</Text>
@@ -108,7 +111,7 @@ const GameBoard = (props: GameBoardProps) => {
         </View>
       </View>
 
-      <View style={{ height: 14 }} />
+      <View style={{ height: verticalScale(14) }} />
 
       <View style={[styles.boardWrap, SHADOW.standar]}>
         {board.map((row, rowIndex) => (
@@ -134,7 +137,7 @@ const GameBoard = (props: GameBoardProps) => {
         ))}
       </View>
 
-      <View style={{ height: 14 }} />
+      <View style={{ height: verticalScale(14) }} />
 
       <View style={styles.bottomRow}>
         <Pressable style={styles.clueRow} onPress={handleClueCount}>
@@ -165,7 +168,7 @@ const GameBoard = (props: GameBoardProps) => {
         </View>
       </View>
 
-      <View style={{ height: 14 }} />
+      <View style={{ height: verticalScale(14) }} />
 
       <NumberPad
         onPress={handleClickNumberPad}
@@ -228,18 +231,19 @@ const createStyles = (colors: TColors) =>
       backgroundColor: colors.surface,
       flexDirection: "row",
       alignItems: "center",
-      height: 52,
-      gap: 16,
-      borderRadius: 16,
+      height: verticalScale(52),
+      gap: scale(16),
+      borderRadius: moderateScale(16),
       borderWidth: 1,
       borderColor: colors.border,
       paddingHorizontal: 12,
-      marginTop: 16,
+      marginTop: verticalScale(16),
     },
     levelBackArrow: {
-      fontSize: 24,
-      // color: "red",
+      width: scale(60),
+      ...textVar.xxlarge,
       color: colors.accentBase,
+      paddingLeft: scale(8),
     },
     levelPill: {
       flex: 1,
@@ -258,48 +262,48 @@ const createStyles = (colors: TColors) =>
       borderRadius: 4,
     },
     levelPillText: {
-      fontSize: 13,
-      fontWeight: "700",
+      ...textVar.mediumBold,
     },
     timeLabel: {
+      width: scale(60),
       color: colors.text,
-      fontSize: 15,
-      fontWeight: "600",
+      ...textVar.baseBold,
       letterSpacing: 1,
-      width: 50,
       textAlign: "right",
     },
     scoreCard: {
       backgroundColor: colors.surface,
       flexDirection: "row",
-      alignItems: "center",
+      justifyContent: "flex-start",
       borderRadius: 18,
       borderWidth: 1,
       borderColor: colors.border,
-      paddingHorizontal: 18,
-      paddingVertical: 16,
+      paddingHorizontal: scale(18),
+      paddingVertical: verticalScale(16),
       gap: 10,
     },
     scoreBlock: {
-      flexGrow: 1,
+      flex: 1,
       alignItems: "center",
+      paddingTop: verticalScale(8),
+      paddingHorizontal: scale(6),
       gap: 4,
     },
     scoreCaption: {
-      fontSize: 10,
-      fontWeight: "700",
+      ...textVar.smallBold,
       letterSpacing: 1.2,
       color: colors.textMuted,
     },
     scoreNum: {
-      fontSize: 28,
-      fontWeight: "800",
+      ...textVar.xxlargeBold,
       color: colors.text,
     },
     dotRow: {
+      height: verticalScale(24),
       flexDirection: "row",
       gap: 5,
-      marginTop: 2,
+      alignItems: "center",
+      // marginTop: 4,
     },
     dotError: {
       width: 9,
@@ -316,14 +320,13 @@ const createStyles = (colors: TColors) =>
       gap: 4,
     },
     factorX: {
-      fontSize: 22,
-      fontWeight: "800",
+      ...textVar.largeBold,
       lineHeight: 38,
       color: colors.accentBase,
     },
     factorNum: {
-      fontSize: 38,
-      fontWeight: "900",
+      fontSize: moderateScale(34),
+      fontWeight: "800",
       color: colors.accentBase,
     },
     boardWrap: {
@@ -348,9 +351,8 @@ const createStyles = (colors: TColors) =>
       paddingLeft: 2,
     },
     clueCaption: {
+      ...textVar.smallBold,
       color: colors.textMuted,
-      fontSize: 11,
-      fontWeight: "700",
       letterSpacing: 1.5,
     },
     notifRow: {
@@ -358,8 +360,7 @@ const createStyles = (colors: TColors) =>
       flexDirection: "row-reverse",
     },
     notifText: {
-      fontSize: 13,
-      fontWeight: "700",
+      ...textVar.smallBold,
       letterSpacing: 1.5,
     },
   });

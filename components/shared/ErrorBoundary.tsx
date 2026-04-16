@@ -1,3 +1,5 @@
+import { moderateScale, scale, verticalScale } from "@/constants/dimensions";
+import { textVar } from "@/constants/textVar";
 import React, { ReactNode } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -39,27 +41,25 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 24,
-    gap: 16,
+    padding: scale(24),
+    gap: scale(16),
   },
   title: {
-    fontSize: 20,
-    fontWeight: "700",
+    ...textVar.xlargeBold,
   },
   message: {
-    fontSize: 14,
+    ...textVar.medium,
     textAlign: "center",
     color: "#666",
   },
   button: {
     backgroundColor: "#5B6AF0",
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 12,
+    paddingHorizontal: scale(24),
+    paddingVertical: verticalScale(12),
+    borderRadius: moderateScale(12),
   },
   buttonText: {
+    ...textVar.baseBold,
     color: "#fff",
-    fontWeight: "700",
-    fontSize: 15,
   },
 });

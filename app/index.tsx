@@ -2,8 +2,9 @@ import LevelBox from "@/components/levels/LevelBox";
 import ButtonNav from "@/components/shared/ButtonNav";
 import ConfirmationModal from "@/components/shared/ConfirmationModal";
 import { SCHEMES } from "@/constants/colors";
-import { H_PAD } from "@/constants/dimensions";
+import { H_PAD, moderateScale, verticalScale } from "@/constants/dimensions";
 import { getLevels } from "@/constants/levels";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { savedGamesService } from "@/store/dbServices";
@@ -52,29 +53,29 @@ const index = () => {
         <Text style={styles.titleText}>SUDOKU</Text>
         <Text style={styles.titleSubtex}>Think. Scan. Place.</Text>
       </View>
-      <View style={{ height: 36 }} />
+      <View style={{ height: verticalScale(36) }} />
       <Text style={styles.sectionLabel}>Choose your level:</Text>
-      <View style={{ height: 12 }} />
+      <View style={{ height: verticalScale(12) }} />
       <LevelBox
         hasSavedGame={hasSavedGame}
         onDisabledPress={handleDisabledLevelPress}
         savedGameLevel={savedGameLevel || null}
       />
-      <View style={{ height: 14 }} />
+      {/* <View style={{ height: verticalScale(14) }} /> */}
 
-      <View style={{ height: 28 }} />
+      <View style={{ height: verticalScale(42) }} />
 
       <View style={styles.buttonBox}>
         <ButtonNav title="Stats" onPress={() => router.push("/Stats")} />
         <ButtonNav title="Instructions" onPress={() => router.push("/Instructions")} />
         <ButtonNav title="Settings" onPress={() => router.push("/Settings")} />
       </View>
-      {__DEV__ && (
+      {/* {__DEV__ && (
         <View style={styles.buttonBox}>
           <ButtonNav title="TestSQLite" onPress={() => {}} />
           <ButtonNav title="DesignPreview" onPress={() => router.push("/DesignPreview")} />
         </View>
-      )}
+      )} */}
       <ConfirmationModal
         visible={warningModal}
         title={"Abandon saved game?"}
@@ -99,7 +100,7 @@ export const createStyles = (colors: TColors) =>
       backgroundColor: colors.background,
       justifyContent: "center",
       padding: H_PAD,
-      // gap: 12,
+      // gap: scale(12),
     },
     titleBox: {
       alignItems: "center",
@@ -107,19 +108,18 @@ export const createStyles = (colors: TColors) =>
       gap: 6,
     },
     titleText: {
-      fontSize: 42,
-      fontWeight: "bold",
+      fontSize: moderateScale(42),
+      fontWeight: "700",
       letterSpacing: 10,
       color: colors.accentBase,
     },
     titleSubtex: {
-      fontSize: 14,
+      ...textVar.medium,
       letterSpacing: 0.3,
       color: colors.textMuted,
     },
     sectionLabel: {
-      fontSize: 12,
-      fontWeight: "semibold",
+      ...textVar.smallBold,
       letterSpacing: 1.5,
       marginHorizontal: 10,
       color: colors.textMuted,
@@ -128,6 +128,6 @@ export const createStyles = (colors: TColors) =>
       flexDirection: "row",
       gap: 8,
       marginHorizontal: 8,
-      marginBottom: 24,
+      marginBottom: moderateScale(24),
     },
   });

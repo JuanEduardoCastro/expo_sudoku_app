@@ -1,3 +1,4 @@
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React from "react";
@@ -25,8 +26,7 @@ const createStyles = (colors: TColors) =>
       alignItems: "center",
     },
     text: {
-      fontSize: 20,
-      fontWeight: "700",
+      ...textVar.xlargeBold,
       color: colors.text,
       letterSpacing: 1.5,
     },

@@ -1,3 +1,4 @@
+import { scale, verticalScale } from "@/constants/dimensions";
 import { useColorMode } from "@/context/ColorModeContext";
 import { Stack, useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -293,9 +294,9 @@ const HomeScreen = ({ c, isDark, levels }: ScreenProps) => (
       <Text style={[s.appTagline, { color: c.textMuted }]}>Focus. Logic. Clarity.</Text>
     </View>
 
-    <View style={{ height: 36 }} />
+    <View style={{ height: verticalScale(36) }} />
     <Text style={[s.sectionLabel, { color: c.textMuted }]}>SELECT DIFFICULTY</Text>
-    <View style={{ height: 12 }} />
+    <View style={{ height: verticalScale(12) }} />
 
     {levels.map((level) => (
       <View
@@ -322,7 +323,7 @@ const HomeScreen = ({ c, isDark, levels }: ScreenProps) => (
       </View>
     ))}
 
-    <View style={{ height: 28 }} />
+    <View style={{ height: verticalScale(28) }} />
 
     <View style={s.homeNav}>
       {["Stats", "Settings", "How to play"].map((label) => (
@@ -355,7 +356,7 @@ const GameScreen = ({ c, isDark, scheme }: ScreenProps) => {
         <Text style={[s.timerLabel, { color: c.textMuted }]}>05:32</Text>
       </View>
 
-      <View style={{ height: 14 }} />
+      <View style={{ height: verticalScale(14) }} />
 
       {/* Score row */}
       <View style={[s.scoreCard, { backgroundColor: c.surface, borderColor: c.border }]}>
@@ -380,7 +381,7 @@ const GameScreen = ({ c, isDark, scheme }: ScreenProps) => {
         </View>
       </View>
 
-      <View style={{ height: 14 }} />
+      <View style={{ height: verticalScale(14) }} />
 
       {/* Board */}
       <View
@@ -442,7 +443,7 @@ const GameScreen = ({ c, isDark, scheme }: ScreenProps) => {
         ))}
       </View>
 
-      <View style={{ height: 14 }} />
+      <View style={{ height: verticalScale(14) }} />
 
       {/* Clue row */}
       <View style={s.clueRow}>
@@ -457,7 +458,7 @@ const GameScreen = ({ c, isDark, scheme }: ScreenProps) => {
         </View>
       </View>
 
-      <View style={{ height: 14 }} />
+      <View style={{ height: verticalScale(14) }} />
 
       {/* Number pad */}
       <View style={[s.numPad, { gap: PAD_GAP }]}>
@@ -511,9 +512,9 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
     <View style={[s.screen, { backgroundColor: c.bg }]}>
       <Text style={[s.pageTitle, { color: c.text }]}>Statistics</Text>
 
-      <View style={{ height: 22 }} />
+      <View style={{ height: verticalScale(22) }} />
       <Text style={[s.sectionLabel, { color: c.textMuted }]}>GLOBAL</Text>
-      <View style={{ height: 12 }} />
+      <View style={{ height: verticalScale(12) }} />
 
       <View style={s.statGrid}>
         {GLOBAL.map((stat) => (
@@ -534,9 +535,9 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
         ))}
       </View>
 
-      <View style={{ height: 28 }} />
+      <View style={{ height: verticalScale(28) }} />
       <Text style={[s.sectionLabel, { color: c.textMuted }]}>BY LEVEL</Text>
-      <View style={{ height: 12 }} />
+      <View style={{ height: verticalScale(12) }} />
 
       {/* ── Easy card — expandable ── */}
       <Pressable
@@ -706,9 +707,9 @@ const TokensScreen = ({ c, isDark, scheme }: { c: C; isDark: boolean; scheme: Le
         Indigo accent · {scheme.name} level scale · Neutral surfaces
       </Text>
 
-      <View style={{ height: 24 }} />
+      <View style={{ height: verticalScale(24) }} />
       <Text style={[s.sectionLabel, { color: c.textMuted }]}>PALETTE</Text>
-      <View style={{ height: 14 }} />
+      <View style={{ height: verticalScale(14) }} />
 
       <View style={s.swatchGrid}>
         {swatches.map((sw) => (
@@ -720,9 +721,9 @@ const TokensScreen = ({ c, isDark, scheme }: { c: C; isDark: boolean; scheme: Le
         ))}
       </View>
 
-      <View style={{ height: 28 }} />
+      <View style={{ height: verticalScale(28) }} />
       <Text style={[s.sectionLabel, { color: c.textMuted }]}>TYPOGRAPHY</Text>
-      <View style={{ height: 14 }} />
+      <View style={{ height: verticalScale(14) }} />
 
       <View style={[s.typeSample, { backgroundColor: c.surface, borderColor: c.border }]}>
         <Text style={{ color: PALETTE.accent, fontSize: 36, fontWeight: "800", letterSpacing: 8 }}>
@@ -771,9 +772,9 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
       </Text>
 
       {/* ── Exit confirmation ── */}
-      <View style={{ height: 32 }} />
+      <View style={{ height: verticalScale(32) }} />
       <Text style={[s.sectionLabel, { color: c.textMuted }]}>EXIT CONFIRMATION</Text>
-      <View style={{ height: 16 }} />
+      <View style={{ height: verticalScale(16) }} />
 
       <View style={s.modalSceneWrap}>
         {/* Dimmed backdrop */}
@@ -816,9 +817,9 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
       </View>
 
       {/* ── Game complete ── */}
-      <View style={{ height: 40 }} />
+      <View style={{ height: verticalScale(40) }} />
       <Text style={[s.sectionLabel, { color: c.textMuted }]}>GAME COMPLETE</Text>
-      <View style={{ height: 16 }} />
+      <View style={{ height: verticalScale(16) }} />
 
       <View style={s.modalSceneWrap}>
         <View style={[s.modalBackdrop, { backgroundColor: isDark ? "#00000088" : "#1A1A3844" }]} />
@@ -873,9 +874,9 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
       </View>
 
       {/* ── No clues ── */}
-      <View style={{ height: 40 }} />
+      <View style={{ height: verticalScale(40) }} />
       <Text style={[s.sectionLabel, { color: c.textMuted }]}>NO CLUES LEFT</Text>
-      <View style={{ height: 16 }} />
+      <View style={{ height: verticalScale(16) }} />
 
       <View style={s.modalSceneWrap}>
         <View style={[s.modalBackdrop, { backgroundColor: isDark ? "#00000088" : "#1A1A3844" }]} />
@@ -905,7 +906,7 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
         </View>
       </View>
 
-      <View style={{ height: 40 }} />
+      <View style={{ height: verticalScale(40) }} />
     </View>
   );
 };
@@ -1028,7 +1029,7 @@ const s = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     marginBottom: 10,
-    gap: 14,
+    gap: scale(14),
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.08,
     shadowRadius: 10,
@@ -1264,7 +1265,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 14,
     paddingBottom: 16,
     paddingTop: 14,
-    gap: 14,
+    gap: scale(14),
   },
   expandGrid: {
     flexDirection: "row",
@@ -1316,7 +1317,7 @@ const s = StyleSheet.create({
   swatchGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 12,
+    gap: scale(12),
   },
   swatchItem: {
     width: (SW - H_PAD * 2 - 12 * 2) / 3,
@@ -1372,7 +1373,7 @@ const s = StyleSheet.create({
     borderWidth: 1,
     padding: 24,
     alignItems: "center",
-    gap: 12,
+    gap: scale(12),
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.12,
     shadowRadius: 20,

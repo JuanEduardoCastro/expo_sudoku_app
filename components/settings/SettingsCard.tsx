@@ -1,3 +1,5 @@
+import { scale } from "@/constants/dimensions";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React, { ReactElement } from "react";
@@ -30,20 +32,19 @@ const createStyles = (colors: TColors) =>
       backgroundColor: colors.surface,
       alignItems: "center",
       flexDirection: "row",
-      padding: 16,
+      padding: scale(16),
       borderRadius: 14,
       borderWidth: 1,
       borderColor: colors.border,
-      gap: 16,
+      gap: scale(16),
     },
     settingsText: {
       flex: 1,
-      fontSize: 16,
+      ...textVar.base,
       color: colors.text,
     },
     settingsDinamicText: {
-      fontSize: 16,
-      fontWeight: "bold",
+      ...textVar.baseBold,
       color: colors.text,
     },
   });

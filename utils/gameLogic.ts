@@ -102,7 +102,7 @@ export const generatesBoard = (difficulty: number): GeneratesBoard => {
 
   let removedCells = 0;
   let attemps = 0;
-  const maxAttemps = 300;
+  const maxAttemps = cellsToRemove * 20;
 
   while (removedCells < cellsToRemove && attemps < maxAttemps) {
     const row = Math.floor(Math.random() * 9);
@@ -126,19 +126,6 @@ export const generatesBoard = (difficulty: number): GeneratesBoard => {
     }
   }
 
-  while (removedCells < cellsToRemove) {
-    const row = Math.floor(Math.random() * 9);
-    const col = Math.floor(Math.random() * 9);
-
-    if (
-      board[row]?.[col]?.value !== null
-      // || board[row]?.[col]?.value !== undefined
-    ) {
-      board[row][col].value = null;
-      board[row][col].editable = true;
-      removedCells++;
-    }
-  }
   return { board, solution };
 };
 

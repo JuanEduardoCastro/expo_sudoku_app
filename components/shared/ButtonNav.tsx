@@ -1,4 +1,6 @@
+import { moderateScale, verticalScale } from "@/constants/dimensions";
 import { SHADOW } from "@/constants/shadows";
+import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
@@ -37,17 +39,16 @@ const createStyles = (colors: TColors) =>
     buttonContainer: {
       backgroundColor: colors.surface,
       flex: 1,
-      height: 44,
+      height: verticalScale(44),
       alignItems: "center",
       justifyContent: "center",
-      borderRadius: 12,
+      borderRadius: moderateScale(12),
       borderWidth: 1,
       borderColor: colors.border,
     },
     buttonText: {
-      fontSize: 14,
-      fontWeight: "500",
-      color: colors.text, //TODO
+      ...textVar.medium,
+      color: colors.text,
       textAlign: "center",
     },
   });
