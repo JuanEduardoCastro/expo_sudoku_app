@@ -33,6 +33,12 @@ const useHaptic = () => {
     }
   }, [vibEnabled]);
 
+  const onGameCompleteHaptic = useCallback(() => {
+    if (vibEnabled) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
+  }, [vibEnabled]);
+
   const setVibEnabledAndPersist = useCallback(
     async (value: boolean | ((prevState: boolean) => boolean)) => {
       const newValue = value instanceof Function ? value(vibEnabled) : value;
@@ -45,6 +51,7 @@ const useHaptic = () => {
   return {
     onClickHapticHeavy,
     onClickHapticMedium,
+    onGameCompleteHaptic,
     vibEnabled,
     setVibEnabled: setVibEnabledAndPersist,
   };

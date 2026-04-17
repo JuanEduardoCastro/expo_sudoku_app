@@ -5,6 +5,7 @@ import { getLevels } from "@/constants/levels";
 import { SHADOW } from "@/constants/shadows";
 import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
+import { useColorMode } from "@/context/ColorModeContext";
 import useGameBoard from "@/hooks/useGameBoard";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
@@ -24,6 +25,7 @@ export type GameBoardProps = {
 };
 
 const GameBoard = (props: GameBoardProps) => {
+  const { colorMode } = useColorMode();
   const { colors, styles } = useStyles(createStyles);
   const router = useRouter();
 
@@ -72,7 +74,13 @@ const GameBoard = (props: GameBoardProps) => {
         >
           <Text style={styles.levelBackArrow}>‹</Text>
         </Pressable>
-        <View style={[styles.levelPill, { backgroundColor: levelDisplay + "28" }]}>
+        <View
+          style={[
+            styles.levelPill,
+            { backgroundColor: levelDisplay + "28" },
+            { borderColor: colors.accentSoft, borderWidth: colorMode === "light" ? 1 : 0 },
+          ]}
+        >
           <View
             style={[
               styles.levelPillDot,
@@ -81,7 +89,14 @@ const GameBoard = (props: GameBoardProps) => {
               },
             ]}
           />
-          <Text style={[styles.levelPillText, { color: levelDisplay }]}>{levelString}</Text>
+          <Text
+            style={[
+              styles.levelPillText,
+              { color: colorMode === "light" ? colors.accentBase : levelDisplay },
+            ]}
+          >
+            {levelString}
+          </Text>
         </View>
         <Text style={styles.timeLabel}>{formatTimer(timer!)}</Text>
       </View>

@@ -15,7 +15,7 @@ import {
   useGameScoresStore,
   useNotificationMessageStore,
 } from "@/store/store_zustand";
-import { checkCol, checkGame, checkGrid, checkRow, isValid } from "@/utils/gameLogic";
+import { checkCol, checkGame, checkGrid, checkRow } from "@/utils/gameLogic";
 import { useRouter } from "expo-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AppState } from "react-native";
@@ -31,11 +31,12 @@ const useGameBoard = ({
   initialTimer,
   initialClues,
 }: GameBoardProps) => {
-  const { onClickHapticHeavy } = useHaptic();
+  const { onClickHapticHeavy, onGameCompleteHaptic } = useHaptic();
   const { playSound } = useLoadSound();
   const isMounted = useRef(false);
   const lastPlacedCell = useRef<CellProps | null>(null);
   const gameCompletedRef = useRef(false);
+  const prevCompletedNumbers = useRef<Set<number>>(new Set());
 
   const router = useRouter();
 
@@ -136,6 +137,22 @@ const useGameBoard = ({
     }
   }, [errors]);
 
+  const completedNumbers = useMemo(() => {
+    const counts: Record<number, number> = {};
+    board.forEach((row) =>
+      row.forEach((cell) => {
+        if (cell.value !== null) {
+          counts[cell.value] = (counts[cell.value] ?? 0) + 1;
+        }
+      }),
+    );
+    const completed = new Set<number>();
+    for (const [num, count] of Object.entries(counts)) {
+      if (count === 9) completed.add(Number(num));
+    }
+    return completed;
+  }, [board]);
+
   useEffect(() => {
     function checkCells() {
       const cell = lastPlacedCell.current;
@@ -171,6 +188,25 @@ const useGameBoard = ({
           setRotate(true);
         }
 
+        const newlyCompleted = [...completedNumbers].filter(
+          (num) => !prevCompletedNumbers.current.has(num),
+        );
+
+        for (const num of newlyCompleted) {
+          for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+              if (board[row][col].value === num) {
+                rotateSelection.add(`${row},${col}`);
+              }
+            }
+          }
+          if (rotateSelection.size > 0) {
+            setRotate(true);
+          }
+        }
+
+        prevCompletedNumbers.current = new Set(completedNumbers);
+
         setRotatedCells(rotateSelection);
 
         if (bonus > 0) {
@@ -190,6 +226,7 @@ const useGameBoard = ({
     if (checkGame(board) && !gameCompletedRef.current) {
       console.log("THIS HAPPEND WHEN FINISH ? ?? ? ?");
       gameCompletedRef.current = true;
+      onGameCompleteHaptic();
       const computed = scoreAfterBonus + Math.floor(timer! * level);
       setFinalScore(computed);
       setScore(computed);
@@ -227,7 +264,7 @@ const useGameBoard = ({
       }
       setTimeout(() => setGameCompleteModal(true), 950);
     }
-  }, [board, score, factor, timer, level]);
+  }, [board, score, factor, timer, level, completedNumbers]);
 
   const handleCellPress = (cell: CellProps) => {
     if (!timerRunning) {
@@ -285,7 +322,8 @@ const useGameBoard = ({
       onClickHapticHeavy();
       return;
     } else {
-      const checkNumberInCell = isValid(board, selectedCell!.row, selectedCell!.col, number);
+      const checkNumberInCell = solutionBoard[selectedCell.row][selectedCell.col].value === number;
+      // const checkNumberInCell = isValid(board, selectedCell!.row, selectedCell!.col, number);
 
       if (checkNumberInCell) {
         playSound();
@@ -344,22 +382,6 @@ const useGameBoard = ({
       });
     }
   };
-
-  const completedNumbers = useMemo(() => {
-    const counts: Record<number, number> = {};
-    board.forEach((row) =>
-      row.forEach((cell) => {
-        if (cell.value !== null) {
-          counts[cell.value] = (counts[cell.value] ?? 0) + 1;
-        }
-      }),
-    );
-    const completed = new Set<number>();
-    for (const [num, count] of Object.entries(counts)) {
-      if (count === 9) completed.add(Number(num));
-    }
-    return completed;
-  }, [board]);
 
   return {
     board,
