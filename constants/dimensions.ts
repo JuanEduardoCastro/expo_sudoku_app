@@ -17,7 +17,7 @@ const MAX_BOARD_FROM_HEIGHT = SH - verticalScale(380);
 const BOARD_WIDTH = Math.min(SW - H_PAD * 2, MAX_BOARD_FROM_HEIGHT);
 
 const CELL_SIZE = Math.floor(BOARD_WIDTH / 9);
-const PAD_GAP = scale(6);
+const PAD_GAP = scale(4);
 const PAD_SIZE = Math.floor((BOARD_WIDTH - PAD_GAP * 8) / 9);
 
 export { BOARD_WIDTH, CELL_SIZE, H_PAD, PAD_GAP, PAD_SIZE, SH, SW };

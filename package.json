@@ -1,7 +1,12 @@
 {
   "name": "expo-sudoku-app",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "0.1.0",
+  "homepage": "https://github.com/JuanEduardoCastro/expo_sudoku_app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JuanEduardoCastro/expo_sudoku_app"
+  },
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",

@@ -224,7 +224,6 @@ const useGameBoard = ({
     }
 
     if (checkGame(board) && !gameCompletedRef.current) {
-      console.log("THIS HAPPEND WHEN FINISH ? ?? ? ?");
       gameCompletedRef.current = true;
       onGameCompleteHaptic();
       const computed = scoreAfterBonus + Math.floor(timer! * level);

@@ -139,8 +139,7 @@ const createStyles = (colors: TColors) =>
 
     numberText: {
       fontFamily: "SpaceMonoBold",
-      fontSize: Math.round(CELL_SIZE * 0.52),
-      fontWeight: "bold",
+      fontSize: Math.round(CELL_SIZE * 0.62),
       color: colors.text,
     },
   });

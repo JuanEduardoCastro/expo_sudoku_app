@@ -13,6 +13,9 @@
       "icon": {
         "light": "./assets/images/splash/sudoku_icon_v2.png",
         "dark": "./assets/images/splash/sudoku_icon_v2.png"
+      },
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {

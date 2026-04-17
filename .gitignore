@@ -42,3 +42,4 @@ app-example
 
 # claude
 *.md
+!README.md

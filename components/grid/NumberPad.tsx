@@ -71,6 +71,6 @@ const createStyles = (colors: TColors) =>
     },
     numberText: {
       fontFamily: "SpaceMonoBold",
-      ...textVar.largeBold,
+      ...textVar.xlargeBold,
     },
   });
