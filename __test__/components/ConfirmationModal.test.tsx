@@ -33,7 +33,7 @@ describe("ConfirmationModal", () => {
     );
 
     expect(getByText("320")).toBeTruthy();
-    expect(getByText("01:30")).toBeTruthy();
+    expect(getByText("01:30 m")).toBeTruthy();
     expect(getByText("1")).toBeTruthy();
   });
 

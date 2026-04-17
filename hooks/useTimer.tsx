@@ -14,7 +14,6 @@ const useTimer = () => {
     } else {
       clearInterval(interval);
     }
-    // TODO: Cleanup function to clear the interval when the component unmounts or `timerRunning` changes.
     return () => clearInterval(interval);
   }, [timerRunning]);
 

@@ -43,7 +43,7 @@ describe("LevelStatsCard", () => {
 
     fireEvent.press(getByText("Easy"));
 
-    expect(getByText("01:35")).toBeTruthy();
+    expect(getByText("01:35 m")).toBeTruthy();
   });
 
   it("shows -- for bestTime when it is 0", () => {
