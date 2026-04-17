@@ -13,7 +13,7 @@ import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const index = () => {
+const Index = () => {
   const { styles } = useStyles(createStyles);
   const { hasSavedGame, savedGameLevel, setHasSavedGame, setSavedGameLevel } = useBoardStore();
   const { scoresByLevels } = useGameScoresStore();
@@ -33,7 +33,6 @@ const index = () => {
   useEffect(() => {
     const checkOnboarding = async () => {
       const hasSeenOnboarding = await settingsService.get("hasSeenOnboarding");
-      console.log("XX -> index.tsx:35 -> index -> hasSeenOnboarding :", hasSeenOnboarding);
       if (!hasSeenOnboarding) {
         setOnboardingModal(true);
       }
@@ -124,7 +123,7 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
 
 export const createStyles = (colors: TColors) =>
   StyleSheet.create({
