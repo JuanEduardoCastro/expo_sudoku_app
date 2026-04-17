@@ -16,13 +16,13 @@ A feature-rich Sudoku app for iOS and Android built with React Native and Expo. 
   </tr>
   <tr>
     <td align="center"><img src="assets/screenshots/Number pad - Hard lvl.png" width="200"/><br/><sub>Hard — no highlights</sub></td>
-    <td align="center"><img src="assets/screenshots/Game complete modal.png" width="200"/><br/><sub>Game complete</sub></td>
-    <td align="center"><img src="assets/screenshots/Stats 1 screen.png" width="200"/><br/><sub>Statistics</sub></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="assets/screenshots/Stats 1 screen - light.png" width="200"/><br/><sub>Statistics — light</sub></td>
     <td align="center"><img src="assets/screenshots/Lost streak modal.png" width="200"/><br/><sub>Streak lost</sub></td>
     <td align="center"><img src="assets/screenshots/No clues left modal.png" width="200"/><br/><sub>No clues left</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/screenshots/Game complete modal.png" width="200"/><br/><sub>Game complete</sub></td>
+    <td align="center"><img src="assets/screenshots/Stats 1 screen.png" width="200"/><br/><sub>Statistics</sub></td>
+    <td align="center"><img src="assets/screenshots/Stats 1 screen - light.png" width="200"/><br/><sub>Statistics — light</sub></td>
   </tr>
 </table>
 
@@ -46,15 +46,15 @@ A feature-rich Sudoku app for iOS and Android built with React Native and Expo. 
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | React Native 0.83 + Expo SDK 55 |
-| Language | TypeScript 5.9 (strict mode) |
-| Navigation | Expo Router (file-based) |
-| State | Zustand 5 |
-| Database | Expo SQLite + Drizzle ORM |
-| Animations | React Native Reanimated 4 |
-| Gestures | React Native Gesture Handler |
+| Layer      | Technology                      |
+| ---------- | ------------------------------- |
+| Framework  | React Native 0.83 + Expo SDK 55 |
+| Language   | TypeScript 5.9 (strict mode)    |
+| Navigation | Expo Router (file-based)        |
+| State      | Zustand 5                       |
+| Database   | Expo SQLite + Drizzle ORM       |
+| Animations | React Native Reanimated 4       |
+| Gestures   | React Native Gesture Handler    |
 
 ---
 
