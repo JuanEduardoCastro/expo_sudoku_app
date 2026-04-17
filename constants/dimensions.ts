@@ -1,8 +1,6 @@
 import { Dimensions } from "react-native";
 
 const { width: SW, height: SH } = Dimensions.get("window");
-console.log("XX -> dimensions.ts:4 -> SH :", SH);
-console.log("XX -> dimensions.ts:4 -> SW :", SW);
 
 const BASE_WIDTH = 390;
 const BASE_HEIGHT = 844;

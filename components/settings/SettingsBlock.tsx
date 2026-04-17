@@ -5,7 +5,7 @@ import {
   VibDisabledIcon,
   VibEnabledIcon,
 } from "@/assets/svgs";
-import { verticalScale } from "@/constants/dimensions";
+import { scale, verticalScale } from "@/constants/dimensions";
 import { TColors } from "@/constants/types";
 import { useColorMode } from "@/context/ColorModeContext";
 import useHaptic from "@/hooks/useHaptic";

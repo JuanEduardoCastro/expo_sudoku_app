@@ -7,10 +7,10 @@ import { getLevels } from "@/constants/levels";
 import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
-import { savedGamesService } from "@/store/dbServices";
+import { savedGamesService, settingsService } from "@/store/dbServices";
 import { useBoardStore, useGameScoresStore } from "@/store/store_zustand";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 const index = () => {
@@ -27,7 +27,19 @@ const index = () => {
     scoresByLevels.find((score) => score.level === savedGameLevel)?.streak ?? 0;
 
   const [warningModal, setWarningModal] = useState(false);
+  const [onboardingModal, setOnboardingModal] = useState(false);
   const [pendingLevel, setPendingLevel] = useState<number | null>(null);
+
+  useEffect(() => {
+    const checkOnboarding = async () => {
+      const hasSeenOnboarding = await settingsService.get("hasSeenOnboarding");
+      console.log("XX -> index.tsx:35 -> index -> hasSeenOnboarding :", hasSeenOnboarding);
+      if (!hasSeenOnboarding) {
+        setOnboardingModal(true);
+      }
+    };
+    checkOnboarding();
+  }, []);
 
   const handleDisabledLevelPress = (levelId: number) => {
     setPendingLevel(levelId);
@@ -45,6 +57,17 @@ const index = () => {
   const handleCancelWarning = () => {
     setWarningModal(false);
     setPendingLevel(null);
+  };
+
+  const handleAcceptOnboarding = () => {
+    settingsService.set("hasSeenOnboarding", "true");
+    router.push("/Instructions");
+    setOnboardingModal(false);
+  };
+
+  const handleCancelOnboarding = () => {
+    settingsService.set("hasSeenOnboarding", "false");
+    setOnboardingModal(false);
   };
 
   return (
@@ -86,6 +109,16 @@ const index = () => {
         cancelOnPress={handleCancelWarning}
         acceptText={"New game!"}
         acceptOnPress={handleConfirmNewGame}
+      />
+      <ConfirmationModal
+        visible={onboardingModal}
+        title="Welcome to SUDOKU"
+        icon="😁"
+        content="Fill the 9×9 grid so every row, column, and box contains the numbers 1–9."
+        acceptText={"Show me how!"}
+        acceptOnPress={handleAcceptOnboarding}
+        cancelText={"Let's play!"}
+        cancelOnPress={handleCancelOnboarding}
       />
     </View>
   );

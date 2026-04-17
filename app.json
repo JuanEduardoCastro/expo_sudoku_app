@@ -2,23 +2,23 @@
   "expo": {
     "name": "expo-sudoku-app",
     "slug": "expo-sudoku-app",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon/icon.png",
+    "icon": "./assets/images/icon/adaptive-iconv2.png",
     "scheme": "exposudokuapp",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.exposudokuapp",
       "icon": {
-        "light": "./assets/images/splash/sudoku_icon_light_bg_2.png",
-        "dark": "./assets/images/splash/sudoku_icon_dark_bg_2.png"
+        "light": "./assets/images/splash/sudoku_icon_v2.png",
+        "dark": "./assets/images/splash/sudoku_icon_v2.png"
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon/adaptive-icon.png",
-        "backgroundColor": "#F8F8F8"
+        "foregroundImage": "./assets/images/icon/adaptive-iconv2.png",
+        "backgroundColor": "#0D0D1B"
       },
       "package": "com.anonymous.exposudokuapp",
       "permissions": [
@@ -37,13 +37,13 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#ffffff",
-          "image": "./assets/images/splash/sudoku_icon_light_bg_2.png",
+          "backgroundColor": "#0D0D1B",
+          "image": "./assets/images/splash/sudoku_icon_v2.png",
           "dark": {
-            "image": "./assets/images/splash/sudoku_icon_dark_bg_2.png",
-            "backgroundColor": "#101010"
+            "image": "./assets/images/splash/sudoku_icon_v2.png",
+            "backgroundColor": "#0D0D1B"
           },
-          "imageWidth": 400
+          "imageWidth": 120
         }
       ],
       "expo-sqlite",

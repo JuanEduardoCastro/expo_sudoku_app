@@ -14,11 +14,6 @@ import * as SQLite from "expo-sqlite";
 
 const DB_NAME = "sudoku.db";
 
-SplashScreen.setOptions({
-  duration: 1000,
-  fade: true,
-});
-
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -88,7 +83,7 @@ export default function RootLayout() {
     <ErrorBoundary>
       <SQLite.SQLiteProvider databaseName={DB_NAME} onInit={initializeDB}>
         <ColorModeProvider>
-          <Stack>
+          <Stack screenOptions={{ contentStyle: { backgroundColor: "#0D0D1B" } }}>
             <Stack.Screen name="index" options={{ headerShown: false, title: "Home" }} />
             <Stack.Screen name="Game" options={{ headerShown: false, title: "Game" }} />
             <Stack.Screen name="Stats" options={{ headerShown: false, title: "Stats" }} />

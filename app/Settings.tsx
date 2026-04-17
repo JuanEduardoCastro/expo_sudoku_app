@@ -1,6 +1,6 @@
 import SettingsBlock from "@/components/settings/SettingsBlock";
 import ButtonBack from "@/components/shared/ButtonBack";
-import { H_PAD, verticalScale } from "@/constants/dimensions";
+import { H_PAD, scale, verticalScale } from "@/constants/dimensions";
 import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";

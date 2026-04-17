@@ -166,13 +166,14 @@ const PAD_SIZE = Math.floor((BOARD_WIDTH - PAD_GAP * 8) / 9);
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
 
-type Tab = "home" | "game" | "stats" | "tokens" | "modals";
+type Tab = "home" | "game" | "stats" | "tokens" | "modals" | "icons";
 const TABS: { key: Tab; label: string }[] = [
   { key: "home", label: "Home" },
   { key: "game", label: "Game" },
   { key: "stats", label: "Stats" },
   { key: "tokens", label: "Tokens" },
   { key: "modals", label: "Modals" },
+  { key: "icons", label: "Icons" },
 ];
 
 // ─── ROOT ─────────────────────────────────────────────────────────────────────
@@ -269,6 +270,7 @@ const DesignPreview = () => {
           {tab === "modals" && (
             <ModalsScreen c={c} isDark={isDark} scheme={scheme} levels={levels} />
           )}
+          {tab === "icons" && <IconsScreen c={c} isDark={isDark} />}
         </ScrollView>
       </SafeAreaView>
     </>
@@ -911,6 +913,332 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
   );
 };
 
+// ─── ICONS SCREEN ────────────────────────────────────────────────────────────
+
+const IconsScreen = ({ c, isDark }: { c: C; isDark: boolean }) => {
+  const [chosen, setChosen] = useState<string | null>(null);
+
+  const ACCENT = PALETTE.accent;
+  const ACCENT_SOFT = PALETTE.accentSoft;
+  const ACCENT_LIGHT = PALETTE.accentLight;
+  const BG_DARK = "#0D0D1B";
+  const BORDER_DARK = "#28284A";
+
+  // ── Option A: Minimal Grid Mark ──────────────────────────────────────────
+  const GridMarkIcon = ({ size }: { size: number }) => {
+    const cell = Math.round(size / 3);
+    const filled = { row: 2, col: 2 }; // bottom-right cell is accent-filled
+    return (
+      <View
+        style={{
+          width: size,
+          height: size,
+          borderRadius: size * 0.22,
+          backgroundColor: BG_DARK,
+          overflow: "hidden",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <View style={{ flexDirection: "column" }}>
+          {[0, 1, 2].map((row) => (
+            <View key={row} style={{ flexDirection: "row" }}>
+              {[0, 1, 2].map((col) => {
+                const isFilledCell = row === filled.row && col === filled.col;
+                const isRightBorder = col < 2;
+                const isBottomBorder = row < 2;
+                return (
+                  <View
+                    key={col}
+                    style={{
+                      width: cell,
+                      height: cell,
+                      backgroundColor: isFilledCell ? ACCENT : "transparent",
+                      borderRightWidth: isRightBorder ? 1.5 : 0,
+                      borderBottomWidth: isBottomBorder ? 1.5 : 0,
+                      borderColor: ACCENT_SOFT + "99",
+                    }}
+                  />
+                );
+              })}
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  // ── Option B: Single Digit ────────────────────────────────────────────────
+  const DigitIcon = ({ size }: { size: number }) => (
+    <View
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size * 0.22,
+        backgroundColor: BG_DARK,
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: size * 0.035,
+        borderColor: BORDER_DARK,
+      }}
+    >
+      <Text
+        style={{
+          color: ACCENT,
+          fontSize: size * 0.58,
+          fontWeight: "800",
+          lineHeight: size * 0.65,
+        }}
+      >
+        9
+      </Text>
+    </View>
+  );
+
+  // ── Option C: Dot Grid ────────────────────────────────────────────────────
+  const DotGridIcon = ({ size }: { size: number }) => {
+    const dot = Math.round(size * 0.12); //
+    const gap = Math.round(size * 0.09); //
+    const dotPositions = [
+      [0, 0],
+      [0, 1],
+      [0, 2],
+      [1, 0],
+      [1, 1],
+      [1, 2],
+      [2, 0],
+      [2, 1],
+      [2, 2],
+    ];
+    return (
+      <View
+        style={{
+          width: size,
+          height: size,
+          borderRadius: size * 0.22,
+          backgroundColor: BG_DARK,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            width: dot * 3 + gap * 2,
+            gap,
+          }}
+        >
+          {dotPositions.map(([row, col], i) => {
+            const isCenter = row === 1 && col === 1;
+            const isEdge = row === 0 || row === 2 || col === 0 || col === 2;
+            const bg = isCenter ? ACCENT : isEdge ? ACCENT_SOFT + "88" : ACCENT_SOFT;
+            const dotSize = isCenter ? dot * 1.35 : isEdge ? dot * 0.85 : dot;
+            const margin = isCenter ? -(dot * 0.35) / 2 : isEdge ? dot * 0.075 : 0;
+            return (
+              <View
+                key={i}
+                style={{
+                  width: dot,
+                  height: dot,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <View
+                  style={{
+                    width: dotSize,
+                    height: dotSize,
+                    borderRadius: dotSize / 2,
+                    backgroundColor: bg,
+                    margin,
+                  }}
+                />
+              </View>
+            );
+          })}
+        </View>
+      </View>
+    );
+  };
+
+  // ── Option D: Sudoku S Monogram ───────────────────────────────────────────
+  const MonogramIcon = ({ size }: { size: number }) => {
+    const block = Math.round(size * 0.12);
+    const gap = Math.round(size * 0.025);
+    // S shape: top bar, top-right gap, middle bar, bottom-left gap, bottom bar
+    // Using 5-row, 3-col block grid
+    const sMap = [
+      [1, 1, 1], // top bar
+      [1, 0, 0], // top-left
+      [1, 1, 1], // middle bar
+      [0, 0, 1], // bottom-right
+      [1, 1, 1], // bottom bar
+    ];
+    return (
+      <View
+        style={{
+          width: size,
+          height: size,
+          borderRadius: size * 0.22,
+          backgroundColor: BG_DARK,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <View style={{ gap }}>
+          {sMap.map((row, ri) => (
+            <View key={ri} style={{ flexDirection: "row", gap }}>
+              {row.map((filled, ci) => (
+                <View
+                  key={ci}
+                  style={{
+                    width: block,
+                    height: block,
+                    borderRadius: 3,
+                    backgroundColor: filled ? ACCENT : "transparent",
+                  }}
+                />
+              ))}
+            </View>
+          ))}
+        </View>
+      </View>
+    );
+  };
+
+  const OPTIONS = [
+    {
+      key: "A",
+      label: "A — Grid Mark",
+      desc: "Minimalist 3×3 grid with one accent-filled cell. Clean, instantly recognizable as Sudoku.",
+      recommended: true,
+      Icon: GridMarkIcon,
+    },
+    {
+      key: "B",
+      label: "B — Single Digit",
+      desc: "The number 9 centered on dark navy. Bold and type-forward. Works great at small sizes.",
+      recommended: false,
+      Icon: DigitIcon,
+    },
+    {
+      key: "C",
+      label: "C — Dot Grid",
+      desc: "Nine dots in 3×3 layout. Center dot is accent indigo, corners fade out. Modern and subtle.",
+      recommended: true,
+      Icon: DotGridIcon,
+    },
+    {
+      key: "D",
+      label: "D — S Monogram",
+      desc: "A bold 'S' built from Sudoku grid blocks. Unique and ownable. More abstract.",
+      recommended: false,
+      Icon: MonogramIcon,
+    },
+  ];
+
+  return (
+    <View style={[s.screen, { backgroundColor: c.bg }]}>
+      <Text style={[s.pageTitle, { color: c.text }]}>App Icon</Text>
+      <Text style={[s.tokenSubtitle, { color: c.textMuted }]}>
+        Tap an option to select it. Recommended options are marked.
+      </Text>
+
+      <View style={{ height: verticalScale(24) }} />
+
+      {OPTIONS.map((opt) => {
+        const isChosen = chosen === opt.key;
+        return (
+          <Pressable
+            key={opt.key}
+            onPress={() => setChosen(opt.key)}
+            style={[
+              s.iconOptionCard,
+              {
+                backgroundColor: c.surface,
+                borderColor: isChosen ? ACCENT : c.border,
+                borderWidth: isChosen ? 2 : 1,
+              },
+            ]}
+          >
+            {/* Header row */}
+            <View style={s.iconOptionHeader}>
+              <Text style={[s.iconOptionLabel, { color: isChosen ? ACCENT : c.text }]}>
+                {opt.label}
+              </Text>
+              <View style={{ flexDirection: "row", gap: 6, alignItems: "center" }}>
+                {opt.recommended && (
+                  <View style={[s.recommendedBadge, { backgroundColor: ACCENT_LIGHT }]}>
+                    <Text style={[s.recommendedText, { color: ACCENT }]}>Recommended</Text>
+                  </View>
+                )}
+                {isChosen && (
+                  <View style={[s.chosenBadge, { backgroundColor: ACCENT }]}>
+                    <Text style={s.chosenBadgeText}>Selected</Text>
+                  </View>
+                )}
+              </View>
+            </View>
+
+            <Text style={[s.iconOptionDesc, { color: c.textMuted }]}>{opt.desc}</Text>
+
+            {/* Icon size previews */}
+            <View style={s.iconSizeRow}>
+              <View style={s.iconSizeItem}>
+                <opt.Icon size={28} />
+                <Text style={[s.iconSizeLabel, { color: c.textMuted }]}>28</Text>
+              </View>
+              <View style={s.iconSizeItem}>
+                <opt.Icon size={48} />
+                <Text style={[s.iconSizeLabel, { color: c.textMuted }]}>48</Text>
+              </View>
+              <View style={s.iconSizeItem}>
+                <opt.Icon size={80} />
+                <Text style={[s.iconSizeLabel, { color: c.textMuted }]}>80</Text>
+              </View>
+              <View style={s.iconSizeItem}>
+                <opt.Icon size={120} />
+                <Text style={[s.iconSizeLabel, { color: c.textMuted }]}>120</Text>
+              </View>
+            </View>
+
+            {/* Splash screen mockup */}
+            <Text style={[s.splashLabel, { color: c.textMuted }]}>Splash preview</Text>
+            <View style={s.splashMockup}>
+              <View
+                style={[
+                  s.splashPhone,
+                  { backgroundColor: BG_DARK, borderColor: isDark ? "#333" : "#ccc" },
+                ]}
+              >
+                <opt.Icon size={72} />
+              </View>
+            </View>
+          </Pressable>
+        );
+      })}
+
+      {chosen && (
+        <View
+          style={[
+            s.selectionSummary,
+            { backgroundColor: ACCENT_LIGHT, borderColor: ACCENT + "44" },
+          ]}
+        >
+          <Text style={[s.selectionText, { color: ACCENT }]}>
+            Option {chosen} selected. Build this in Figma using your accent color{" "}
+            <Text style={{ fontWeight: "800" }}>#5B6AF0</Text> on dark navy{" "}
+            <Text style={{ fontWeight: "800" }}>#0D0D1B</Text>.
+          </Text>
+        </View>
+      )}
+
+      <View style={{ height: verticalScale(40) }} />
+    </View>
+  );
+};
+
 // ─── STYLES ───────────────────────────────────────────────────────────────────
 
 const s = StyleSheet.create({
@@ -1475,6 +1803,89 @@ const s = StyleSheet.create({
   factorPillText: {
     fontSize: 16,
     fontWeight: "800",
+  },
+
+  // Icons
+  iconOptionCard: {
+    borderRadius: 20,
+    padding: 18,
+    marginBottom: 16,
+    gap: scale(14),
+  },
+  iconOptionHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  iconOptionLabel: {
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  iconOptionDesc: {
+    fontSize: 13,
+    lineHeight: 20,
+  },
+  recommendedBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 8,
+  },
+  recommendedText: {
+    fontSize: 11,
+    fontWeight: "700",
+  },
+  chosenBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 8,
+  },
+  chosenBadgeText: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#fff",
+  },
+  iconSizeRow: {
+    flexDirection: "row",
+    gap: scale(18),
+    alignItems: "flex-end",
+    paddingVertical: 4,
+  },
+  iconSizeItem: {
+    alignItems: "center",
+    gap: 6,
+  },
+  iconSizeLabel: {
+    fontSize: 10,
+    fontWeight: "600",
+  },
+  splashLabel: {
+    fontSize: 10,
+    fontWeight: "700",
+    letterSpacing: 1.2,
+    marginTop: 4,
+  },
+  splashMockup: {
+    alignItems: "center",
+  },
+  splashPhone: {
+    width: 120,
+    height: 200,
+    borderRadius: 18,
+    borderWidth: 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  selectionSummary: {
+    borderRadius: 14,
+    borderWidth: 1,
+    padding: 16,
+    marginTop: 8,
+  },
+  selectionText: {
+    fontSize: 13,
+    lineHeight: 20,
   },
 });
 

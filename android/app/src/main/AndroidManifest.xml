@@ -34,6 +34,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="exposudokuapp"/>
+        <data android:scheme="exp+expo-sudoku-app"/>
       </intent-filter>
     </activity>
   </application>
