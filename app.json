@@ -9,7 +9,7 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.exposudokuapp",
+      "bundleIdentifier": "com.juancastro.sudokuapp",
       "icon": {
         "light": "./assets/images/splash/sudoku_icon_v2.png",
         "dark": "./assets/images/splash/sudoku_icon_v2.png"
@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/images/icon/adaptive-iconv2.png",
         "backgroundColor": "#0D0D1B"
       },
-      "package": "com.anonymous.exposudokuapp",
+      "package": "com.juancastro.sudokuapp",
       "permissions": [
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS",

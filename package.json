@@ -7,6 +7,14 @@
     "type": "git",
     "url": "https://github.com/JuanEduardoCastro/expo_sudoku_app"
   },
+  "expo": {
+    "install": {
+      "exclude": [
+        "expo-modules-core",
+        "react-native-worklets"
+      ]
+    }
+  },
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",

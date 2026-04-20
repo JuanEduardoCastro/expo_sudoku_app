@@ -21,6 +21,8 @@ type ConfirmationModalProps = {
     score: number;
     timer: number;
     errors: number;
+    isNewScoreRecord: boolean;
+    isNewTimeRecord: boolean;
   };
 };
 
@@ -58,22 +60,32 @@ const ConfirmationModal = ({
               <Text style={styles.modalContent}>{content2}</Text>
             </>
           ) : (
-            <View style={styles.statsRow}>
-              <View style={styles.statBox}>
-                <Text style={styles.statValue}>{finishedData?.score}</Text>
-                <Text style={styles.statLabel}>Score</Text>
+            <>
+              <View style={styles.statsRow}>
+                <View style={styles.statBox}>
+                  <Text style={styles.statValue}>{finishedData?.score}</Text>
+                  <Text style={styles.statLabel}>Score</Text>
+                </View>
+                <View style={styles.statBox}>
+                  <Text style={styles.statValue}>
+                    {finishedData?.timer ? formatSeconds(finishedData?.timer) : "--"}
+                  </Text>
+                  <Text style={styles.statLabel}>Time</Text>
+                </View>
+                <View style={styles.statBox}>
+                  <Text style={styles.statValue}>{finishedData?.errors}</Text>
+                  <Text style={styles.statLabel}>Errors</Text>
+                </View>
               </View>
-              <View style={styles.statBox}>
-                <Text style={styles.statValue}>
-                  {finishedData?.timer ? formatSeconds(finishedData?.timer) : "--"}
-                </Text>
-                <Text style={styles.statLabel}>Time</Text>
+              <View style={styles.recordBadgeBox}>
+                {finishedData?.isNewScoreRecord && (
+                  <Text style={styles.recordBadge}>🏆 Best score!</Text>
+                )}
+                {finishedData?.isNewTimeRecord && (
+                  <Text style={styles.recordBadge}>🏆 Best time!</Text>
+                )}
               </View>
-              <View style={styles.statBox}>
-                <Text style={styles.statValue}>{finishedData?.errors}</Text>
-                <Text style={styles.statLabel}>Errors</Text>
-              </View>
-            </View>
+            </>
           )}
 
           <View style={{ height: verticalScale(16) }} />
@@ -165,6 +177,14 @@ const createStyles = (colors: TColors) =>
       ...textVar.small,
       letterSpacing: 0.8,
       color: colors.textMuted,
+    },
+    recordBadgeBox: {
+      height: verticalScale(32),
+      justifyContent: "flex-end",
+    },
+    recordBadge: {
+      ...textVar.smallBold,
+      color: colors.accentBase,
     },
     buttonBox: {
       flexDirection: "row",

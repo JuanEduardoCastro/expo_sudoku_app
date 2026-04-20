@@ -63,6 +63,8 @@ const GameBoard = (props: GameBoardProps) => {
     formatTimer,
     notification,
     resetBoard,
+    isNewScoreRecord,
+    isNewTimeRecord,
   } = useGameBoard(props);
   return (
     <View style={styles.container}>
@@ -225,7 +227,7 @@ const GameBoard = (props: GameBoardProps) => {
             resetBoard();
           }}
           acceptText={"Continue"}
-          finishedData={{ score, timer, errors }}
+          finishedData={{ score, timer, errors, isNewScoreRecord, isNewTimeRecord }}
         />
       }
       {

@@ -82,6 +82,8 @@ const useGameBoard = ({
   const [clueCell, setClueCell] = useState<number | null>(null);
   const [activeNumber, setActiveNumber] = useState<number | null>(null);
   const [errorCell, setErrorCell] = useState<{ row: number; col: number } | null>(null);
+  const [isNewScoreRecord, setIsNewScoreRecord] = useState(false);
+  const [isNewTimeRecord, setIsNewTimeRecord] = useState(false);
 
   const levels = getLevels(SCHEMES);
 
@@ -244,6 +246,15 @@ const useGameBoard = ({
       setRotate(true);
 
       if (level !== TEST_LEVEL.id) {
+        const prevLevelStats = useGameScoresStore
+          .getState()
+          .scoresByLevels.find((score) => score.level === level);
+        const newScoreRecod = computed > (prevLevelStats?.maxPoints ?? 0);
+        const newTimeRecord =
+          (prevLevelStats?.bestTime ?? 0) === 0 || timer! < (prevLevelStats?.bestTime ?? Infinity);
+        setIsNewScoreRecord(newScoreRecod);
+        setIsNewTimeRecord(newTimeRecord);
+
         saveCompletedGame({
           level: level,
           points: computed,
@@ -413,6 +424,8 @@ const useGameBoard = ({
     formatTimer,
     notification,
     resetBoard,
+    isNewScoreRecord,
+    isNewTimeRecord,
   };
 };
 
