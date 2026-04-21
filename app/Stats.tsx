@@ -8,7 +8,7 @@ import useStyles from "@/hooks/useStyles";
 import { useGameScoresStore } from "@/store/store_zustand";
 import { useRouter } from "expo-router";
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Stats = () => {
@@ -54,6 +54,7 @@ const createStyles = (colors: TColors) =>
       backgroundColor: colors.background,
       justifyContent: "flex-start",
       padding: H_PAD,
+      paddingTop: Platform.OS === "android" ? 34 : null,
     },
     header: {
       width: "100%",

@@ -1,11 +1,11 @@
 import ButtonBack from "@/components/shared/ButtonBack";
-import { H_PAD, scale, verticalScale } from "@/constants/dimensions";
+import { scale, verticalScale } from "@/constants/dimensions";
 import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Instructions = () => {
@@ -47,7 +47,8 @@ const createStyles = (colors: TColors) =>
       flex: 1,
       backgroundColor: colors.background,
       justifyContent: "flex-start",
-      padding: H_PAD,
+      paddingTop: Platform.OS === "android" ? 34 : null,
+      // padding: H_PAD,
     },
     header: {
       width: "100%",
@@ -63,7 +64,7 @@ const createStyles = (colors: TColors) =>
 
     content: {
       flex: 1,
-      paddingHorizontal: scale(20),
+      paddingHorizontal: scale(30),
       gap: scale(20),
     },
     title: {
@@ -76,8 +77,8 @@ const createStyles = (colors: TColors) =>
     ruleText: {
       ...textVar.largeLight,
       lineHeight: 26,
-      letterSpacing: 1.3,
+      letterSpacing: 1.2,
       color: colors.text,
-      textAlign: "justify",
+      // textAlign: "justify",
     },
   });

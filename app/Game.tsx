@@ -8,7 +8,7 @@ import { useBoardStore } from "@/store/store_zustand";
 import { generatesBoard } from "@/utils/gameLogic";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export type CellProps = {
@@ -106,6 +106,8 @@ const createStyles = (colors: TColors) =>
       backgroundColor: colors.background,
       alignItems: "center",
       justifyContent: "flex-start",
+      paddingTop: Platform.OS === "android" ? 34 : null,
+
       gap: 10,
     },
     gridContainer: {
