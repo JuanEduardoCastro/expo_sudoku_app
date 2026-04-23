@@ -4,7 +4,7 @@ export function formatSeconds(seconds: number): string {
   const minutes = Math.floor((seconds % 3600) / 60);
   const remainingSeconds = seconds % 60;
   if (seconds >= 86400) {
-    return `${days < 10 ? "0" : ""}${minutes} ds ${hours < 10 ? "0" : ""}${hours}:${minutes < 10 ? "0" : ""}${minutes} hs`;
+    return `${days < 10 ? "0" : ""}${days} ds ${hours < 10 ? "0" : ""}${hours}:${minutes < 10 ? "0" : ""}${minutes} hs`;
   }
   if (seconds < 3600) {
     return `${minutes < 10 ? "0" : ""}${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds} m`;

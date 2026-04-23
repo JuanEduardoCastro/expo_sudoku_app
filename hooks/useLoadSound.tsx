@@ -31,6 +31,7 @@ const useLoadSound = () => {
 
   const setSoundEnabledAndPersit = useCallback(async (value: boolean) => {
     try {
+      setSoundEnabled(value);
       await settingsService.set("soundEnabled", JSON.stringify(value));
     } catch (error) {
       __DEV__ && console.error("Failed to persist sound setting", error);

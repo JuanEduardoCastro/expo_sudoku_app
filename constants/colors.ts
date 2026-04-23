@@ -49,7 +49,6 @@ export const BNW = {
 
 export const ACCENT = {
   accentBase: "#5B6AF0",
-  accentBassasde: "#5B6AF0" + 28,
   accentSoft: "#818CF8",
   accentLight: "#EEEFFE",
 };

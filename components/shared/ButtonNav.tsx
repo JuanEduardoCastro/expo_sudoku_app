@@ -38,9 +38,6 @@ export default ButtonNav;
 
 const createStyles = (colors: TColors) =>
   StyleSheet.create({
-    container: {
-      margin: 8,
-    },
     buttonContainer: {
       backgroundColor: colors.surface,
       flex: 1,

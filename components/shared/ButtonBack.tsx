@@ -36,9 +36,4 @@ const createStyles = (colors: TColors) =>
       alignItems: "center",
       paddingHorizontal: scale(10),
     },
-    backButtonText: {
-      fontSize: moderateScale(26),
-      color: colors.text,
-      fontWeight: "semibold",
-    },
   });

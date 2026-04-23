@@ -4,6 +4,7 @@ import { H_PAD, scale, verticalScale } from "@/constants/dimensions";
 import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
+import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
@@ -12,6 +13,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const Settings = () => {
   const { styles } = useStyles(createStyles);
   const router = useRouter();
+
+  const version = Constants.nativeAppVersion ?? Constants.expoConfig?.version ?? "0.1.0(*)";
+  const build = Constants.nativeBuildVersion ?? "dev";
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -30,6 +35,11 @@ const Settings = () => {
           <SettingsBlock />
         </View>
       </ScrollView>
+      <View style={styles.versionBox}>
+        <Text style={styles.versionText}>
+          v{version} ({build})
+        </Text>
+      </View>
     </SafeAreaView>
   );
 };
@@ -56,19 +66,20 @@ const createStyles = (colors: TColors) =>
       ...textVar.titleBold,
       color: colors.text,
     },
-
-    statsTitle: {
-      width: "100%",
-      paddingHorizontal: 16,
-      fontSize: 24,
-      fontWeight: "bold",
-      color: colors.text,
-    },
     content: {
       flex: 1,
       width: "100%",
       alignItems: "center",
       justifyContent: "flex-start",
       gap: scale(20),
+    },
+    versionBox: {
+      alignItems: "center",
+      paddingVertical: verticalScale(12),
+    },
+    versionText: {
+      ...textVar.mediumBold,
+      color: colors.textMuted,
+      letterSpacing: 1.3,
     },
   });
