@@ -37,6 +37,7 @@ const useGameBoard = ({
   const lastPlacedCell = useRef<CellProps | null>(null);
   const gameCompletedRef = useRef(false);
   const prevCompletedNumbers = useRef<Set<number>>(new Set());
+  const cluetimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const router = useRouter();
 
@@ -100,6 +101,12 @@ const useGameBoard = ({
       remainingClues: remainingClues,
     });
   }, [level, board, solutionBoard, score, errors, timer, remainingClues]);
+
+  useEffect(() => {
+    return () => {
+      if (cluetimeoutRef.current) clearTimeout(cluetimeoutRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     if (initialTimer && initialTimer > 0) {
@@ -280,7 +287,7 @@ const useGameBoard = ({
     if (!timerRunning) {
       setTimerRunning(true);
     }
-    if (!cell.editable === true) return;
+    // if (!cell.editable === true) return;
 
     if (selectedCell?.row === cell.row && selectedCell?.col === cell.col) {
       setSelectedCell(null);
@@ -290,16 +297,24 @@ const useGameBoard = ({
 
     setSelectedCell(cell);
 
-    if (cell.value !== null) {
-      setActiveNumber(cell.value);
-    } else {
-      setActiveNumber(null);
-    }
+    setActiveNumber(cell.value ?? null);
 
-    if (level < 3) {
+    if (cell.value !== null) {
+      setHighlightedCells(calculateSameNumberCells(cell, board));
+    } else if (level < 3) {
       setHighlightedCells(calculateHighlightedCells(cell));
-      setActiveNumber(null);
+    } else {
+      setHighlightedCells(new Set());
     }
+    // if (cell.value !== null) {
+    //   setActiveNumber(cell.value);
+    // } else {
+    //   setActiveNumber(null);
+    // }
+    // if (level < 3) {
+    //   setHighlightedCells(calculateHighlightedCells(cell));
+    //   setActiveNumber(null);
+    // }
   };
 
   const calculateHighlightedCells = (cell: CellProps) => {
@@ -313,12 +328,25 @@ const useGameBoard = ({
 
     const startRow = Math.floor(row / 3) * 3;
     const startCol = Math.floor(col / 3) * 3;
-    for (let row = startRow; row < startRow + 3; row++) {
-      for (let col = startCol; col < startCol + 3; col++) {
-        newHighlightedCells.add(`${row},${col}`);
+    for (let r = startRow; r < startRow + 3; r++) {
+      for (let c = startCol; c < startCol + 3; c++) {
+        newHighlightedCells.add(`${r},${c}`);
       }
     }
+
     return newHighlightedCells;
+  };
+
+  const calculateSameNumberCells = (cell: CellProps, board: Board) => {
+    const matched = new Set<string>();
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+        if (board[row][col].value === cell.value) {
+          matched.add(`${row},${col}`);
+        }
+      }
+    }
+    return matched;
   };
 
   const handleClickNumberPad = (number: number) => {
@@ -332,6 +360,8 @@ const useGameBoard = ({
       onClickHapticHeavy();
       return;
     } else {
+      if (!selectedCell.editable) return;
+
       const checkNumberInCell = solutionBoard[selectedCell.row][selectedCell.col].value === number;
       // const checkNumberInCell = isValid(board, selectedCell!.row, selectedCell!.col, number);
 
@@ -348,6 +378,10 @@ const useGameBoard = ({
         lastPlacedCell.current = selectedCell;
 
         setBoard(newBoard);
+        if (cluetimeoutRef.current) {
+          clearTimeout(cluetimeoutRef.current);
+          cluetimeoutRef.current = null;
+        }
         setClueCell(null);
         setScore(score! + number * factor);
         setSelectedCell(null);
@@ -360,6 +394,9 @@ const useGameBoard = ({
         setScore(Math.max(0, score - ERROR_PENALTY_MULTIPLAYER * factor));
         playSound();
         onClickHapticHeavy();
+        setSelectedCell(null);
+        setHighlightedCells(new Set());
+        setActiveNumber(null);
         setNotification({
           message: "Invalid number",
           type: "warning",
@@ -385,6 +422,12 @@ const useGameBoard = ({
       setRemainingClues((prev) => prev - 1);
       setScore(Math.max(0, score - CLUE_COST_MULTIPLAYER * factor));
       setClueCell(solutionBoard[selectedCell!.row][selectedCell!.col].value);
+      if (cluetimeoutRef.current) clearTimeout(cluetimeoutRef.current);
+
+      cluetimeoutRef.current = setTimeout(() => {
+        setClueCell(null);
+        cluetimeoutRef.current = null;
+      }, 5000);
     } else {
       setNotification({
         message: "Select a cell first",

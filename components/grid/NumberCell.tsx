@@ -108,7 +108,7 @@ const NumberCell = ({
               borderBottomWidth: 0.5,
               borderBottomColor: colorMode === "dark" ? colors.border : colors.veryLightGray,
             },
-        isError && { backgroundColor: colors.danger + 16 },
+        isError && { backgroundColor: colors.danger + 75 },
       ]}
       onPress={() => onPress(cell)}
     >
