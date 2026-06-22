@@ -83,7 +83,7 @@ const NumberCell = ({
       style={[
         styles.container,
         highlighted && {
-          backgroundColor: colorMode === "dark" ? colors.accentBase + 28 : colors.accentLight,
+          backgroundColor: colorMode === "dark" ? colors.accentBase + 45 : colors.accentBase + 50,
         },
         selected && {
           backgroundColor: colors.accentBase,
@@ -92,21 +92,21 @@ const NumberCell = ({
         },
         cell.col === 2 || cell.col === 5
           ? {
-              borderRightWidth: 2,
-              borderRightColor: colorMode === "dark" ? colors.border : colors.veryLightGray,
+              borderRightWidth: 2.8,
+              borderRightColor: colorMode === "dark" ? colors.border : colors.lightgray + 30,
             }
           : {
-              borderRightWidth: 0.5,
-              borderRightColor: colorMode === "dark" ? colors.border : colors.veryLightGray,
+              borderRightWidth: 1,
+              borderRightColor: colorMode === "dark" ? colors.border : colors.lightgray + 30,
             },
         cell.row === 2 || cell.row === 5
           ? {
-              borderBottomWidth: 2,
-              borderBottomColor: colorMode === "dark" ? colors.border : colors.veryLightGray,
+              borderBottomWidth: 2.8,
+              borderBottomColor: colorMode === "dark" ? colors.border : colors.lightgray + 30,
             }
           : {
-              borderBottomWidth: 0.5,
-              borderBottomColor: colorMode === "dark" ? colors.border : colors.veryLightGray,
+              borderBottomWidth: 1,
+              borderBottomColor: colorMode === "dark" ? colors.border : colors.lightgray + 30,
             },
         isError && { backgroundColor: colors.danger + 75 },
       ]}

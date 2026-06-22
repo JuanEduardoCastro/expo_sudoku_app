@@ -61,7 +61,7 @@ const createStyles = (colors: TColors) =>
       height: verticalScale(36),
       flexDirection: "row",
       alignItems: "center",
-      gap: scale(24),
+      gap: scale(18),
     },
     pageTitle: {
       ...textVar.titleBold,

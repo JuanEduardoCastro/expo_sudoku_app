@@ -1,11 +1,11 @@
 import ButtonBack from "@/components/shared/ButtonBack";
-import { scale, verticalScale } from "@/constants/dimensions";
+import { H_PAD, scale, verticalScale } from "@/constants/dimensions";
 import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Instructions = () => {
@@ -21,20 +21,26 @@ const Instructions = () => {
 
       <View style={{ height: verticalScale(42) }} />
 
-      <View style={styles.content}>
-        <Text style={styles.ruleText}>
-          {`• The goal is to fill a 9x9 grid with digits so that each column, each row, and each of the nine 3x3 subgrids that compose the grid contain all of the digits from 1 to 9.`}
-        </Text>
-        <Text style={styles.ruleText}>
-          {`• On Easy and Medium levels, selecting an empty cell highlights its row, column and 3x3 grid.`}
-        </Text>
-        <Text style={styles.ruleText}>
-          {`• Tap a number from the number pad at the bottom to place it in the selected cell.`}
-        </Text>
-        <Text
-          style={styles.ruleText}
-        >{`• If you get stuck, use the "Clue" button for a hint!`}</Text>
-      </View>
+      <ScrollView
+        scrollEnabled={false}
+        style={{ flex: 1, width: "100%" }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.content}>
+          <Text style={styles.ruleText}>
+            {`• The goal is to fill a 9x9 grid with digits so that each column, each row, and each of the nine 3x3 subgrids that compose the grid contain all of the digits from 1 to 9.`}
+          </Text>
+          <Text style={styles.ruleText}>
+            {`• On Easy and Medium levels, selecting an empty cell highlights its row, column and 3x3 grid.`}
+          </Text>
+          <Text style={styles.ruleText}>
+            {`• Tap a number from the number pad at the bottom to place it in the selected cell.`}
+          </Text>
+          <Text
+            style={styles.ruleText}
+          >{`• If you get stuck, use the "Clue" button for a hint!`}</Text>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -47,6 +53,7 @@ const createStyles = (colors: TColors) =>
       flex: 1,
       backgroundColor: colors.background,
       justifyContent: "flex-start",
+      padding: H_PAD,
       paddingTop: Platform.OS === "android" ? 34 : null,
       // padding: H_PAD,
     },
@@ -55,7 +62,7 @@ const createStyles = (colors: TColors) =>
       height: verticalScale(36),
       flexDirection: "row",
       alignItems: "center",
-      gap: scale(24),
+      gap: scale(18),
     },
     pageTitle: {
       ...textVar.titleBold,
@@ -64,7 +71,9 @@ const createStyles = (colors: TColors) =>
 
     content: {
       flex: 1,
-      paddingHorizontal: scale(30),
+      width: "100%",
+      // backgroundColor: "green",
+      // paddingHorizontal: scale(30),
       gap: scale(20),
     },
     title: {

@@ -214,8 +214,6 @@ const useGameBoard = ({
           }
         }
 
-        prevCompletedNumbers.current = new Set(completedNumbers);
-
         setRotatedCells(rotateSelection);
 
         if (bonus > 0) {
@@ -226,6 +224,7 @@ const useGameBoard = ({
     }
 
     const bonusScore = checkCells();
+    prevCompletedNumbers.current = new Set(completedNumbers);
     const scoreAfterBonus = bonusScore ?? score;
 
     if (bonusScore !== undefined && bonusScore > 0) {
