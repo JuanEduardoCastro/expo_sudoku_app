@@ -55,7 +55,6 @@ const createStyles = (colors: TColors) =>
       justifyContent: "flex-start",
       padding: H_PAD,
       paddingTop: Platform.OS === "android" ? 34 : null,
-      // padding: H_PAD,
     },
     header: {
       width: "100%",
@@ -72,8 +71,7 @@ const createStyles = (colors: TColors) =>
     content: {
       flex: 1,
       width: "100%",
-      // backgroundColor: "green",
-      // paddingHorizontal: scale(30),
+      paddingHorizontal: scale(16),
       gap: scale(20),
     },
     title: {
