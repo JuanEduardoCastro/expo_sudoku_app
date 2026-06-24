@@ -1,73 +1,349 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Terms &amp; Conditions</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms &amp; Conditions — Sudoku</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --accent: #5b6af0;
+        --accent-dark: #4455cc;
+        --accent-light: #818cf8;
+        --accent-faint: #5b6af018;
+        --accent-border: #5b6af040;
+        --bg: #0d0d1b;
+        --bg-card: #17172b;
+        --text: #eeeffe;
+        --text-muted: #6b6b9a;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        padding: 1em;
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+        background: rgba(13, 13, 27, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--accent-border);
+        padding: 0 2rem;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .nav-logo {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--text);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .nav-logo .dot {
+        width: 8px;
+        height: 8px;
+        background: var(--accent);
+        border-radius: 50%;
+      }
+
+      .nav-logo .accent {
+        color: var(--accent-light);
+      }
+
+      .nav-link {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        transition: color 0.2s;
+      }
+      .nav-link:hover {
+        color: var(--text);
+      }
+
+      /* PAGE HEADER */
+      .page-header {
+        padding: 9rem 2rem 4rem;
+        text-align: center;
+        border-bottom: 1px solid #ffffff0d;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 70% 60% at 50% 0%, #5b6af025 0%, transparent 70%);
+        pointer-events: none;
+      }
+
+      .page-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--accent-faint);
+        border: 1px solid var(--accent-border);
+        border-radius: 999px;
+        padding: 0.3rem 0.9rem;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--accent-light);
+        margin-bottom: 1.5rem;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+      }
+
+      .page-header h1 {
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-bottom: 0.75rem;
+      }
+
+      .page-header p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      /* DOCUMENT BODY */
+      .doc {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+      }
+
+      .doc-section {
+        margin-bottom: 2.75rem;
+      }
+
+      .doc-section h2 {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #28284a;
+      }
+
+      .doc-section p {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        line-height: 1.75;
+        margin-bottom: 0.75rem;
+      }
+
+      .doc-section p:last-child {
+        margin-bottom: 0;
+      }
+
+      .doc-section a {
+        color: var(--accent-light);
+        text-decoration: none;
+      }
+      .doc-section a:hover {
+        text-decoration: underline;
+      }
+
+      .doc-effective {
+        display: inline-block;
+        background: var(--bg-card);
+        border: 1px solid #28284a;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 3rem;
+      }
+
+      /* FOOTER */
+      footer {
+        padding: 2.5rem 2rem;
+        text-align: center;
+        border-top: 1px solid #ffffff0d;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.2rem;
+      }
+
+      .footer-links a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.875rem;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: var(--text);
+      }
+
+      .footer-copy {
+        font-size: 0.78rem;
+        color: #333355;
       }
     </style>
   </head>
+
   <body>
-    <strong>Terms &amp; Conditions</strong>
-    <p>
-      These terms and conditions apply to the SudokuApp app (hereby referred to as "Application")
-      for mobile devices, created by Juan Castro (hereby referred to as "Service Provider") as a
-      free service.
-    </p>
-    <p>
-      Upon downloading or utilizing the Application, you are automatically agreeing to the following
-      terms. It is strongly advised that you thoroughly read and understand these terms prior to
-      using the Application.
-    </p>
+    <!-- NAV -->
+    <nav>
+      <a href="./index.html" class="nav-logo">
+        <span class="dot"></span>
+        Sudoku<span class="accent">.Jc</span>
+      </a>
+      <a
+        href="https://juaneduardocastro.github.io/expo_sudoku_app"
+        target="_blank"
+        rel="noopener"
+        class="nav-link"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0.268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+          />
+        </svg>
+        GitHub
+      </a>
+    </nav>
 
-    <br />
-    <p>
-      Unauthorized copying or modification of the Application, any part of the Application, or its
-      trademarks is strictly prohibited. Any attempts to extract the source code of the Application,
-      translate it into other languages, or create derivative versions are not permitted. All
-      trademarks, copyrights, database rights, and other intellectual property rights related to the
-      Application remain the property of the Service Provider.
-    </p>
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="page-badge">Legal</div>
+      <h1>Terms &amp; Conditions</h1>
+      <p>Last updated: 2026-04-20</p>
+    </div>
 
-    <br />
-    <p>
-      The Application is fully offline. It does not require an internet connection and does not
-      transmit any data to external servers. All game data, scores, and settings are stored locally
-      on your device.
-    </p>
+    <!-- DOCUMENT CONTENT -->
+    <main class="doc">
+      <div class="doc-effective">Effective date: 2026-04-20</div>
 
-    <br />
-    <p>
-      The Service Provider is dedicated to ensuring that the Application is as beneficial and
-      efficient as possible. They reserve the right to modify the Application at any time and for
-      any reason. The Service Provider may also cease providing the Application and may terminate
-      its use at any time. Upon termination, the rights and licenses granted to you will end and you
-      must cease using the Application.
-    </p>
+      <div class="doc-section">
+        <h2>Overview</h2>
+        <p>
+          These terms and conditions apply to the SudokuApp app (hereby referred to as
+          "Application") for mobile devices, created by Juan Castro (hereby referred to as "Service
+          Provider") as a free service.
+        </p>
+        <p>
+          Upon downloading or utilizing the Application, you are automatically agreeing to the
+          following terms. It is strongly advised that you thoroughly read and understand these
+          terms prior to using the Application.
+        </p>
+      </div>
 
-    <br />
-    <p>
-      The Service Provider strongly advises against jailbreaking or rooting your phone. Such actions
-      could compromise your device's security features and may result in the Application not
-      functioning correctly.
-    </p>
+      <div class="doc-section">
+        <h2>Intellectual Property</h2>
+        <p>
+          Unauthorized copying or modification of the Application, any part of the Application, or
+          its trademarks is strictly prohibited. Any attempts to extract the source code of the
+          Application, translate it into other languages, or create derivative versions are not
+          permitted. All trademarks, copyrights, database rights, and other intellectual property
+          rights related to the Application remain the property of the Service Provider.
+        </p>
+      </div>
 
-    <br /><strong>Changes to These Terms and Conditions</strong>
-    <p>
-      The Service Provider may periodically update these Terms and Conditions. You are advised to
-      review this page regularly for any changes. The Service Provider will notify you of any
-      changes by posting the new Terms and Conditions on this page.
-    </p>
-    <p>These terms and conditions are effective as of 2026-04-20</p>
+      <div class="doc-section">
+        <h2>Offline Use &amp; Data</h2>
+        <p>
+          The Application is fully offline. It does not require an internet connection and does not
+          transmit any data to external servers. All game data, scores, and settings are stored
+          locally on your device.
+        </p>
+      </div>
 
-    <br /><strong>Contact Us</strong>
-    <p>
-      If you have any questions or suggestions about these Terms and Conditions, please contact the
-      Service Provider at juaneduardo.castrotrujillo@gmail.com.
-    </p>
+      <div class="doc-section">
+        <h2>Modifications &amp; Termination</h2>
+        <p>
+          The Service Provider is dedicated to ensuring that the Application is as beneficial and
+          efficient as possible. They reserve the right to modify the Application at any time and
+          for any reason. The Service Provider may also cease providing the Application and may
+          terminate its use at any time. Upon termination, the rights and licenses granted to you
+          will end and you must cease using the Application.
+        </p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Device Security</h2>
+        <p>
+          The Service Provider strongly advises against jailbreaking or rooting your phone. Such
+          actions could compromise your device's security features and may result in the Application
+          not functioning correctly.
+        </p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Changes to These Terms</h2>
+        <p>
+          The Service Provider may periodically update these Terms and Conditions. You are advised
+          to review this page regularly for any changes. The Service Provider will notify you of any
+          changes by posting the new Terms and Conditions on this page.
+        </p>
+      </div>
+
+      <div class="doc-section">
+        <h2>Contact Us</h2>
+        <p>
+          If you have any questions or suggestions about these Terms and Conditions, please contact
+          the Service Provider at
+          <a href="mailto:juaneduardo.castrotrujillo@gmail.com"
+            >juaneduardo.castrotrujillo@gmail.com</a
+          >.
+        </p>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-links">
+        <a href="./index.html">Home</a>
+        <a href="./app-privacy-policy.html">Privacy Policy</a>
+        <a href="./app-terms-&-conditions.html">Terms &amp; Conditions</a>
+        <a
+          href="https://github.com/juaneduardocastro/expo_sudoku_app"
+          target="_blank"
+          rel="noopener"
+          >GitHub</a
+        >
+      </div>
+      <p class="footer-copy">&copy; 2026 Sudoku &mdash; Juan Eduardo Castro</p>
+    </footer>
   </body>
 </html>
