@@ -1,3 +1,4 @@
+import AppText from "@/components/shared/AppText";
 import ButtonBack from "@/components/shared/ButtonBack";
 import GlobalScores from "@/components/stats/GlobalScores";
 import ScoresByLevel from "@/components/stats/ScoresByLevel";
@@ -8,7 +9,7 @@ import useStyles from "@/hooks/useStyles";
 import { useGameScoresStore } from "@/store/store_zustand";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Stats = () => {
@@ -22,7 +23,7 @@ const Stats = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={() => router.back()} />
-        <Text style={styles.pageTitle}>Statistics</Text>
+        <AppText style={styles.pageTitle}>Statistics</AppText>
       </View>
 
       <View style={{ height: verticalScale(22) }} />
@@ -36,9 +37,11 @@ const Stats = () => {
         </ScrollView>
       ) : (
         <View style={styles.emptyState}>
-          <Text style={styles.emptyIcon}>🎯</Text>
-          <Text style={styles.emptyTitle}>No games yet</Text>
-          <Text style={styles.emptySubtitle}>Complete your first game to see your stats here.</Text>
+          <AppText style={styles.emptyIcon}>🎯</AppText>
+          <AppText style={styles.emptyTitle}>No games yet</AppText>
+          <AppText style={styles.emptySubtitle}>
+            Complete your first game to see your stats here.
+          </AppText>
         </View>
       )}
     </SafeAreaView>

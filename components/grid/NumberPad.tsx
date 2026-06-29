@@ -4,7 +4,8 @@ import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import AppText from "../shared/AppText";
 
 export type NumberPadProps = {
   onPress: (number: number) => void;
@@ -34,7 +35,7 @@ const NumberPad = ({ onPress, clueCell, completedNumbers }: NumberPadProps) => {
           key={index}
           onPress={() => onPress(number)}
         >
-          <Text
+          <AppText
             style={[
               styles.numberText,
               { color: number === clueCell ? colors.accentLight : colors.text },
@@ -42,7 +43,7 @@ const NumberPad = ({ onPress, clueCell, completedNumbers }: NumberPadProps) => {
             ]}
           >
             {number}
-          </Text>
+          </AppText>
         </Pressable>
       ))}
     </View>

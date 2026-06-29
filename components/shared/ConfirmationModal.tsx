@@ -4,7 +4,8 @@ import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { formatSeconds } from "@/utils/formatters";
 import React from "react";
-import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { Modal, Pressable, StyleSheet, View } from "react-native";
+import AppText from "./AppText";
 
 type ConfirmationModalProps = {
   visible: boolean;
@@ -46,43 +47,43 @@ const ConfirmationModal = ({
       <View style={styles.container}>
         <View style={styles.cardContainer}>
           <View style={styles.iconWrap}>
-            <Text style={{ fontSize: 26 }}>{icon}</Text>
+            <AppText style={{ fontSize: 26 }}>{icon}</AppText>
           </View>
 
           <View style={{ height: verticalScale(16) }} />
 
-          <Text style={styles.modalTitle}>{title}</Text>
+          <AppText style={styles.modalTitle}>{title}</AppText>
 
           <View style={{ height: verticalScale(16) }} />
           {!isFinishedModal ? (
             <>
-              <Text style={styles.modalContent}>{content}</Text>
-              <Text style={styles.modalContent}>{content2}</Text>
+              <AppText style={styles.modalContent}>{content}</AppText>
+              <AppText style={styles.modalContent}>{content2}</AppText>
             </>
           ) : (
             <>
               <View style={styles.statsRow}>
                 <View style={styles.statBox}>
-                  <Text style={styles.statValue}>{finishedData?.score}</Text>
-                  <Text style={styles.statLabel}>Score</Text>
+                  <AppText style={styles.statValue}>{finishedData?.score}</AppText>
+                  <AppText style={styles.statLabel}>Score</AppText>
                 </View>
                 <View style={styles.statBox}>
-                  <Text style={styles.statValue}>
+                  <AppText style={styles.statValue}>
                     {finishedData?.timer ? formatSeconds(finishedData?.timer) : "--"}
-                  </Text>
-                  <Text style={styles.statLabel}>Time</Text>
+                  </AppText>
+                  <AppText style={styles.statLabel}>Time</AppText>
                 </View>
                 <View style={styles.statBox}>
-                  <Text style={styles.statValue}>{finishedData?.errors}</Text>
-                  <Text style={styles.statLabel}>Errors</Text>
+                  <AppText style={styles.statValue}>{finishedData?.errors}</AppText>
+                  <AppText style={styles.statLabel}>Errors</AppText>
                 </View>
               </View>
               <View style={styles.recordBadgeBox}>
                 {finishedData?.isNewScoreRecord && (
-                  <Text style={styles.recordBadge}>🏆 Best score!</Text>
+                  <AppText style={styles.recordBadge}>🏆 Best score!</AppText>
                 )}
                 {finishedData?.isNewTimeRecord && (
-                  <Text style={styles.recordBadge}>🏆 Best time!</Text>
+                  <AppText style={styles.recordBadge}>🏆 Best time!</AppText>
                 )}
               </View>
             </>
@@ -93,12 +94,12 @@ const ConfirmationModal = ({
           <View style={styles.buttonBox}>
             {cancelText && (
               <Pressable style={[styles.buttonCancel]} onPress={cancelOnPress}>
-                <Text style={styles.buttonCancelText}>{cancelText} </Text>
+                <AppText style={styles.buttonCancelText}>{cancelText} </AppText>
               </Pressable>
             )}
             {acceptText && (
               <Pressable style={styles.buttonAccept} onPress={acceptOnPress}>
-                <Text style={styles.buttonAcceptText}>{acceptText}</Text>
+                <AppText style={styles.buttonAcceptText}>{acceptText}</AppText>
               </Pressable>
             )}
           </View>

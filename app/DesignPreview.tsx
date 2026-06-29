@@ -1,16 +1,9 @@
+import AppText from "@/components/shared/AppText";
 import { scale, verticalScale } from "@/constants/dimensions";
 import { useColorMode } from "@/context/ColorModeContext";
 import { Stack, useRouter } from "expo-router";
 import React, { useState } from "react";
-import {
-  Dimensions,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Dimensions, Pressable, SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 
 // ─── FIXED DESIGN TOKENS ──────────────────────────────────────────────────────
 
@@ -195,15 +188,15 @@ const DesignPreview = () => {
         {/* ── Top bar ── */}
         <View style={[s.topBar, { borderBottomColor: c.border }]}>
           <Pressable onPress={() => router.back()} style={s.backBtn} hitSlop={12}>
-            <Text style={{ color: PALETTE.accent, fontSize: 26, lineHeight: 30 }}>‹</Text>
+            <AppText style={{ color: PALETTE.accent, fontSize: 26, lineHeight: 30 }}>‹</AppText>
           </Pressable>
-          <Text style={[s.topBarTitle, { color: c.text }]}>Design Preview</Text>
+          <AppText style={[s.topBarTitle, { color: c.text }]}>Design Preview</AppText>
           <View style={{ width: 40 }} />
         </View>
 
         {/* ── Color scheme picker ── */}
         <View style={[s.pickerWrap, { backgroundColor: c.surface, borderBottomColor: c.border }]}>
-          <Text style={[s.pickerLabel, { color: c.textMuted }]}>LEVEL COLORS</Text>
+          <AppText style={[s.pickerLabel, { color: c.textMuted }]}>LEVEL COLORS</AppText>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
@@ -230,9 +223,11 @@ const DesignPreview = () => {
                       <View key={i} style={[s.schemeDot, { backgroundColor: hex }]} />
                     ))}
                   </View>
-                  <Text style={[s.schemeName, { color: isActive ? PALETTE.accent : c.textMuted }]}>
+                  <AppText
+                    style={[s.schemeName, { color: isActive ? PALETTE.accent : c.textMuted }]}
+                  >
                     {sch.label}
-                  </Text>
+                  </AppText>
                 </Pressable>
               );
             })}
@@ -250,9 +245,9 @@ const DesignPreview = () => {
               ]}
               onPress={() => setTab(key)}
             >
-              <Text style={[s.tabLabel, { color: tab === key ? PALETTE.accent : c.textMuted }]}>
+              <AppText style={[s.tabLabel, { color: tab === key ? PALETTE.accent : c.textMuted }]}>
                 {label}
-              </Text>
+              </AppText>
             </Pressable>
           ))}
         </View>
@@ -292,12 +287,12 @@ type ScreenProps = {
 const HomeScreen = ({ c, isDark, levels }: ScreenProps) => (
   <View style={[s.screen, { backgroundColor: c.bg }]}>
     <View style={s.homeHero}>
-      <Text style={[s.appName, { color: PALETTE.accent }]}>SUDOKU</Text>
-      <Text style={[s.appTagline, { color: c.textMuted }]}>Focus. Logic. Clarity.</Text>
+      <AppText style={[s.appName, { color: PALETTE.accent }]}>SUDOKU</AppText>
+      <AppText style={[s.appTagline, { color: c.textMuted }]}>Focus. Logic. Clarity.</AppText>
     </View>
 
     <View style={{ height: verticalScale(36) }} />
-    <Text style={[s.sectionLabel, { color: c.textMuted }]}>SELECT DIFFICULTY</Text>
+    <AppText style={[s.sectionLabel, { color: c.textMuted }]}>SELECT DIFFICULTY</AppText>
     <View style={{ height: verticalScale(12) }} />
 
     {levels.map((level) => (
@@ -314,13 +309,13 @@ const HomeScreen = ({ c, isDark, levels }: ScreenProps) => (
       >
         <View style={[s.levelDot, { backgroundColor: level.color }]} />
         <View style={{ flex: 1, gap: 3 }}>
-          <Text style={[s.levelCardName, { color: c.text }]}>{level.name}</Text>
-          <Text style={[s.levelCardSub, { color: c.textMuted }]}>{level.sub}</Text>
+          <AppText style={[s.levelCardName, { color: c.text }]}>{level.name}</AppText>
+          <AppText style={[s.levelCardSub, { color: c.textMuted }]}>{level.sub}</AppText>
         </View>
         <View style={[s.levelArrow, { backgroundColor: level.color + "22" }]}>
-          <Text style={{ color: level.color, fontSize: 18, fontWeight: "700", lineHeight: 22 }}>
+          <AppText style={{ color: level.color, fontSize: 18, fontWeight: "700", lineHeight: 22 }}>
             ›
-          </Text>
+          </AppText>
         </View>
       </View>
     ))}
@@ -333,7 +328,7 @@ const HomeScreen = ({ c, isDark, levels }: ScreenProps) => (
           key={label}
           style={[s.homeNavBtn, { backgroundColor: c.surface, borderColor: c.border }]}
         >
-          <Text style={[s.homeNavLabel, { color: c.text }]}>{label}</Text>
+          <AppText style={[s.homeNavLabel, { color: c.text }]}>{label}</AppText>
         </View>
       ))}
     </View>
@@ -350,12 +345,12 @@ const GameScreen = ({ c, isDark, scheme }: ScreenProps) => {
     <View style={[s.screen, { backgroundColor: c.bg }]}>
       {/* Top bar */}
       <View style={[s.gameBar, { backgroundColor: c.surface, borderColor: c.border }]}>
-        <Text style={{ color: PALETTE.accent, fontSize: 24, width: 32 }}>‹</Text>
+        <AppText style={{ color: PALETTE.accent, fontSize: 24, width: 32 }}>‹</AppText>
         <View style={[s.levelPill, { backgroundColor: easyColor + "28" }]}>
           <View style={[s.levelPillDot, { backgroundColor: easyColor }]} />
-          <Text style={[s.levelPillText, { color: easyColor }]}>Easy</Text>
+          <AppText style={[s.levelPillText, { color: easyColor }]}>Easy</AppText>
         </View>
-        <Text style={[s.timerLabel, { color: c.textMuted }]}>05:32</Text>
+        <AppText style={[s.timerLabel, { color: c.textMuted }]}>05:32</AppText>
       </View>
 
       <View style={{ height: verticalScale(14) }} />
@@ -363,15 +358,15 @@ const GameScreen = ({ c, isDark, scheme }: ScreenProps) => {
       {/* Score row */}
       <View style={[s.scoreCard, { backgroundColor: c.surface, borderColor: c.border }]}>
         <View style={s.scoreBlock}>
-          <Text style={[s.scoreCaption, { color: c.textMuted }]}>SCORE</Text>
-          <Text style={[s.scoreNum, { color: c.text }]}>1,240</Text>
+          <AppText style={[s.scoreCaption, { color: c.textMuted }]}>SCORE</AppText>
+          <AppText style={[s.scoreNum, { color: c.text }]}>1,240</AppText>
         </View>
         <View style={[s.factorPill, { backgroundColor: PALETTE.accentLight }]}>
-          <Text style={[s.factorX, { color: PALETTE.accent }]}>×</Text>
-          <Text style={[s.factorNum, { color: PALETTE.accent }]}>18</Text>
+          <AppText style={[s.factorX, { color: PALETTE.accent }]}>×</AppText>
+          <AppText style={[s.factorNum, { color: PALETTE.accent }]}>18</AppText>
         </View>
         <View style={s.scoreBlock}>
-          <Text style={[s.scoreCaption, { color: c.textMuted }]}>ERRORS</Text>
+          <AppText style={[s.scoreCaption, { color: c.textMuted }]}>ERRORS</AppText>
           <View style={s.dotRow}>
             {[0, 1, 2].map((i) => (
               <View
@@ -428,7 +423,7 @@ const GameScreen = ({ c, isDark, scheme }: ScreenProps) => {
                     },
                   ]}
                 >
-                  <Text
+                  <AppText
                     style={{
                       fontSize: CELL_SIZE * 0.44,
                       fontWeight: isGiven ? "700" : "400",
@@ -437,7 +432,7 @@ const GameScreen = ({ c, isDark, scheme }: ScreenProps) => {
                     }}
                   >
                     {isSelected ? "3" : isPlayer ? "4" : val !== 0 ? val : ""}
-                  </Text>
+                  </AppText>
                 </View>
               );
             })}
@@ -449,7 +444,7 @@ const GameScreen = ({ c, isDark, scheme }: ScreenProps) => {
 
       {/* Clue row */}
       <View style={s.clueRow}>
-        <Text style={[s.clueCaption, { color: c.textMuted }]}>CLUES</Text>
+        <AppText style={[s.clueCaption, { color: c.textMuted }]}>CLUES</AppText>
         <View style={s.dotRow}>
           {[0, 1, 2].map((i) => (
             <View
@@ -480,7 +475,7 @@ const GameScreen = ({ c, isDark, scheme }: ScreenProps) => {
                 },
               ]}
             >
-              <Text style={[s.padBtnNum, { color: active ? "#FFF" : c.text }]}>{n}</Text>
+              <AppText style={[s.padBtnNum, { color: active ? "#FFF" : c.text }]}>{n}</AppText>
             </View>
           );
         })}
@@ -512,10 +507,10 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
 
   return (
     <View style={[s.screen, { backgroundColor: c.bg }]}>
-      <Text style={[s.pageTitle, { color: c.text }]}>Statistics</Text>
+      <AppText style={[s.pageTitle, { color: c.text }]}>Statistics</AppText>
 
       <View style={{ height: verticalScale(22) }} />
-      <Text style={[s.sectionLabel, { color: c.textMuted }]}>GLOBAL</Text>
+      <AppText style={[s.sectionLabel, { color: c.textMuted }]}>GLOBAL</AppText>
       <View style={{ height: verticalScale(12) }} />
 
       <View style={s.statGrid}>
@@ -531,14 +526,14 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
               },
             ]}
           >
-            <Text style={[s.statCardValue, { color: c.text }]}>{stat.value}</Text>
-            <Text style={[s.statCardLabel, { color: c.textMuted }]}>{stat.label}</Text>
+            <AppText style={[s.statCardValue, { color: c.text }]}>{stat.value}</AppText>
+            <AppText style={[s.statCardLabel, { color: c.textMuted }]}>{stat.label}</AppText>
           </View>
         ))}
       </View>
 
       <View style={{ height: verticalScale(28) }} />
-      <Text style={[s.sectionLabel, { color: c.textMuted }]}>BY LEVEL</Text>
+      <AppText style={[s.sectionLabel, { color: c.textMuted }]}>BY LEVEL</AppText>
       <View style={{ height: verticalScale(12) }} />
 
       {/* ── Easy card — expandable ── */}
@@ -559,21 +554,23 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
         <View style={{ flexDirection: "row", alignItems: "center", width: "100%" }}>
           <View style={[s.levelStatBar, { backgroundColor: easy.color, alignSelf: "stretch" }]} />
           <View style={{ flex: 1, paddingLeft: 14, paddingVertical: 14, gap: 4 }}>
-            <Text style={[s.levelStatName, { color: c.text }]}>{easy.name}</Text>
+            <AppText style={[s.levelStatName, { color: c.text }]}>{easy.name}</AppText>
             <View style={{ flexDirection: "row", gap: 4 }}>
-              <Text style={[s.levelStatMeta, { color: c.textMuted }]}>Best {easy.best}</Text>
-              <Text style={[s.levelStatMeta, { color: c.border }]}>·</Text>
-              <Text style={[s.levelStatMeta, { color: c.textMuted }]}>{easy.games} games</Text>
+              <AppText style={[s.levelStatMeta, { color: c.textMuted }]}>Best {easy.best}</AppText>
+              <AppText style={[s.levelStatMeta, { color: c.border }]}>·</AppText>
+              <AppText style={[s.levelStatMeta, { color: c.textMuted }]}>
+                {easy.games} games
+              </AppText>
             </View>
           </View>
           <View style={[s.streakBadge, { backgroundColor: easy.color + "22" }]}>
-            <Text style={{ fontSize: 13, fontWeight: "700", color: easy.color }}>
+            <AppText style={{ fontSize: 13, fontWeight: "700", color: easy.color }}>
               🔥 {easy.streak}
-            </Text>
+            </AppText>
           </View>
           {/* Chevron */}
           <View style={{ paddingRight: 14, paddingLeft: 4 }}>
-            <Text
+            <AppText
               style={{
                 fontSize: 16,
                 color: c.textMuted,
@@ -581,7 +578,7 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
               }}
             >
               ⌄
-            </Text>
+            </AppText>
           </View>
         </View>
 
@@ -603,32 +600,34 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
                 <View
                   style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}
                 >
-                  <Text style={[s.expandTileValue, { color: c.text }]}>{easy.best}</Text>
-                  <Text style={[s.expandTileLabel, { color: c.textMuted }]}>Best Time</Text>
+                  <AppText style={[s.expandTileValue, { color: c.text }]}>{easy.best}</AppText>
+                  <AppText style={[s.expandTileLabel, { color: c.textMuted }]}>Best Time</AppText>
                 </View>
                 <View
                   style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}
                 >
-                  <Text style={[s.expandTileValue, { color: c.text }]}>3,840</Text>
-                  <Text style={[s.expandTileLabel, { color: c.textMuted }]}>Max Points</Text>
+                  <AppText style={[s.expandTileValue, { color: c.text }]}>3,840</AppText>
+                  <AppText style={[s.expandTileLabel, { color: c.textMuted }]}>Max Points</AppText>
                 </View>
                 <View
                   style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}
                 >
-                  <Text style={[s.expandTileValue, { color: c.text }]}>{easy.games}</Text>
-                  <Text style={[s.expandTileLabel, { color: c.textMuted }]}>Games</Text>
+                  <AppText style={[s.expandTileValue, { color: c.text }]}>{easy.games}</AppText>
+                  <AppText style={[s.expandTileLabel, { color: c.textMuted }]}>Games</AppText>
                 </View>
                 <View
                   style={[s.expandTile, { backgroundColor: c.surface2, borderColor: c.border }]}
                 >
-                  <Text style={[s.expandTileValue, { color: easy.color }]}>6</Text>
-                  <Text style={[s.expandTileLabel, { color: c.textMuted }]}>Perfect</Text>
+                  <AppText style={[s.expandTileValue, { color: easy.color }]}>6</AppText>
+                  <AppText style={[s.expandTileLabel, { color: c.textMuted }]}>Perfect</AppText>
                 </View>
               </View>
 
               {/* Streak bar */}
               <View style={s.expandStreakRow}>
-                <Text style={[s.expandStreakLabel, { color: c.textMuted }]}>Current streak</Text>
+                <AppText style={[s.expandStreakLabel, { color: c.textMuted }]}>
+                  Current streak
+                </AppText>
                 <View style={s.expandStreakDots}>
                   {[1, 2, 3, 4, 5].map((i) => (
                     <View
@@ -640,9 +639,9 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
                     />
                   ))}
                 </View>
-                <Text style={{ fontSize: 13, fontWeight: "700", color: easy.color }}>
+                <AppText style={{ fontSize: 13, fontWeight: "700", color: easy.color }}>
                   🔥 {easy.streak}
-                </Text>
+                </AppText>
               </View>
             </View>
           </>
@@ -664,18 +663,18 @@ const StatsScreen = ({ c, isDark, levels }: ScreenProps) => {
         >
           <View style={[s.levelStatBar, { backgroundColor: lvl.color }]} />
           <View style={{ flex: 1, paddingLeft: 14, paddingVertical: 12, gap: 4 }}>
-            <Text style={[s.levelStatName, { color: c.text }]}>{lvl.name}</Text>
+            <AppText style={[s.levelStatName, { color: c.text }]}>{lvl.name}</AppText>
             <View style={{ flexDirection: "row", gap: 4 }}>
-              <Text style={[s.levelStatMeta, { color: c.textMuted }]}>Best {lvl.best}</Text>
-              <Text style={[s.levelStatMeta, { color: c.border }]}>·</Text>
-              <Text style={[s.levelStatMeta, { color: c.textMuted }]}>{lvl.games} games</Text>
+              <AppText style={[s.levelStatMeta, { color: c.textMuted }]}>Best {lvl.best}</AppText>
+              <AppText style={[s.levelStatMeta, { color: c.border }]}>·</AppText>
+              <AppText style={[s.levelStatMeta, { color: c.textMuted }]}>{lvl.games} games</AppText>
             </View>
           </View>
           {lvl.streak > 0 && (
             <View style={[s.streakBadge, { backgroundColor: lvl.color + "22" }]}>
-              <Text style={{ fontSize: 13, fontWeight: "700", color: lvl.color }}>
+              <AppText style={{ fontSize: 13, fontWeight: "700", color: lvl.color }}>
                 🔥 {lvl.streak}
-              </Text>
+              </AppText>
             </View>
           )}
         </View>
@@ -704,58 +703,66 @@ const TokensScreen = ({ c, isDark, scheme }: { c: C; isDark: boolean; scheme: Le
 
   return (
     <View style={[s.screen, { backgroundColor: c.bg }]}>
-      <Text style={[s.pageTitle, { color: c.text }]}>Design Tokens</Text>
-      <Text style={[s.tokenSubtitle, { color: c.textMuted }]}>
+      <AppText style={[s.pageTitle, { color: c.text }]}>Design Tokens</AppText>
+      <AppText style={[s.tokenSubtitle, { color: c.textMuted }]}>
         Indigo accent · {scheme.name} level scale · Neutral surfaces
-      </Text>
+      </AppText>
 
       <View style={{ height: verticalScale(24) }} />
-      <Text style={[s.sectionLabel, { color: c.textMuted }]}>PALETTE</Text>
+      <AppText style={[s.sectionLabel, { color: c.textMuted }]}>PALETTE</AppText>
       <View style={{ height: verticalScale(14) }} />
 
       <View style={s.swatchGrid}>
         {swatches.map((sw) => (
           <View key={sw.name} style={s.swatchItem}>
             <View style={[s.swatch, { backgroundColor: sw.hex, borderColor: c.border }]} />
-            <Text style={[s.swatchName, { color: c.text }]}>{sw.name}</Text>
-            <Text style={[s.swatchHex, { color: c.textMuted }]}>{sw.hex.toUpperCase()}</Text>
+            <AppText style={[s.swatchName, { color: c.text }]}>{sw.name}</AppText>
+            <AppText style={[s.swatchHex, { color: c.textMuted }]}>{sw.hex.toUpperCase()}</AppText>
           </View>
         ))}
       </View>
 
       <View style={{ height: verticalScale(28) }} />
-      <Text style={[s.sectionLabel, { color: c.textMuted }]}>TYPOGRAPHY</Text>
+      <AppText style={[s.sectionLabel, { color: c.textMuted }]}>TYPOGRAPHY</AppText>
       <View style={{ height: verticalScale(14) }} />
 
       <View style={[s.typeSample, { backgroundColor: c.surface, borderColor: c.border }]}>
-        <Text style={{ color: PALETTE.accent, fontSize: 36, fontWeight: "800", letterSpacing: 8 }}>
+        <AppText
+          style={{ color: PALETTE.accent, fontSize: 36, fontWeight: "800", letterSpacing: 8 }}
+        >
           SUDOKU
-        </Text>
-        <Text style={[s.typeCaption, { color: c.textMuted }]}>App name · 36 / 800 / spacing 8</Text>
+        </AppText>
+        <AppText style={[s.typeCaption, { color: c.textMuted }]}>
+          App name · 36 / 800 / spacing 8
+        </AppText>
 
         <View style={[s.typeDivider, { backgroundColor: c.border }]} />
 
-        <Text style={{ color: c.text, fontSize: 40, fontWeight: "800" }}>1,240</Text>
-        <Text style={[s.typeCaption, { color: c.textMuted }]}>Score · 40 / 800 / tabular nums</Text>
+        <AppText style={{ color: c.text, fontSize: 40, fontWeight: "800" }}>1,240</AppText>
+        <AppText style={[s.typeCaption, { color: c.textMuted }]}>
+          Score · 40 / 800 / tabular nums
+        </AppText>
 
         <View style={[s.typeDivider, { backgroundColor: c.border }]} />
 
         <View style={{ flexDirection: "row", alignItems: "flex-end", gap: 2 }}>
-          <Text style={{ color: PALETTE.accent, fontSize: 28, fontWeight: "800" }}>×</Text>
-          <Text style={{ color: PALETTE.accent, fontSize: 52, fontWeight: "900", lineHeight: 58 }}>
+          <AppText style={{ color: PALETTE.accent, fontSize: 28, fontWeight: "800" }}>×</AppText>
+          <AppText
+            style={{ color: PALETTE.accent, fontSize: 52, fontWeight: "900", lineHeight: 58 }}
+          >
             18
-          </Text>
+          </AppText>
         </View>
-        <Text style={[s.typeCaption, { color: c.textMuted }]}>
+        <AppText style={[s.typeCaption, { color: c.textMuted }]}>
           Factor X · 52 / 900 / accent color
-        </Text>
+        </AppText>
 
         <View style={[s.typeDivider, { backgroundColor: c.border }]} />
 
-        <Text style={{ color: c.textMuted, fontSize: 20, fontWeight: "600", letterSpacing: 1 }}>
+        <AppText style={{ color: c.textMuted, fontSize: 20, fontWeight: "600", letterSpacing: 1 }}>
           05:32
-        </Text>
-        <Text style={[s.typeCaption, { color: c.textMuted }]}>Timer · 20 / 600 / muted</Text>
+        </AppText>
+        <AppText style={[s.typeCaption, { color: c.textMuted }]}>Timer · 20 / 600 / muted</AppText>
       </View>
     </View>
   );
@@ -768,14 +775,14 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
 
   return (
     <View style={[s.screen, { backgroundColor: c.bg }]}>
-      <Text style={[s.pageTitle, { color: c.text }]}>Modals</Text>
-      <Text style={[s.tokenSubtitle, { color: c.textMuted }]}>
+      <AppText style={[s.pageTitle, { color: c.text }]}>Modals</AppText>
+      <AppText style={[s.tokenSubtitle, { color: c.textMuted }]}>
         Confirmation dialogs · Game complete · No clues
-      </Text>
+      </AppText>
 
       {/* ── Exit confirmation ── */}
       <View style={{ height: verticalScale(32) }} />
-      <Text style={[s.sectionLabel, { color: c.textMuted }]}>EXIT CONFIRMATION</Text>
+      <AppText style={[s.sectionLabel, { color: c.textMuted }]}>EXIT CONFIRMATION</AppText>
       <View style={{ height: verticalScale(16) }} />
 
       <View style={s.modalSceneWrap}>
@@ -795,24 +802,24 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
         >
           {/* Icon */}
           <View style={[s.modalIconWrap, { backgroundColor: PALETTE.accentLight }]}>
-            <Text style={{ fontSize: 26 }}>🚪</Text>
+            <AppText style={{ fontSize: 26 }}>🚪</AppText>
           </View>
 
-          <Text style={[s.modalTitle, { color: c.text }]}>Leave the game?</Text>
-          <Text style={[s.modalMessage, { color: c.textMuted }]}>
+          <AppText style={[s.modalTitle, { color: c.text }]}>Leave the game?</AppText>
+          <AppText style={[s.modalMessage, { color: c.textMuted }]}>
             Your current progress will be lost. Are you sure you want to exit?
-          </Text>
+          </AppText>
 
           <View style={s.modalBtnRow}>
             {/* Cancel */}
             <View
               style={[s.modalBtnOutline, { borderColor: c.border, backgroundColor: c.surface2 }]}
             >
-              <Text style={[s.modalBtnOutlineText, { color: c.textMuted }]}>Stay</Text>
+              <AppText style={[s.modalBtnOutlineText, { color: c.textMuted }]}>Stay</AppText>
             </View>
             {/* Confirm */}
             <View style={[s.modalBtnFilled, { backgroundColor: PALETTE.accent }]}>
-              <Text style={s.modalBtnFilledText}>Leave</Text>
+              <AppText style={s.modalBtnFilledText}>Leave</AppText>
             </View>
           </View>
         </View>
@@ -820,7 +827,7 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
 
       {/* ── Game complete ── */}
       <View style={{ height: verticalScale(40) }} />
-      <Text style={[s.sectionLabel, { color: c.textMuted }]}>GAME COMPLETE</Text>
+      <AppText style={[s.sectionLabel, { color: c.textMuted }]}>GAME COMPLETE</AppText>
       <View style={{ height: verticalScale(16) }} />
 
       <View style={s.modalSceneWrap}>
@@ -838,46 +845,46 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
         >
           {/* Icon */}
           <View style={[s.modalIconWrap, { backgroundColor: easyColor + "33" }]}>
-            <Text style={{ fontSize: 26 }}>🎉</Text>
+            <AppText style={{ fontSize: 26 }}>🎉</AppText>
           </View>
 
-          <Text style={[s.modalTitle, { color: c.text }]}>Puzzle Complete!</Text>
+          <AppText style={[s.modalTitle, { color: c.text }]}>Puzzle Complete!</AppText>
 
           {/* Stats row */}
           <View style={[s.modalStatsRow, { backgroundColor: c.surface2, borderColor: c.border }]}>
             <View style={s.modalStat}>
-              <Text style={[s.modalStatValue, { color: c.text }]}>1,840</Text>
-              <Text style={[s.modalStatLabel, { color: c.textMuted }]}>Score</Text>
+              <AppText style={[s.modalStatValue, { color: c.text }]}>1,840</AppText>
+              <AppText style={[s.modalStatLabel, { color: c.textMuted }]}>Score</AppText>
             </View>
             <View style={[s.modalStatDivider, { backgroundColor: c.border }]} />
             <View style={s.modalStat}>
-              <Text style={[s.modalStatValue, { color: c.text }]}>04:22</Text>
-              <Text style={[s.modalStatLabel, { color: c.textMuted }]}>Time</Text>
+              <AppText style={[s.modalStatValue, { color: c.text }]}>04:22</AppText>
+              <AppText style={[s.modalStatLabel, { color: c.textMuted }]}>Time</AppText>
             </View>
             <View style={[s.modalStatDivider, { backgroundColor: c.border }]} />
             <View style={s.modalStat}>
-              <Text style={[s.modalStatValue, { color: c.text }]}>1</Text>
-              <Text style={[s.modalStatLabel, { color: c.textMuted }]}>Errors</Text>
+              <AppText style={[s.modalStatValue, { color: c.text }]}>1</AppText>
+              <AppText style={[s.modalStatLabel, { color: c.textMuted }]}>Errors</AppText>
             </View>
           </View>
 
           {/* Factor pill */}
           <View style={[s.modalFactorRow]}>
-            <Text style={[s.modalFactorLabel, { color: c.textMuted }]}>Factor</Text>
+            <AppText style={[s.modalFactorLabel, { color: c.textMuted }]}>Factor</AppText>
             <View style={[s.factorPillSmall, { backgroundColor: PALETTE.accentLight }]}>
-              <Text style={[s.factorPillText, { color: PALETTE.accent }]}>× 18</Text>
+              <AppText style={[s.factorPillText, { color: PALETTE.accent }]}>× 18</AppText>
             </View>
           </View>
 
           <View style={[s.modalBtnFilled, { backgroundColor: PALETTE.accent, marginTop: 8 }]}>
-            <Text style={s.modalBtnFilledText}>Continue</Text>
+            <AppText style={s.modalBtnFilledText}>Continue</AppText>
           </View>
         </View>
       </View>
 
       {/* ── No clues ── */}
       <View style={{ height: verticalScale(40) }} />
-      <Text style={[s.sectionLabel, { color: c.textMuted }]}>NO CLUES LEFT</Text>
+      <AppText style={[s.sectionLabel, { color: c.textMuted }]}>NO CLUES LEFT</AppText>
       <View style={{ height: verticalScale(16) }} />
 
       <View style={s.modalSceneWrap}>
@@ -894,16 +901,16 @@ const ModalsScreen = ({ c, isDark, scheme, levels }: ScreenProps) => {
           ]}
         >
           <View style={[s.modalIconWrap, { backgroundColor: "#FEF3C7" }]}>
-            <Text style={{ fontSize: 26 }}>💡</Text>
+            <AppText style={{ fontSize: 26 }}>💡</AppText>
           </View>
 
-          <Text style={[s.modalTitle, { color: c.text }]}>No clues left</Text>
-          <Text style={[s.modalMessage, { color: c.textMuted }]}>
+          <AppText style={[s.modalTitle, { color: c.text }]}>No clues left</AppText>
+          <AppText style={[s.modalMessage, { color: c.textMuted }]}>
             {`You've used all your clues for this game. Keep going — you've got this!`}
-          </Text>
+          </AppText>
 
           <View style={[s.modalBtnFilled, { backgroundColor: PALETTE.accent, marginTop: 8 }]}>
-            <Text style={s.modalBtnFilledText}>Got it</Text>
+            <AppText style={s.modalBtnFilledText}>Got it</AppText>
           </View>
         </View>
       </View>
@@ -982,7 +989,7 @@ const IconsScreen = ({ c, isDark }: { c: C; isDark: boolean }) => {
         borderColor: BORDER_DARK,
       }}
     >
-      <Text
+      <AppText
         style={{
           color: ACCENT,
           fontSize: size * 0.58,
@@ -991,7 +998,7 @@ const IconsScreen = ({ c, isDark }: { c: C; isDark: boolean }) => {
         }}
       >
         9
-      </Text>
+      </AppText>
     </View>
   );
 
@@ -1140,10 +1147,10 @@ const IconsScreen = ({ c, isDark }: { c: C; isDark: boolean }) => {
 
   return (
     <View style={[s.screen, { backgroundColor: c.bg }]}>
-      <Text style={[s.pageTitle, { color: c.text }]}>App Icon</Text>
-      <Text style={[s.tokenSubtitle, { color: c.textMuted }]}>
+      <AppText style={[s.pageTitle, { color: c.text }]}>App Icon</AppText>
+      <AppText style={[s.tokenSubtitle, { color: c.textMuted }]}>
         Tap an option to select it. Recommended options are marked.
-      </Text>
+      </AppText>
 
       <View style={{ height: verticalScale(24) }} />
 
@@ -1164,47 +1171,47 @@ const IconsScreen = ({ c, isDark }: { c: C; isDark: boolean }) => {
           >
             {/* Header row */}
             <View style={s.iconOptionHeader}>
-              <Text style={[s.iconOptionLabel, { color: isChosen ? ACCENT : c.text }]}>
+              <AppText style={[s.iconOptionLabel, { color: isChosen ? ACCENT : c.text }]}>
                 {opt.label}
-              </Text>
+              </AppText>
               <View style={{ flexDirection: "row", gap: 6, alignItems: "center" }}>
                 {opt.recommended && (
                   <View style={[s.recommendedBadge, { backgroundColor: ACCENT_LIGHT }]}>
-                    <Text style={[s.recommendedText, { color: ACCENT }]}>Recommended</Text>
+                    <AppText style={[s.recommendedText, { color: ACCENT }]}>Recommended</AppText>
                   </View>
                 )}
                 {isChosen && (
                   <View style={[s.chosenBadge, { backgroundColor: ACCENT }]}>
-                    <Text style={s.chosenBadgeText}>Selected</Text>
+                    <AppText style={s.chosenBadgeText}>Selected</AppText>
                   </View>
                 )}
               </View>
             </View>
 
-            <Text style={[s.iconOptionDesc, { color: c.textMuted }]}>{opt.desc}</Text>
+            <AppText style={[s.iconOptionDesc, { color: c.textMuted }]}>{opt.desc}</AppText>
 
             {/* Icon size previews */}
             <View style={s.iconSizeRow}>
               <View style={s.iconSizeItem}>
                 <opt.Icon size={28} />
-                <Text style={[s.iconSizeLabel, { color: c.textMuted }]}>28</Text>
+                <AppText style={[s.iconSizeLabel, { color: c.textMuted }]}>28</AppText>
               </View>
               <View style={s.iconSizeItem}>
                 <opt.Icon size={48} />
-                <Text style={[s.iconSizeLabel, { color: c.textMuted }]}>48</Text>
+                <AppText style={[s.iconSizeLabel, { color: c.textMuted }]}>48</AppText>
               </View>
               <View style={s.iconSizeItem}>
                 <opt.Icon size={80} />
-                <Text style={[s.iconSizeLabel, { color: c.textMuted }]}>80</Text>
+                <AppText style={[s.iconSizeLabel, { color: c.textMuted }]}>80</AppText>
               </View>
               <View style={s.iconSizeItem}>
                 <opt.Icon size={120} />
-                <Text style={[s.iconSizeLabel, { color: c.textMuted }]}>120</Text>
+                <AppText style={[s.iconSizeLabel, { color: c.textMuted }]}>120</AppText>
               </View>
             </View>
 
             {/* Splash screen mockup */}
-            <Text style={[s.splashLabel, { color: c.textMuted }]}>Splash preview</Text>
+            <AppText style={[s.splashLabel, { color: c.textMuted }]}>Splash preview</AppText>
             <View style={s.splashMockup}>
               <View
                 style={[
@@ -1226,11 +1233,11 @@ const IconsScreen = ({ c, isDark }: { c: C; isDark: boolean }) => {
             { backgroundColor: ACCENT_LIGHT, borderColor: ACCENT + "44" },
           ]}
         >
-          <Text style={[s.selectionText, { color: ACCENT }]}>
+          <AppText style={[s.selectionText, { color: ACCENT }]}>
             Option {chosen} selected. Build this in Figma using your accent color{" "}
-            <Text style={{ fontWeight: "800" }}>#5B6AF0</Text> on dark navy{" "}
-            <Text style={{ fontWeight: "800" }}>#0D0D1B</Text>.
-          </Text>
+            <AppText style={{ fontWeight: "800" }}>#5B6AF0</AppText> on dark navy{" "}
+            <AppText style={{ fontWeight: "800" }}>#0D0D1B</AppText>.
+          </AppText>
         </View>
       )}
 

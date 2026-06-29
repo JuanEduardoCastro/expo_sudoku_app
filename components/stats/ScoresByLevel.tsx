@@ -6,7 +6,8 @@ import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useGameScoresStore } from "@/store/store_zustand";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import AppText from "../shared/AppText";
 import LevelStatCard from "./LevelStatCard";
 
 const ScoresByLevel = () => {
@@ -18,7 +19,7 @@ const ScoresByLevel = () => {
 
   return (
     <View style={styles.statsSection}>
-      <Text style={styles.statsTitle}>BY LEVEL</Text>
+      <AppText style={styles.statsTitle}>BY LEVEL</AppText>
       <View style={{ height: verticalScale(12) }} />
 
       <View style={styles.statsGrid}>

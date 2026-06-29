@@ -1,3 +1,4 @@
+import AppText from "@/components/shared/AppText";
 import ButtonBack from "@/components/shared/ButtonBack";
 import { H_PAD, scale, verticalScale } from "@/constants/dimensions";
 import { textVar } from "@/constants/textVar";
@@ -5,7 +6,7 @@ import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Instructions = () => {
@@ -16,7 +17,7 @@ const Instructions = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={() => router.back()} />
-        <Text style={styles.pageTitle}>How to Play Sudoku</Text>
+        <AppText style={styles.pageTitle}>How to Play Sudoku</AppText>
       </View>
 
       <View style={{ height: verticalScale(42) }} />
@@ -27,18 +28,18 @@ const Instructions = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.content}>
-          <Text style={styles.ruleText}>
+          <AppText style={styles.ruleText}>
             {`• The goal is to fill a 9x9 grid with digits so that each column, each row, and each of the nine 3x3 subgrids that compose the grid contain all of the digits from 1 to 9.`}
-          </Text>
-          <Text style={styles.ruleText}>
+          </AppText>
+          <AppText style={styles.ruleText}>
             {`• On Easy and Medium levels, selecting an empty cell highlights its row, column and 3x3 grid.`}
-          </Text>
-          <Text style={styles.ruleText}>
+          </AppText>
+          <AppText style={styles.ruleText}>
             {`• Tap a number from the number pad at the bottom to place it in the selected cell.`}
-          </Text>
-          <Text
+          </AppText>
+          <AppText
             style={styles.ruleText}
-          >{`• If you get stuck, use the "Clue" button for a hint!`}</Text>
+          >{`• If you get stuck, use the "Clue" button for a hint!`}</AppText>
         </View>
       </ScrollView>
     </SafeAreaView>

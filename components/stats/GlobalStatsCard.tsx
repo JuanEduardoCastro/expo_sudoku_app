@@ -3,7 +3,8 @@ import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import AppText from "../shared/AppText";
 
 type GlobalStatsCardProps = {
   title: string;
@@ -15,8 +16,8 @@ const GlobalStatsCard = ({ title, value }: GlobalStatsCardProps) => {
 
   return (
     <View style={styles.statCard}>
-      <Text style={styles.statCardValue}>{value}</Text>
-      <Text style={styles.statCardLabel}>{title}</Text>
+      <AppText style={styles.statCardValue}>{value}</AppText>
+      <AppText style={styles.statCardLabel}>{title}</AppText>
     </View>
   );
 };

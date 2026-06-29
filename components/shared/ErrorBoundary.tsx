@@ -1,7 +1,8 @@
 import { moderateScale, scale, verticalScale } from "@/constants/dimensions";
 import { textVar } from "@/constants/textVar";
 import React, { ReactNode } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import AppText from "./AppText";
 
 type Props = { children: ReactNode };
 type State = { hasError: boolean; error: Error | null };
@@ -24,10 +25,10 @@ export class ErrorBoundary extends React.Component<Props, State> {
     if (this.state.hasError) {
       return (
         <View style={styles.container}>
-          <Text style={styles.title}>Something went wrong.</Text>
-          <Text style={styles.message}>The app encountered an unexpected error.</Text>
+          <AppText style={styles.title}>Something went wrong.</AppText>
+          <AppText style={styles.message}>The app encountered an unexpected error.</AppText>
           <Pressable style={styles.button} onPress={() => this.setState({ hasError: false })}>
-            <Text style={styles.buttonText}>Try again!</Text>
+            <AppText style={styles.buttonText}>Try again!</AppText>
           </Pressable>
         </View>
       );

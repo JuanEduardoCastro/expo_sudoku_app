@@ -141,7 +141,7 @@ const useGameBoard = ({
       isMounted.current = true;
       return;
     }
-    if (errors > 3) {
+    if (errors === 4) {
       setStreakBrokeModal(true);
     }
   }, [errors]);
@@ -352,14 +352,21 @@ const useGameBoard = ({
     setActiveNumber(number);
     if (!selectedCell) {
       setNotification({
-        message: "Select a cell first",
+        message: "Select an empty cell first",
         type: "warning",
       });
       playSound();
       onClickHapticHeavy();
       return;
     } else {
-      if (!selectedCell.editable) return;
+      if (!selectedCell.editable) {
+        setSelectedCell(null);
+        setHighlightedCells(new Set());
+        setNotification({ message: "Select an empty cell first", type: "warning" });
+        playSound();
+        onClickHapticHeavy();
+        return;
+      }
 
       const checkNumberInCell = solutionBoard[selectedCell.row][selectedCell.col].value === number;
       // const checkNumberInCell = isValid(board, selectedCell!.row, selectedCell!.col, number);
@@ -429,7 +436,7 @@ const useGameBoard = ({
       }, 5000);
     } else {
       setNotification({
-        message: "Select a cell first",
+        message: "Select an empty cell first",
         type: "warning",
       });
     }

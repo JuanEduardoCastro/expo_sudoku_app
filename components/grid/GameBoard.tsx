@@ -10,7 +10,8 @@ import useGameBoard from "@/hooks/useGameBoard";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import AppText from "../shared/AppText";
 import ConfirmationModal from "../shared/ConfirmationModal";
 import NumberCell from "./NumberCell";
 import NumberPad from "./NumberPad";
@@ -74,7 +75,7 @@ const GameBoard = (props: GameBoardProps) => {
           accessibilityRole="button"
           onPress={handleGoBackAndSaveCurrent}
         >
-          <Text style={styles.levelBackArrow}>‹</Text>
+          <AppText style={styles.levelBackArrow}>‹</AppText>
         </Pressable>
         <View
           style={[
@@ -91,33 +92,33 @@ const GameBoard = (props: GameBoardProps) => {
               },
             ]}
           />
-          <Text
+          <AppText
             style={[
               styles.levelPillText,
               { color: colorMode === "light" ? colors.accentBase : levelDisplay },
             ]}
           >
             {levelString}
-          </Text>
+          </AppText>
         </View>
-        <Text style={styles.timeLabel}>{formatTimer(timer!)}</Text>
+        <AppText style={styles.timeLabel}>{formatTimer(timer!)}</AppText>
       </View>
 
       <View style={{ height: verticalScale(14) }} />
 
       <View style={[styles.scoreCard, SHADOW.standar]}>
         <View style={styles.scoreBlock}>
-          <Text style={styles.scoreCaption}>SCORE</Text>
-          <Text style={styles.scoreNum} adjustsFontSizeToFit numberOfLines={1}>
+          <AppText style={styles.scoreCaption}>SCORE</AppText>
+          <AppText style={styles.scoreNum} adjustsFontSizeToFit numberOfLines={1}>
             {score}
-          </Text>
+          </AppText>
         </View>
         <View style={styles.factorPill}>
-          <Text style={styles.factorX}>x</Text>
-          <Text style={styles.factorNum}>{factor}</Text>
+          <AppText style={styles.factorX}>x</AppText>
+          <AppText style={styles.factorNum}>{factor}</AppText>
         </View>
         <View style={styles.scoreBlock}>
-          <Text style={styles.scoreCaption}>ERRORS</Text>
+          <AppText style={styles.scoreCaption}>ERRORS</AppText>
           <View style={styles.dotRow}>
             {[0, 1, 2].map((i) => (
               <View
@@ -168,7 +169,7 @@ const GameBoard = (props: GameBoardProps) => {
           style={styles.clueRow}
           onPress={handleClueCount}
         >
-          <Text style={styles.clueCaption}>CLUES</Text>
+          <AppText style={styles.clueCaption}>CLUES</AppText>
           <View style={styles.dotRow}>
             {[0, 1, 2].map((i) => (
               <View
@@ -183,14 +184,14 @@ const GameBoard = (props: GameBoardProps) => {
         </Pressable>
         <View style={styles.notifRow}>
           {notification.message && (
-            <Text
+            <AppText
               style={[
                 styles.notifText,
                 { color: notification.type === "warning" ? colors.warning : colors.accept },
               ]}
             >
               {notification.message}{" "}
-            </Text>
+            </AppText>
           )}
         </View>
       </View>

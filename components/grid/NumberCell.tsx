@@ -113,6 +113,7 @@ const NumberCell = ({
       onPress={() => onPress(cell)}
     >
       <AnimatedText
+        allowFontScaling={false}
         style={[
           styles.numberText,
           rotatesCells && animatedStyle,

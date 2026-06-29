@@ -5,7 +5,8 @@ import useStyles from "@/hooks/useStyles";
 import { useGameScoresStore } from "@/store/store_zustand";
 import { formatDecimal, formatSeconds } from "@/utils/formatters";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import AppText from "../shared/AppText";
 import GlobalStatsCard from "./GlobalStatsCard";
 
 const GlobalScores = () => {
@@ -15,7 +16,7 @@ const GlobalScores = () => {
 
   return (
     <View style={styles.statsSection}>
-      <Text style={styles.statsTitle}>GLOBAL</Text>
+      <AppText style={styles.statsTitle}>GLOBAL</AppText>
       <View style={{ height: verticalScale(12) }} />
 
       <View style={styles.statsGrid}>

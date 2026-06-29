@@ -3,7 +3,8 @@ import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React, { ReactElement } from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
+import AppText from "../shared/AppText";
 
 type SettingsCardProps = {
   title: string;
@@ -18,8 +19,8 @@ const SettingsCard = ({ title, value, icon, onPress }: SettingsCardProps) => {
   return (
     <Pressable onPress={onPress} style={styles.settingsLine}>
       {icon}
-      <Text style={styles.settingsText}>{title}</Text>
-      {value ? <Text style={styles.settingsDinamicText}>{value}</Text> : null}
+      <AppText style={styles.settingsText}>{title}</AppText>
+      {value ? <AppText style={styles.settingsDinamicText}>{value}</AppText> : null}
     </Pressable>
   );
 };

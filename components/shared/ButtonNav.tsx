@@ -4,7 +4,8 @@ import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
+import AppText from "./AppText";
 
 export type ButtonNavProps = {
   title?: string;
@@ -29,7 +30,7 @@ const ButtonNav = ({ title, onPress }: ButtonNavProps) => {
       style={[styles.buttonContainer, SHADOW.standar]}
       onPress={handleOnPress}
     >
-      <Text style={styles.buttonText}>{title}</Text>
+      <AppText style={styles.buttonText}>{title}</AppText>
     </Pressable>
   );
 };

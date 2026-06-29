@@ -8,7 +8,8 @@ import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import AppText from "../shared/AppText";
 
 type LevelBoxProps = {
   hasSavedGame?: boolean;
@@ -48,18 +49,18 @@ const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxPro
         >
           <View style={[styles.levelDot, { backgroundColor: level.color }]} />
           <View style={{ flex: 1, gap: 2 }}>
-            <Text style={styles.levelText}>{level.name}</Text>
-            <Text style={styles.levelTextSub}>{level.sub}</Text>
+            <AppText style={styles.levelText}>{level.name}</AppText>
+            <AppText style={styles.levelTextSub}>{level.sub}</AppText>
           </View>
           <View style={styles.levelArrow}>
-            <Text
+            <AppText
               style={[
                 styles.levelArrowIcon,
                 { color: colorMode === "dark" ? colors.accentLight : colors.gray },
               ]}
             >
               ›
-            </Text>
+            </AppText>
           </View>
         </Pressable>
       ))}
@@ -74,26 +75,26 @@ const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxPro
         >
           <View style={[styles.levelDot, { backgroundColor: "transparent" }]} />
           <View style={{ flex: 1, gap: 2 }}>
-            <Text style={styles.levelText}>Continue playing!</Text>
-            <Text style={styles.levelTextSub}>
+            <AppText style={styles.levelText}>Continue playing!</AppText>
+            <AppText style={styles.levelTextSub}>
               {savedGameLevel ? levels[savedGameLevel - 1]?.name + " level" : ""}
-            </Text>
+            </AppText>
           </View>
           <View style={styles.levelArrow}>
-            <Text
+            <AppText
               style={[
                 styles.levelArrowIcon,
                 { color: colorMode === "dark" ? colors.accentLight : colors.gray },
               ]}
             >
               ›
-            </Text>
+            </AppText>
           </View>
         </Pressable>
       )}
       {/* {__DEV__ && (
         <Pressable onPress={() => handleClick(TEST_LEVEL.id)} style={styles.levelCard}>
-          <Text style={styles.levelText}>For test</Text>
+          <AppText style={styles.levelText}>For test</AppText>
         </Pressable>
       )} */}
     </View>

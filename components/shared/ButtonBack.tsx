@@ -2,7 +2,8 @@ import { moderateScale, scale } from "@/constants/dimensions";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
+import AppText from "./AppText";
 
 export type ButtonBackProps = {
   title?: string;
@@ -20,9 +21,9 @@ const ButtonBack = ({ title, onPress }: ButtonBackProps) => {
       style={styles.backButton}
       hitSlop={12}
     >
-      <Text style={{ color: colors.accentBase, fontSize: moderateScale(26), lineHeight: 30 }}>
+      <AppText style={{ color: colors.accentBase, fontSize: moderateScale(26), lineHeight: 30 }}>
         ‹
-      </Text>
+      </AppText>
     </Pressable>
   );
 };

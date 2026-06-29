@@ -2,15 +2,16 @@ import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AppText from "./AppText";
 
 const Loading = () => {
   const { styles } = useStyles(createStyles);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.text}> Loading ...</Text>
+      <AppText style={styles.text}> Loading ...</AppText>
     </SafeAreaView>
   );
 };

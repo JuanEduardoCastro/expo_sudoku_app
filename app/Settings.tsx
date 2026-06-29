@@ -1,4 +1,5 @@
 import SettingsBlock from "@/components/settings/SettingsBlock";
+import AppText from "@/components/shared/AppText";
 import ButtonBack from "@/components/shared/ButtonBack";
 import { H_PAD, scale, verticalScale } from "@/constants/dimensions";
 import { textVar } from "@/constants/textVar";
@@ -7,7 +8,7 @@ import useStyles from "@/hooks/useStyles";
 import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Settings = () => {
@@ -21,7 +22,7 @@ const Settings = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <ButtonBack onPress={() => router.back()} />
-        <Text style={styles.pageTitle}>Settings</Text>
+        <AppText style={styles.pageTitle}>Settings</AppText>
       </View>
 
       <View style={{ height: verticalScale(22) }} />
@@ -36,9 +37,9 @@ const Settings = () => {
         </View>
       </ScrollView>
       <View style={styles.versionBox}>
-        <Text style={styles.versionText}>
+        <AppText style={styles.versionText}>
           v{version} ({build})
-        </Text>
+        </AppText>
       </View>
     </SafeAreaView>
   );

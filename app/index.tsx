@@ -1,4 +1,5 @@
 import LevelBox from "@/components/levels/LevelBox";
+import AppText from "@/components/shared/AppText";
 import ButtonNav from "@/components/shared/ButtonNav";
 import ConfirmationModal from "@/components/shared/ConfirmationModal";
 import { SCHEMES } from "@/constants/colors";
@@ -11,7 +12,7 @@ import { savedGamesService, settingsService } from "@/store/dbServices";
 import { useBoardStore, useGameScoresStore } from "@/store/store_zustand";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 const Index = () => {
   const { styles } = useStyles(createStyles);
@@ -72,11 +73,11 @@ const Index = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleBox}>
-        <Text style={styles.titleText}>SUDOKU</Text>
-        <Text style={styles.titleSubtex}>Think. Scan. Place.</Text>
+        <AppText style={styles.titleText}>SUDOKU</AppText>
+        <AppText style={styles.titleSubtex}>Think. Scan. Place.</AppText>
       </View>
       <View style={{ height: verticalScale(36) }} />
-      <Text style={styles.sectionLabel}>Choose your level:</Text>
+      <AppText style={styles.sectionLabel}>Choose your level:</AppText>
       <View style={{ height: verticalScale(12) }} />
       <LevelBox
         hasSavedGame={hasSavedGame}

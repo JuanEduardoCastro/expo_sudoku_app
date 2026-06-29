@@ -4,7 +4,8 @@ import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
 import { formatDecimal, formatSeconds } from "@/utils/formatters";
 import React, { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import AppText from "../shared/AppText";
 
 type LevelStatsProps = {
   levelStats: {
@@ -37,28 +38,28 @@ const LevelStatCard = ({ levelStats, levelColor }: LevelStatsProps) => {
               // backgroundColor: "lightblue",
             }}
           >
-            <Text style={styles.levelStatName}>{levelStats.name}</Text>
+            <AppText style={styles.levelStatName}>{levelStats.name}</AppText>
             {!toggleCard && (
               <View style={styles.levelStatData}>
                 <>
-                  <Text style={styles.levelStatMeta}>
+                  <AppText style={styles.levelStatMeta}>
                     Best {formatDecimal.format(levelStats.maxPoints!)}
-                  </Text>
-                  <Text style={styles.levelStatMeta}>-</Text>
-                  <Text style={styles.levelStatMeta}>{levelStats.totalGames} games</Text>
+                  </AppText>
+                  <AppText style={styles.levelStatMeta}>-</AppText>
+                  <AppText style={styles.levelStatMeta}>{levelStats.totalGames} games</AppText>
                 </>
               </View>
             )}
           </View>
           <View style={styles.expandArrowBlock}>
-            <Text
+            <AppText
               style={[
                 styles.expandArrow,
                 { transform: [{ rotate: !toggleCard ? "-90deg" : "90deg" }] },
               ]}
             >
               ‹
-            </Text>
+            </AppText>
           </View>
         </View>
         {toggleCard && (
@@ -66,24 +67,24 @@ const LevelStatCard = ({ levelStats, levelColor }: LevelStatsProps) => {
             <View style={styles.expandBody}>
               <View style={styles.expandGrid}>
                 <View style={styles.expandTile}>
-                  <Text style={styles.expandTileValue}>
+                  <AppText style={styles.expandTileValue}>
                     {levelStats.bestTime ? formatSeconds(levelStats.bestTime) : "--"}
-                  </Text>
-                  <Text style={styles.expandTileLabel}>Best time</Text>
+                  </AppText>
+                  <AppText style={styles.expandTileLabel}>Best time</AppText>
                 </View>
                 <View style={styles.expandTile}>
-                  <Text style={styles.expandTileValue}>
+                  <AppText style={styles.expandTileValue}>
                     {formatDecimal.format(levelStats.maxPoints!)}
-                  </Text>
-                  <Text style={styles.expandTileLabel}>Max points</Text>
+                  </AppText>
+                  <AppText style={styles.expandTileLabel}>Max points</AppText>
                 </View>
                 <View style={styles.expandTile}>
-                  <Text style={styles.expandTileValue}>{levelStats.totalGames}</Text>
-                  <Text style={styles.expandTileLabel}>Games</Text>
+                  <AppText style={styles.expandTileValue}>{levelStats.totalGames}</AppText>
+                  <AppText style={styles.expandTileLabel}>Games</AppText>
                 </View>
                 <View style={styles.expandTile}>
-                  <Text style={styles.expandTileValue}>{levelStats.streak}</Text>
-                  <Text style={styles.expandTileLabel}>Streak</Text>
+                  <AppText style={styles.expandTileValue}>{levelStats.streak}</AppText>
+                  <AppText style={styles.expandTileLabel}>Streak</AppText>
                 </View>
               </View>
             </View>
