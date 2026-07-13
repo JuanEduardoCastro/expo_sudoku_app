@@ -168,6 +168,7 @@
         gap: 1rem;
         flex-wrap: wrap;
         justify-content: center;
+        align-items: center;
       }
 
       .btn-primary {
@@ -209,6 +210,27 @@
       .btn-ghost:hover {
         border-color: var(--accent-border);
         color: var(--text);
+      }
+
+      .badge-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 160px;
+        height: 50px;
+        transition:
+          transform 0.15s,
+          opacity 0.2s;
+      }
+      .badge-link:hover {
+        transform: translateY(-2px);
+        opacity: 0.9;
+      }
+
+      .badge-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
       }
 
       /* STATS */
@@ -501,6 +523,143 @@
         .phone-frame {
           width: 160px;
         }
+        .badge-link {
+          width: 140px;
+          height: 44px;
+        }
+      }
+
+      /* GOOGLE PLAY MODAL */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        background: rgba(5, 5, 12, 0.72);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+      }
+
+      .modal-overlay.open {
+        display: flex;
+      }
+
+      .modal-box {
+        position: relative;
+        width: 100%;
+        max-width: 580px;
+        max-height: 85vh;
+        overflow-y: auto;
+        background: var(--bg-card);
+        border: 1px solid var(--accent-border);
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow:
+          0 0 0 1px #5b6af020,
+          0 30px 80px rgba(0, 0, 0, 0.6);
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border: 1px solid #2a2a40;
+        background: transparent;
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+
+      .modal-close:hover {
+        border-color: var(--accent-border);
+        color: var(--text);
+      }
+
+      .modal-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--accent-faint);
+        border: 1px solid var(--accent-border);
+        border-radius: 999px;
+        padding: 0.3rem 0.9rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--accent-light);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 1.25rem;
+      }
+
+      .modal-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        padding-right: 2rem;
+      }
+
+      .modal-text {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 1.25rem;
+        line-height: 1.7;
+      }
+
+      .modal-steps {
+        margin: 0 0 1.25rem 1.1rem;
+        padding: 0;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        line-height: 1.8;
+      }
+
+      .modal-steps li {
+        margin-bottom: 0.5rem;
+      }
+
+      .modal-steps a,
+      .modal-text a {
+        color: var(--accent-light);
+        word-break: break-all;
+      }
+
+      .modal-note {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        background: #ffffff07;
+        border: 1px solid #ffffff10;
+        border-radius: 10px;
+        padding: 0.85rem 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .modal-note a {
+        color: var(--accent-light);
+        word-break: break-all;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      @media (max-width: 480px) {
+        .modal-box {
+          padding: 1.5rem;
+        }
       }
     </style>
   </head>
@@ -543,23 +702,35 @@
         win streaks, and smooth animations.
       </p>
       <div class="hero-cta">
-        <!-- Replace # with your App Store link once published -->
-        <a href="#" class="btn-primary">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2z" />
-            <path d="M12 8v8M8 12l4 4 4-4" />
-          </svg>
-          Download on App Store
+        <a
+          href="https://apps.apple.com/ar/app/sudoku-jc/id6762877678?l=en-GB"
+          target="_blank"
+          rel="noopener"
+          class="badge-link"
+          aria-label="Download on the App Store"
+        >
+          <img
+            src="./assets/svg/App_Store_Badge_US-UK.svg"
+            alt="Download on the App Store"
+            class="badge-img badge-img--apple"
+          />
         </a>
+        <a
+          href="#"
+          class="badge-link"
+          onclick="openPlayStoreModal(event)"
+          role="button"
+          aria-haspopup="dialog"
+          aria-controls="playstore-modal"
+          aria-label="Get it on Google Play"
+        >
+          <img
+            src="./assets/svg/Google_Play_Badge_EN.svg"
+            alt="Get it on Google Play"
+            class="badge-img badge-img--google"
+          />
+        </a>
+
         <a
           href="https://github.com/juaneduardocastro/expo_sudoku_app"
           target="_blank"
@@ -765,5 +936,80 @@
       </div>
       <p class="footer-copy">&copy; 2026 Sudoku &mdash; Juan Eduardo Castro</p>
     </footer>
+    <!-- GOOGLE PLAY CLOSED TESTING MODAL -->
+    <div
+      class="modal-overlay"
+      id="playstore-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="playstore-modal-title"
+      onclick="handleOverlayClick(event)"
+    >
+      <div class="modal-box">
+        <button
+          class="modal-close"
+          type="button"
+          aria-label="Close"
+          onclick="closePlayStoreModal()"
+        >
+          &times;
+        </button>
+        <span class="modal-badge">Closed Testing</span>
+        <h3 class="modal-title" id="playstore-modal-title">Join the Sudoku.Jc Test Group</h3>
+        <p class="modal-text">
+          To install the app on Android, you need to join the closed testing group first. Follow
+          these steps:
+        </p>
+        <ol class="modal-steps">
+          <li>
+            Join the Google Group first:
+            <a href="https://groups.google.com/g/closed-testing-v1" target="_blank" rel="noopener"
+              >Sudoku.Jc group</a
+            >
+          </li>
+          <li>
+            Once you're in, you'll get a welcome message with the testing link — click it and tap
+            "Become a tester". After that, you can install the app from the Play Store.
+          </li>
+        </ol>
+        <div class="modal-note">
+          Direct testing link, in case you need it again:<br />
+          <a
+            href="https://play.google.com/apps/testing/com.juancastro.sudokuapp"
+            target="_blank"
+            rel="noopener"
+            >https://play.google.com/apps/testing/com.juancastro.sudokuapp</a
+          >
+        </div>
+        <p class="modal-text" style="margin-bottom: 1.5rem">
+          You don't need to do anything else — just having the app installed for a few days is
+          enough.
+        </p>
+        <div class="modal-actions">
+          <button class="btn-primary" type="button" onclick="closePlayStoreModal()">Got it</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function openPlayStoreModal(e) {
+        e.preventDefault();
+        document.getElementById("playstore-modal").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closePlayStoreModal() {
+        document.getElementById("playstore-modal").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      function handleOverlayClick(e) {
+        if (e.target === e.currentTarget) closePlayStoreModal();
+      }
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closePlayStoreModal();
+      });
+    </script>
   </body>
 </html>

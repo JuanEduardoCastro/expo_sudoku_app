@@ -54,11 +54,11 @@ const createStyles = (colors: TColors) =>
       backgroundColor: colors.background,
       justifyContent: "flex-start",
       padding: H_PAD,
-      paddingTop: Platform.OS === "android" ? 34 : null,
+      paddingTop: Platform.OS === "android" ? 44 : null,
     },
     header: {
       width: "100%",
-      height: verticalScale(36),
+      height: verticalScale(46),
       flexDirection: "row",
       alignItems: "center",
       gap: scale(18),

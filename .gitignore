@@ -42,5 +42,6 @@ app-example
 SudokuApp-2
 
 # claude
+.claude/
 *.md
 !README.md

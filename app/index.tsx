@@ -28,7 +28,7 @@ const Index = () => {
     scoresByLevels.find((score) => score.level === savedGameLevel)?.streak ?? 0;
 
   const [warningModal, setWarningModal] = useState(false);
-  const [onboardingModal, setOnboardingModal] = useState(false);
+  const [onboardingModal, setOnboardingModal] = useState(true);
   const [pendingLevel, setPendingLevel] = useState<number | null>(null);
 
   useEffect(() => {
