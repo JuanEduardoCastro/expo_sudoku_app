@@ -94,7 +94,7 @@ const ConfirmationModal = ({
           <View style={styles.buttonBox}>
             {cancelText && (
               <Pressable style={[styles.buttonCancel]} onPress={cancelOnPress}>
-                <AppText style={styles.buttonCancelText}>{cancelText} </AppText>
+                <AppText style={styles.buttonCancelText}>{cancelText}</AppText>
               </Pressable>
             )}
             {acceptText && (

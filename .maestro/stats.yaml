@@ -1,0 +1,17 @@
+appId: com.juancastro.sudokuapp
+---
+- launchApp
+# - tapOn:
+#     text: "Continue"
+#     optional: true
+- extendedWaitUntil:
+    visible: "Let's play!"
+    timeout: 30000
+- tapOn:
+    text: "Let's play!"
+- tapOn:
+    text: "Stats"
+- assertVisible: "Statistics"
+- tapOn:
+    text: "Go back"
+- assertVisible: "SUDOKU"
