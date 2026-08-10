@@ -1,8 +1,10 @@
-const { getDefaultConfig } = require("expo/metro-config");
+const {
+  getSentryExpoConfig
+} = require("@sentry/react-native/metro");
 
 module.exports = (() => {
   /** @type {import('expo/metro-config').MetroConfig} */
-  const config = getDefaultConfig(__dirname);
+  const config = getSentryExpoConfig(__dirname);
 
   config.resolver.sourceExts.push("sql");
 

@@ -45,3 +45,4 @@ SudokuApp-2
 .claude/
 *.md
 !README.md
+.env.local

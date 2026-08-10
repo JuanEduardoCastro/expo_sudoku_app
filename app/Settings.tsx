@@ -1,10 +1,12 @@
 import SettingsBlock from "@/components/settings/SettingsBlock";
 import AppText from "@/components/shared/AppText";
 import ButtonBack from "@/components/shared/ButtonBack";
+import ButtonNav from "@/components/shared/ButtonNav";
 import { H_PAD, scale, verticalScale } from "@/constants/dimensions";
 import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
+import * as Sentry from "@sentry/react-native";
 import Constants from "expo-constants";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -35,6 +37,14 @@ const Settings = () => {
         <View style={styles.content}>
           <SettingsBlock />
         </View>
+        {__DEV__ && (
+          <ButtonNav
+            title="Test Sentry error"
+            onPress={() => {
+              Sentry.captureException(new Error("Test error from Settings page"));
+            }}
+          />
+        )}
       </ScrollView>
       <View style={styles.versionBox}>
         <AppText style={styles.versionText}>

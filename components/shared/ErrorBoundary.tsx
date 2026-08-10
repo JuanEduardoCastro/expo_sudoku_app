@@ -1,5 +1,6 @@
 import { moderateScale, scale, verticalScale } from "@/constants/dimensions";
 import { textVar } from "@/constants/textVar";
+import * as Sentry from "@sentry/react-native";
 import React, { ReactNode } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import AppText from "./AppText";
@@ -19,6 +20,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     __DEV__ && console.error("ErrorBoundary caught an error", error, errorInfo);
+    Sentry.captureException(error);
   }
 
   render() {

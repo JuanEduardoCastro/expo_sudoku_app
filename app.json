@@ -24,7 +24,9 @@
         "backgroundColor": "#0D0D1B"
       },
       "package": "com.juancastro.sudokuapp",
-      "permissions": ["android.permission.MODIFY_AUDIO_SETTINGS"]
+      "permissions": [
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -54,7 +56,15 @@
       "expo-font",
       "expo-image",
       "expo-sharing",
-      "expo-asset"
+      "expo-asset",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "expo-sudoku-app",
+          "organization": "juancastro"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

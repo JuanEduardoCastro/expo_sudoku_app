@@ -5,6 +5,7 @@ import { initializeDbInstance, savedGamesService } from "@/store/dbServices";
 import * as schema from "@/store/schema";
 import { useBoardStore, useGameScoresStore } from "@/store/store_zustand";
 import { migrateSettings } from "@/utils/migrateSettings";
+import * as Sentry from "@sentry/react-native";
 import { drizzle, ExpoSQLiteDatabase } from "drizzle-orm/expo-sqlite";
 import { migrate } from "drizzle-orm/expo-sqlite/migrator";
 import { useFonts } from "expo-font";
@@ -12,11 +13,26 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import * as SQLite from "expo-sqlite";
 
+Sentry.init({
+  dsn: "https://b497b090da90d9b1957dede6c195fcfc@o4511886902689792.ingest.us.sentry.io/4511886947057664",
+  environment: __DEV__ ? "development" : "production",
+
+  // Adds more context data to events (IP address, cookies, user, etc.)
+  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
+  sendDefaultPii: false,
+
+  // Enable Logs
+  enableLogs: true,
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
+
 const DB_NAME = "sudoku.db";
 
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+export default Sentry.wrap(function RootLayout() {
   const [fontsLoaded] = useFonts({
     SpaceMonoBold: require("../assets/fonts/SpaceMono-Bold.ttf"),
   });
@@ -42,6 +58,7 @@ export default function RootLayout() {
       __DEV__ && console.log("DB initialized");
     } catch (error) {
       __DEV__ && console.log(error);
+      Sentry.captureException(error);
     } finally {
       await SplashScreen.hideAsync();
     }
@@ -88,4 +105,4 @@ export default function RootLayout() {
       </SQLite.SQLiteProvider>
     </ErrorBoundary>
   );
-}
+});
