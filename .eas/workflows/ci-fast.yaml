@@ -9,6 +9,8 @@ on:
 jobs:
   lint_typecheck_test:
     steps:
+      - eas/checkout
+      - eas/install_node_modules
       - name: Lint
         run: npm run lint
       - name: Typecheck

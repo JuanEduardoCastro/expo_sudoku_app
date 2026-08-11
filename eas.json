@@ -14,7 +14,7 @@
     "production": {
       "autoIncrement": true
     },
-    "eas-test": {
+    "e2e-tests": {
       "withoutCredentials": true,
       "environment": "preview",
       "ios": { "simulator": true },
