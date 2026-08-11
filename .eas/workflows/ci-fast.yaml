@@ -1,0 +1,17 @@
+name: ci-fast
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  lint_typecheck_test:
+    steps:
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Jest
+        run: npm run test

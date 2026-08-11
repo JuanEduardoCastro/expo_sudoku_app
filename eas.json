@@ -13,6 +13,12 @@
     },
     "production": {
       "autoIncrement": true
+    },
+    "eas-test": {
+      "withoutCredentials": true,
+      "environment": "preview",
+      "ios": { "simulator": true },
+      "android": { "buildType": "apk" }
     }
   },
   "submit": {

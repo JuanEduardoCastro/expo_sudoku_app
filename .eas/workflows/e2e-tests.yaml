@@ -1,0 +1,44 @@
+name: e2e-tests
+
+on:
+  pull_request_labeled:
+    labels: ["run-e2e"]
+  workflow_dispatch: {}
+
+jobs:
+  build_ios_for_e2e:
+    type: build
+    params:
+      platform: ios
+      profile: e2e-test
+
+  build_android_for_e2e:
+    type: build
+    params:
+      platform: android
+      profile: e2e-test
+
+  maestro_ios:
+    needs: [build_ios_for_e2e]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_ios_for_e2e.outputs.build_id }}
+      flow_path: [".maestro"]
+      retries: 1
+
+  maestro_android:
+    needs: [build_android_for_e2e]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_android_for_e2e.outputs.build_id }}
+      flow_path: [".maestro"]
+      retries: 1
+
+  report:
+    after: [maestro_ios, maestro_android]
+    type: github-comment
+    params:
+      payload: |
+        ### E2E Test Report
+        - iOS: ${{ needs.maestro_ios.outputs.status }}
+        - Android: ${{ needs.maestro_android.outputs.status }}
