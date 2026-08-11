@@ -28,7 +28,13 @@ describe("ConfirmationModal", () => {
       <ConfirmationModal
         {...baseProps}
         isFinishedModal
-        finishedData={{ score: 320, timer: 90, errors: 1 }}
+        finishedData={{
+          score: 320,
+          timer: 90,
+          errors: 1,
+          isNewScoreRecord: false,
+          isNewTimeRecord: false,
+        }}
       />,
     );
 

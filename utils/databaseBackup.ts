@@ -1,5 +1,5 @@
 import { gameScoresService, globalStatsService, levelStatsService } from "@/store/dbServices";
-import { File, Path } from "expo-file-system/next";
+import { File, Paths } from "expo-file-system";
 import * as Sharing from "expo-sharing";
 
 export async function exportDatabaseToJSON(): Promise<string> {
@@ -11,7 +11,7 @@ export async function exportDatabaseToJSON(): Promise<string> {
   };
 
   const json = JSON.stringify(data, null, 2);
-  const file = new File(Path.document, "sudoku_backup.json");
+  const file = new File(Paths.document, "sudoku_backup.json");
   await file.write(json);
   return file.uri;
 }
