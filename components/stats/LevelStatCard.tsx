@@ -23,6 +23,7 @@ const LevelStatCard = ({ levelStats, levelColor }: LevelStatsProps) => {
   const { styles } = useStyles(createStyles);
 
   const [toggleCard, setToggleCard] = useState(false);
+  const notStarted = levelStats.totalGames === 0 || levelStats.totalGames === undefined;
 
   return (
     <Pressable style={[styles.levelStatCard]} onPress={() => setToggleCard(!toggleCard)}>
@@ -41,13 +42,17 @@ const LevelStatCard = ({ levelStats, levelColor }: LevelStatsProps) => {
             <AppText style={styles.levelStatName}>{levelStats.name}</AppText>
             {!toggleCard && (
               <View style={styles.levelStatData}>
-                <>
-                  <AppText style={styles.levelStatMeta}>
-                    Best {formatDecimal.format(levelStats.maxPoints!)}
-                  </AppText>
-                  <AppText style={styles.levelStatMeta}>-</AppText>
-                  <AppText style={styles.levelStatMeta}>{levelStats.totalGames} games</AppText>
-                </>
+                {notStarted ? (
+                  <AppText style={styles.levelStatMeta}>Not started yet</AppText>
+                ) : (
+                  <>
+                    <AppText style={styles.levelStatMeta}>
+                      Best {formatDecimal.format(levelStats.maxPoints!)}
+                    </AppText>
+                    <AppText style={styles.levelStatMeta}>-</AppText>
+                    <AppText style={styles.levelStatMeta}>{levelStats.totalGames} games</AppText>
+                  </>
+                )}
               </View>
             )}
           </View>
@@ -65,28 +70,34 @@ const LevelStatCard = ({ levelStats, levelColor }: LevelStatsProps) => {
         {toggleCard && (
           <View style={styles.expandContainer}>
             <View style={styles.expandBody}>
-              <View style={styles.expandGrid}>
-                <View style={styles.expandTile}>
-                  <AppText style={styles.expandTileValue}>
-                    {levelStats.bestTime ? formatSeconds(levelStats.bestTime) : "--"}
-                  </AppText>
-                  <AppText style={styles.expandTileLabel}>Best time</AppText>
+              {notStarted ? (
+                <AppText style={styles.levelStatMeta}>
+                  Play a game to see stats for this level.
+                </AppText>
+              ) : (
+                <View style={styles.expandGrid}>
+                  <View style={styles.expandTile}>
+                    <AppText style={styles.expandTileValue}>
+                      {levelStats.bestTime ? formatSeconds(levelStats.bestTime) : "--"}
+                    </AppText>
+                    <AppText style={styles.expandTileLabel}>Best time</AppText>
+                  </View>
+                  <View style={styles.expandTile}>
+                    <AppText style={styles.expandTileValue}>
+                      {formatDecimal.format(levelStats.maxPoints!)}
+                    </AppText>
+                    <AppText style={styles.expandTileLabel}>Max points</AppText>
+                  </View>
+                  <View style={styles.expandTile}>
+                    <AppText style={styles.expandTileValue}>{levelStats.totalGames}</AppText>
+                    <AppText style={styles.expandTileLabel}>Games</AppText>
+                  </View>
+                  <View style={styles.expandTile}>
+                    <AppText style={styles.expandTileValue}>{levelStats.streak}</AppText>
+                    <AppText style={styles.expandTileLabel}>Streak</AppText>
+                  </View>
                 </View>
-                <View style={styles.expandTile}>
-                  <AppText style={styles.expandTileValue}>
-                    {formatDecimal.format(levelStats.maxPoints!)}
-                  </AppText>
-                  <AppText style={styles.expandTileLabel}>Max points</AppText>
-                </View>
-                <View style={styles.expandTile}>
-                  <AppText style={styles.expandTileValue}>{levelStats.totalGames}</AppText>
-                  <AppText style={styles.expandTileLabel}>Games</AppText>
-                </View>
-                <View style={styles.expandTile}>
-                  <AppText style={styles.expandTileValue}>{levelStats.streak}</AppText>
-                  <AppText style={styles.expandTileLabel}>Streak</AppText>
-                </View>
-              </View>
+              )}
             </View>
           </View>
         )}
@@ -164,6 +175,7 @@ const createStyles = (colors: TColors) =>
       backgroundColor: colors.surface2,
       flex: 1,
       alignItems: "center",
+      justifyContent: "center",
       paddingVertical: verticalScale(12),
       borderRadius: 12,
       borderWidth: 1,
@@ -171,6 +183,7 @@ const createStyles = (colors: TColors) =>
       gap: 4,
     },
     expandTileValue: {
+      textAlign: "center",
       ...textVar.baseBold,
       color: colors.text,
     },
