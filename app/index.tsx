@@ -4,7 +4,7 @@ import ButtonNav from "@/components/shared/ButtonNav";
 import ConfirmationModal from "@/components/shared/ConfirmationModal";
 import { SCHEMES } from "@/constants/colors";
 import { H_PAD, moderateScale, verticalScale } from "@/constants/dimensions";
-import { getLevels } from "@/constants/levels";
+import { getLevels, LEVEL_UNLOCK_GAMES } from "@/constants/levels";
 import { textVar } from "@/constants/textVar";
 import { TColors } from "@/constants/types";
 import useStyles from "@/hooks/useStyles";
@@ -19,6 +19,12 @@ const Index = () => {
   const { hasSavedGame, savedGameLevel, setHasSavedGame, setSavedGameLevel } = useBoardStore();
   const { scoresByLevels } = useGameScoresStore();
 
+  const [warningModal, setWarningModal] = useState(false);
+  const [onboardingModal, setOnboardingModal] = useState(true);
+  const [pendingLevel, setPendingLevel] = useState<number | null>(null);
+  const [lockedModal, setLockedModal] = useState(false);
+  const [lockedLevel, setLockedLevel] = useState<number | null>(null);
+
   const router = useRouter();
   const levels = getLevels(SCHEMES);
 
@@ -26,10 +32,11 @@ const Index = () => {
     levels.find((level) => level.id === savedGameLevel)?.name ?? "current";
   const savedLevelStreak: number =
     scoresByLevels.find((score) => score.level === savedGameLevel)?.streak ?? 0;
-
-  const [warningModal, setWarningModal] = useState(false);
-  const [onboardingModal, setOnboardingModal] = useState(true);
-  const [pendingLevel, setPendingLevel] = useState<number | null>(null);
+  const lockedLevelName = levels.find((level) => level.id === lockedLevel)?.name ?? "";
+  const previousLevelName =
+    levels.find((level) => level.id === (lockedLevel ?? 0) - 1)?.name ?? "the previous level";
+  const previousLevelGames =
+    scoresByLevels.find((score) => score.level === (lockedLevel ?? 0) - 1)?.totalGames ?? 0;
 
   useEffect(() => {
     const checkOnboarding = async () => {
@@ -44,6 +51,11 @@ const Index = () => {
   const handleDisabledLevelPress = (levelId: number) => {
     setPendingLevel(levelId);
     setWarningModal(true);
+  };
+
+  const handleLockedLevelPress = (levelId: number) => {
+    setLockedLevel(levelId);
+    setLockedModal(true);
   };
 
   const handleConfirmNewGame = async () => {
@@ -82,9 +94,9 @@ const Index = () => {
       <LevelBox
         hasSavedGame={hasSavedGame}
         onDisabledPress={handleDisabledLevelPress}
+        onLockedPress={handleLockedLevelPress}
         savedGameLevel={savedGameLevel || null}
       />
-      {/* <View style={{ height: verticalScale(14) }} /> */}
 
       <View style={{ height: verticalScale(42) }} />
 
@@ -93,12 +105,6 @@ const Index = () => {
         <ButtonNav title="Instructions" onPress={() => router.push("/Instructions")} />
         <ButtonNav title="Settings" onPress={() => router.push("/Settings")} />
       </View>
-      {/* {__DEV__ && (
-        <View style={styles.buttonBox}>
-          <ButtonNav title="TestSQLite" onPress={() => {}} />
-          <ButtonNav title="DesignPreview" onPress={() => router.push("/DesignPreview")} />
-        </View>
-      )} */}
       <ConfirmationModal
         visible={warningModal}
         title={"Abandon saved game?"}
@@ -119,6 +125,15 @@ const Index = () => {
         acceptOnPress={handleAcceptOnboarding}
         cancelText={"Let's play!"}
         cancelOnPress={handleCancelOnboarding}
+      />
+      <ConfirmationModal
+        visible={lockedModal}
+        title={`${lockedLevelName} level is locked!`}
+        icon={"🔒"}
+        content={`You need to complete ${LEVEL_UNLOCK_GAMES} games in ${previousLevelName} level to unlock ${lockedLevelName} level.`}
+        content2={`Progress: ${previousLevelGames}/${LEVEL_UNLOCK_GAMES}`}
+        acceptText={"Got it!"}
+        acceptOnPress={() => setLockedModal(false)}
       />
     </View>
   );

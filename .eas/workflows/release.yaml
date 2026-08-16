@@ -1,0 +1,37 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch: {}
+
+jobs:
+  build_ios_production:
+    type: build
+    params:
+      platform: ios
+      profile: production
+
+  build_android_production:
+    type: build
+    params:
+      platform: android
+      profile: production
+
+  submit_ios_production:
+    type: submit
+    needs: [build_ios_production]
+    env:
+      EXPO_DEBUG: "1"
+    params:
+      build_id: ${{ needs.build_ios_production.outputs.build_id }}
+      profile: production
+
+  submit_android_production:
+    type: submit
+    needs: [build_android_production]
+    env:
+      EXPO_DEBUG: "1"
+    params:
+      build_id: ${{ needs.build_android_production.outputs.build_id }}
+      profile: production

@@ -1,6 +1,7 @@
 appId: com.juancastro.sudokuapp
 ---
-- launchApp
+- launchApp:
+    clearState: true
 # - tapOn:
 #     text: "Continue"
 #     optional: true
@@ -12,6 +13,8 @@ appId: com.juancastro.sudokuapp
 - tapOn:
     text: "Stats"
 - assertVisible: "Statistics"
+- assertVisible: "No games yet"
+- assertVisible: "Complete your first game to see your stats here."
 - tapOn:
     text: "Go back"
 - assertVisible: "SUDOKU"

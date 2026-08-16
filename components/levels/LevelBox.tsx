@@ -1,11 +1,12 @@
 import { SCHEMES } from "@/constants/colors";
 import { scale } from "@/constants/dimensions";
-import { getLevels } from "@/constants/levels";
+import { getLevels, isLevelLocked, LEVEL_UNLOCK_GAMES } from "@/constants/levels";
 import { SHADOW } from "@/constants/shadows";
 import { TColors } from "@/constants/types";
 import { useColorMode } from "@/context/ColorModeContext";
 import useHaptic from "@/hooks/useHaptic";
 import useStyles from "@/hooks/useStyles";
+import { useGameScoresStore } from "@/store/store_zustand";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
@@ -15,17 +16,28 @@ type LevelBoxProps = {
   hasSavedGame?: boolean;
   savedGameLevel?: number | null;
   onDisabledPress?: (levelId: number) => void;
+  onLockedPress?: (levelId: number) => void;
 };
 
-const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxProps) => {
+const LevelBox = ({
+  hasSavedGame,
+  savedGameLevel,
+  onDisabledPress,
+  onLockedPress,
+}: LevelBoxProps) => {
   const { colors, styles } = useStyles(createStyles);
   const { onClickHapticHeavy } = useHaptic();
   const { colorMode } = useColorMode();
   const router = useRouter();
-
+  const { scoresByLevels } = useGameScoresStore();
   const levels = getLevels(SCHEMES);
 
   const handleClick = (level: number) => {
+    if (isLevelLocked(level, scoresByLevels)) {
+      onClickHapticHeavy();
+      onLockedPress?.(level);
+      return;
+    }
     if (hasSavedGame) {
       onClickHapticHeavy();
       onDisabledPress?.(level);
@@ -38,32 +50,48 @@ const LevelBox = ({ hasSavedGame, savedGameLevel, onDisabledPress }: LevelBoxPro
 
   return (
     <View style={styles.levelBox}>
-      {Object.values(levels).map((level) => (
-        <Pressable
-          accessibilityLabel={`${level.name} difficulty`}
-          accessibilityHint={hasSavedGame ? "A game is alredy saved" : "Start a new game"}
-          accessibilityRole="button"
-          key={level.id}
-          onPress={() => handleClick(level.id)}
-          style={[styles.levelCard, SHADOW.standar, { opacity: hasSavedGame ? 0.7 : 1 }]}
-        >
-          <View style={[styles.levelDot, { backgroundColor: level.color }]} />
-          <View style={{ flex: 1, gap: 2 }}>
-            <AppText style={styles.levelText}>{level.name}</AppText>
-            <AppText style={styles.levelTextSub}>{level.sub}</AppText>
-          </View>
-          <View style={styles.levelArrow}>
-            <AppText
-              style={[
-                styles.levelArrowIcon,
-                { color: colorMode === "dark" ? colors.accentLight : colors.gray },
-              ]}
-            >
-              ›
-            </AppText>
-          </View>
-        </Pressable>
-      ))}
+      {Object.values(levels).map((level) => {
+        const locked = isLevelLocked(level.id, scoresByLevels);
+
+        return (
+          <Pressable
+            accessibilityLabel={`${level.name} difficulty${locked ? ", locked" : ""}`}
+            accessibilityHint={
+              locked
+                ? `Complete ${LEVEL_UNLOCK_GAMES} games in the previous level to unlock`
+                : hasSavedGame
+                  ? "A game is already saved"
+                  : "Start a new game"
+            }
+            accessibilityRole="button"
+            key={level.id}
+            onPress={() => handleClick(level.id)}
+            style={[
+              styles.levelCard,
+              SHADOW.standar,
+              { opacity: locked ? 0.5 : hasSavedGame ? 0.7 : 1 },
+            ]}
+          >
+            <View style={[styles.levelDot, { backgroundColor: level.color }]} />
+            <View style={{ flex: 1, gap: 2 }}>
+              <AppText style={styles.levelText}>{level.name}</AppText>
+              <AppText style={styles.levelTextSub}>
+                {locked ? `🔒 Complete ${LEVEL_UNLOCK_GAMES} games to unlock` : level.sub}
+              </AppText>
+            </View>
+            <View style={styles.levelArrow}>
+              <AppText
+                style={[
+                  styles.levelArrowIcon,
+                  { color: colorMode === "dark" ? colors.accentLight : colors.gray },
+                ]}
+              >
+                {locked ? "🔒" : "›"}
+              </AppText>
+            </View>
+          </Pressable>
+        );
+      })}
       {hasSavedGame && (
         <Pressable
           accessibilityLabel={`Resume ${savedGameLevel ? levels[savedGameLevel - 1]?.name : ""} game`}

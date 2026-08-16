@@ -2,7 +2,7 @@
   "expo": {
     "name": "Sudoku.Jc",
     "slug": "expo-sudoku-app",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon/adaptive-iconv2.png",
     "scheme": "exposudokuapp",
@@ -24,9 +24,7 @@
         "backgroundColor": "#0D0D1B"
       },
       "package": "com.juancastro.sudokuapp",
-      "permissions": [
-        "android.permission.MODIFY_AUDIO_SETTINGS"
-      ]
+      "permissions": ["android.permission.MODIFY_AUDIO_SETTINGS"]
     },
     "web": {
       "bundler": "metro",

@@ -8,6 +8,18 @@ export type LevelConfig = {
   scoreMultiplier: number;
 };
 
+export const LEVEL_UNLOCK_GAMES = 3;
+
+export const isLevelLocked = (
+  levelId: number,
+  scoresByLevels: { level: number; totalGames: number }[],
+): boolean => {
+  if (levelId <= 2) return false;
+  const previousGames =
+    scoresByLevels.find((score) => score.level === levelId - 1)?.totalGames ?? 0;
+  return previousGames < LEVEL_UNLOCK_GAMES;
+};
+
 export const LEVEL_CONFIG: Record<number, LevelConfig> = {
   1: {
     id: 1,
