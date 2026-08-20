@@ -4,6 +4,12 @@
 
 A feature-rich Sudoku app for iOS and Android built with React Native and Expo. Four difficulty levels, score tracking, statistics, haptic feedback, sound effects, and full dark/light theme support — all persisted locally with SQLite.
 
+**Get the app:**
+
+- iOS — [App Store](https://apps.apple.com/app/id6762877678)
+- Android — currently in [closed testing](https://groups.google.com/g/closed-testing-v1); Play Store listing pending Google's production-access requirements
+- [Landing page](https://juaneduardocastro.github.io/expo_sudoku_app/) · [Support](https://juaneduardocastro.github.io/expo_sudoku_app/support.html) · [Privacy Policy](https://juaneduardocastro.github.io/expo_sudoku_app/app-privacy-policy.html)
+
 ---
 
 ## Screenshots
@@ -55,6 +61,21 @@ A feature-rich Sudoku app for iOS and Android built with React Native and Expo. 
 | Database   | Expo SQLite + Drizzle ORM       |
 | Animations | React Native Reanimated 4       |
 | Gestures   | React Native Gesture Handler    |
+| CI/CD      | EAS Workflows                   |
+
+---
+
+## CI/CD
+
+The pipeline runs on [EAS Workflows](https://docs.expo.dev/eas/workflows/get-started/) in three stages:
+
+| Workflow             | Trigger                                          | What it does                                        |
+| --------------------- | ------------------------------------------------ | ---------------------------------------------------- |
+| `ci-fast.yaml`        | Push to `main`, any pull request                 | Lint + typecheck + Jest                               |
+| `e2e-tests.yaml`      | PR labeled `run-e2e`, or manual dispatch         | Builds iOS + Android on the `e2e-test` profile        |
+| `release.yaml`        | Tag push (`v*`), or manual dispatch              | Production build (iOS + Android) chained to store submission |
+
+Releases are never triggered automatically by a merge to `main` — only an explicit version tag (or manual dispatch) ships a build.
 
 ---
 
